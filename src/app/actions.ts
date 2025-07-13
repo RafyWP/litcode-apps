@@ -53,6 +53,56 @@ export async function getAccessToken(
   }
 }
 
+const getAdvertisersSchema = z.object({
+  accessToken: z.string().min(1, "Access Token is required."),
+});
+
+export async function getAdvertisers(
+  params: z.infer<typeof getAdvertisersSchema>
+) {
+  try {
+    const validatedParams = getAdvertisersSchema.parse(params);
+    const { accessToken } = validatedParams;
+    const appId = process.env.TIKTOK_APP_ID;
+    const secret = process.env.TIKTOK_SECRET;
+
+    if (!appId || !secret) {
+      return { success: false, error: "App ID or Secret is not configured." };
+    }
+
+    const response = await fetch(
+      `https://business-api.tiktok.com/open_api/v1.3/advertiser/get/?app_id=${appId}&secret=${secret}`,
+      {
+        headers: {
+          "Access-Token": accessToken,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.code !== 0) {
+      return {
+        success: false,
+        error: data.message || "Failed to fetch advertisers.",
+      };
+    }
+
+    return { success: true, data: data.data.list };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return {
+        success: false,
+        error: error.errors.map((e) => e.message).join(" "),
+      };
+    }
+    return {
+      success: false,
+      error: "An unexpected error occurred while fetching advertisers.",
+    };
+  }
+}
+
 const createPixelSchema = z.object({
   accessToken: z.string().min(1, "Access Token is required."),
   advertiserId: z.string().min(1, "Advertiser ID is required."),

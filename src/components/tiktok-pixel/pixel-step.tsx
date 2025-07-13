@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { createPixel } from "@/app/actions";
+import { createPixel, getAdvertisers } from "@/app/actions";
 import {
   Card,
   CardContent,
@@ -23,6 +23,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import {
   WandSparkles,
@@ -31,8 +38,13 @@ import {
   Copy,
 } from "lucide-react";
 
+type Advertiser = {
+  advertiser_id: string;
+  advertiser_name: string;
+};
+
 const formSchema = z.object({
-  advertiserId: z.string().min(1, "Advertiser ID is required"),
+  advertiserId: z.string().min(1, "Please select an Advertiser account."),
   pixelName: z.string().min(1, "Pixel Name is required"),
 });
 
@@ -44,7 +56,9 @@ type PixelStepProps = {
 export function PixelStep({ accessToken, onPixelCreated }: PixelStepProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [isFetchingAdvertisers, setIsFetchingAdvertisers] = useState(true);
   const [pixelId, setPixelId] = useState<string | null>(null);
+  const [advertisers, setAdvertisers] = useState<Advertiser[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,6 +67,25 @@ export function PixelStep({ accessToken, onPixelCreated }: PixelStepProps) {
       pixelName: "",
     },
   });
+
+  useEffect(() => {
+    async function fetchAdvertisers() {
+      if (!accessToken) return;
+      setIsFetchingAdvertisers(true);
+      const result = await getAdvertisers({ accessToken });
+      if (result.success) {
+        setAdvertisers(result.data || []);
+      } else {
+        toast({
+          title: "Error fetching advertisers",
+          description: result.error,
+          variant: "destructive",
+        });
+      }
+      setIsFetchingAdvertisers(false);
+    }
+    fetchAdvertisers();
+  }, [accessToken, toast]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
@@ -127,19 +160,37 @@ export function PixelStep({ accessToken, onPixelCreated }: PixelStepProps) {
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <fieldset disabled={isLoading}>
+          <fieldset disabled={isLoading || isFetchingAdvertisers}>
             <CardContent className="space-y-4">
               <FormField
                 control={form.control}
                 name="advertiserId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Advertiser ID</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter your Advertiser ID" {...field} />
-                    </FormControl>
+                    <FormLabel>Advertiser Account</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger disabled={isFetchingAdvertisers}>
+                          {isFetchingAdvertisers ? (
+                            <span className="flex items-center">
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Loading Accounts...
+                            </span>
+                          ) : (
+                            <SelectValue placeholder="Select an advertiser account" />
+                          )}
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {advertisers.map((ad) => (
+                          <SelectItem key={ad.advertiser_id} value={ad.advertiser_id}>
+                            {ad.advertiser_name} ({ad.advertiser_id})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormDescription>
-                      This is your TikTok Ads Manager account ID.
+                      Choose the TikTok Ads account for this pixel.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -163,8 +214,8 @@ export function PixelStep({ accessToken, onPixelCreated }: PixelStepProps) {
               />
             </CardContent>
             <CardFooter>
-              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold">
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold" disabled={isLoading || isFetchingAdvertisers}>
+                {(isLoading || isFetchingAdvertisers) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 <WandSparkles className="mr-2" />
                 Generate Pixel
               </Button>
