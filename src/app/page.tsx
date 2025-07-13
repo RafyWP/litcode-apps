@@ -20,7 +20,7 @@ export default function Home() {
             TikTok Pixel Generator
           </h1>
           <p className="text-muted-foreground mt-2 text-md max-w-xs mx-auto">
-            Effortless pixel creation for your TikTok campaigns.
+            Crie seu pixel do TikTok para GTM, sem precisar de um e-commerce.
           </p>
         </header>
 
