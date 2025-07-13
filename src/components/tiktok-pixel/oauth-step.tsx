@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -35,6 +36,7 @@ const formSchema = z.object({
   appId: z.string().min(1, "App ID is required"),
   secret: z.string().min(1, "Secret is required"),
   redirectUri: z.string().url("Please enter a valid URL"),
+  scope: z.string().min(1, "Scope is required"),
   state: z.string().min(1, "State is required"),
 });
 
@@ -59,12 +61,12 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
       appId: "",
       secret: "",
       redirectUri: "https://www.tiktok.com",
+      scope: "tiktok_business_api_management,tiktok_business_api_access",
       state: "",
     },
   });
 
   useEffect(() => {
-    // Generate state only on the client-side to prevent hydration mismatch
     if (typeof window !== "undefined") {
       form.setValue("state", crypto.randomUUID());
     }
@@ -77,6 +79,7 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
       app_id: values.appId,
       state: values.state,
       redirect_uri: values.redirectUri,
+      scope: values.scope,
     });
     const url = `${baseUrl}?${params.toString()}`;
     setAuthUrl(url);
@@ -152,6 +155,22 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
                   <FormControl>
                     <Input
                       placeholder="https://your-redirect-uri.com"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="scope"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Scope</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="e.g., tiktok_business_api_management"
                       {...field}
                     />
                   </FormControl>
