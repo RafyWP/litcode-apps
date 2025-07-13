@@ -53,10 +53,10 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
       const baseUrl = "https://business-api.tiktok.com/portal/auth";
       const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
       const redirectUri = process.env.NEXT_PUBLIC_TIKTOK_REDIRECT_URI;
-      const scope = process.env.NEXT_PUBLIC_TIKTOK_SCOPE;
+      const scope = "bc.read,cm.manage";
       const state = crypto.randomUUID();
 
-      if (!appId || !redirectUri || !scope) {
+      if (!appId || !redirectUri) {
         const errorMsg = "TikTok app credentials are not configured.";
         console.error(errorMsg);
         setError(errorMsg);
