@@ -77,7 +77,7 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const params = new URLSearchParams({
-      app_id: values.clientKey,
+      client_key: values.clientKey,
       scope: values.scope,
       response_type: "code",
       redirect_uri: values.redirectUri,
