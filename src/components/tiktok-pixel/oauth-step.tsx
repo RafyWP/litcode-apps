@@ -31,8 +31,10 @@ import {
   Check,
 } from "lucide-react";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const formSchema = z.object({
+  environment: z.enum(["production", "sandbox"]),
   clientKey: z.string().min(1, "Client Key is required"),
   clientSecret: z.string().min(1, "Client Secret is required"),
   redirectUri: z.string().url("Please enter a valid URL"),
@@ -59,6 +61,7 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      environment: "sandbox",
       clientKey: "",
       clientSecret: "",
       redirectUri: "",
@@ -76,6 +79,11 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
   }, [form]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    const baseUrl =
+      values.environment === "sandbox"
+        ? "https://www.tiktok.com/v2/sandbox/auth/authorize"
+        : "https://www.tiktok.com/v2/auth/authorize";
+
     const params = new URLSearchParams({
       client_key: values.clientKey,
       scope: values.scope,
@@ -83,7 +91,7 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
       redirect_uri: values.redirectUri,
       state: values.state,
     });
-    const url = `https://www.tiktok.com/v2/auth/authorize?${params.toString()}`;
+    const url = `${baseUrl}?${params.toString()}`;
     setAuthUrl(url);
     onConfigured({
       clientKey: values.clientKey,
@@ -93,7 +101,7 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
     });
     toast({
       title: "Authorization URL Generated",
-      description: "Proceed to the URL to authorize the application.",
+      description: `Proceed to the URL to authorize the application in ${values.environment} mode.`,
     });
   }
 
@@ -117,6 +125,36 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
+            <FormField
+              control={form.control}
+              name="environment"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Environment</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex space-x-4"
+                    >
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="sandbox" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Sandbox</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="production" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Production</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <div className="grid sm:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
