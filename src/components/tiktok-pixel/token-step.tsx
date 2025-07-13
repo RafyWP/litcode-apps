@@ -65,9 +65,8 @@ export function TokenStep({
     setIsLoading(true);
 
     const result = await getAccessToken({
-      clientKey: oauthData.clientKey,
-      clientSecret: oauthData.clientSecret,
-      redirectUri: oauthData.redirectUri,
+      appId: oauthData.appId,
+      secret: oauthData.secret,
       authCode: values.authCode,
     });
 
@@ -131,7 +130,7 @@ export function TokenStep({
                   </div>
                 </div>
               )}
-               {!disabled && !oauthData && (
+               {disabled && (
                 <div className="flex items-center gap-2 text-sm text-yellow-600 dark:text-yellow-400">
                   <AlertTriangle className="h-4 w-4" />
                   <p>Complete Step 1 to enable this section.</p>

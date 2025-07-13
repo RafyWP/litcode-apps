@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -31,21 +30,17 @@ import {
   Check,
 } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const formSchema = z.object({
-  environment: z.enum(["production", "sandbox"]),
-  clientKey: z.string().min(1, "Client Key is required"),
-  clientSecret: z.string().min(1, "Client Secret is required"),
+  appId: z.string().min(1, "App ID is required"),
+  secret: z.string().min(1, "Secret is required"),
   redirectUri: z.string().url("Please enter a valid URL"),
-  scope: z.string().min(1, "Scope is required"),
   state: z.string().min(1, "State is required"),
 });
 
 export type OAuthData = {
-  clientKey: string;
-  clientSecret: string;
-  redirectUri: string;
+  appId: string;
+  secret: string;
   authUrl: string;
 };
 
@@ -61,45 +56,38 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      environment: "sandbox",
-      clientKey: "",
-      clientSecret: "",
-      redirectUri: "",
-      scope: "user.info.basic,pixel.read,pixel.manage",
+      appId: "",
+      secret: "",
+      redirectUri: "https://www.tiktok.com",
       state: "",
     },
   });
 
   useEffect(() => {
+    // Generate state only on the client-side to prevent hydration mismatch
     if (typeof window !== "undefined") {
       form.setValue("state", crypto.randomUUID());
     }
   }, [form]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const baseUrl =
-      values.environment === "sandbox"
-        ? "https://www.tiktok.com/v2/sandbox/auth/authorize"
-        : "https://www.tiktok.com/v2/auth/authorize";
+    const baseUrl = "https://business-api.tiktok.com/portal/auth";
 
     const params = new URLSearchParams({
-      client_key: values.clientKey,
-      scope: values.scope,
-      response_type: "code",
-      redirect_uri: values.redirectUri,
+      app_id: values.appId,
       state: values.state,
+      redirect_uri: values.redirectUri,
     });
     const url = `${baseUrl}?${params.toString()}`;
     setAuthUrl(url);
     onConfigured({
-      clientKey: values.clientKey,
-      clientSecret: values.clientSecret,
-      redirectUri: values.redirectUri,
+      appId: values.appId,
+      secret: values.secret,
       authUrl: url,
     });
     toast({
       title: "Authorization URL Generated",
-      description: `Proceed to the URL to authorize the application in ${values.environment} mode.`,
+      description: `Proceed to the URL to authorize the application.`,
     });
   }
 
@@ -123,45 +111,15 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
-            <FormField
-              control={form.control}
-              name="environment"
-              render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel>Environment</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="flex space-x-4"
-                    >
-                      <FormItem className="flex items-center space-x-2 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="sandbox" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Sandbox</FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center space-x-2 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="production" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Production</FormLabel>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <div className="grid sm:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="clientKey"
+                name="appId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Client Key</FormLabel>
+                    <FormLabel>App ID</FormLabel>
                     <FormControl>
-                      <Input placeholder="Your Client Key" {...field} />
+                      <Input placeholder="Your App ID" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -169,14 +127,14 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
               />
               <FormField
                 control={form.control}
-                name="clientSecret"
+                name="secret"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Client Secret</FormLabel>
+                    <FormLabel>Secret</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="Your Client Secret"
+                        placeholder="Your App Secret"
                         {...field}
                       />
                     </FormControl>
@@ -201,26 +159,12 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
                 </FormItem>
               )}
             />
-            <div className="grid sm:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="scope"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Scope</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
+            <FormField
                 control={form.control}
                 name="state"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>State</FormLabel>
+                    <FormLabel>State (auto-generated)</FormLabel>
                     <FormControl>
                       <Input readOnly {...field} />
                     </FormControl>
@@ -228,7 +172,6 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
                   </FormItem>
                 )}
               />
-            </div>
             {authUrl && (
               <div className="space-y-2">
                 <Label>Generated Authorization URL</Label>

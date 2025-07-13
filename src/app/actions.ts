@@ -3,10 +3,9 @@
 import { z } from "zod";
 
 const getAccessTokenSchema = z.object({
-  clientKey: z.string().min(1, "Client Key is required."),
-  clientSecret: z.string().min(1, "Client Secret is required."),
+  appId: z.string().min(1, "App ID is required."),
+  secret: z.string().min(1, "Secret is required."),
   authCode: z.string().min(1, "Authorization Code is required."),
-  redirectUri: z.string().url("Invalid Redirect URI."),
 });
 
 export async function getAccessToken(
@@ -14,32 +13,30 @@ export async function getAccessToken(
 ) {
   try {
     const validatedParams = getAccessTokenSchema.parse(params);
-    const { clientKey, clientSecret, authCode, redirectUri } = validatedParams;
+    const { appId, secret, authCode } = validatedParams;
 
-    const response = await fetch("https://open.tiktokapis.com/v2/oauth/token/", {
+    const response = await fetch("https://business-api.tiktok.com/open_api/v1.3/oauth2/access_token/", {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
       },
-      body: new URLSearchParams({
-        client_key: clientKey,
-        client_secret: clientSecret,
-        code: authCode,
-        grant_type: "authorization_code",
-        redirect_uri: redirectUri,
+      body: JSON.stringify({
+        app_id: appId,
+        secret: secret,
+        auth_code: authCode,
       }),
     });
 
     const data = await response.json();
 
-    if (!response.ok || data.error) {
+    if (data.code !== 0) {
       return {
         success: false,
-        error: data.error_description || "Failed to retrieve access token.",
+        error: data.message || "Failed to retrieve access token.",
       };
     }
 
-    return { success: true, data };
+    return { success: true, data: data.data };
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {
