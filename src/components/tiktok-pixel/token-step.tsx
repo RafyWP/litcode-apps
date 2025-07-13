@@ -30,10 +30,8 @@ import {
   Code,
   CheckCircle2,
   Link as LinkIcon,
-  ClipboardCopy,
-  Check,
+  ExternalLink,
 } from "lucide-react";
-import { Label } from "../ui/label";
 
 const formSchema = z.object({
   authCode: z.string().min(1, "Authorization Code is required"),
@@ -48,7 +46,6 @@ export function TokenStep({ onTokenReceived }: TokenStepProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const [authUrl, setAuthUrl] = useState("");
-  const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
     const generateAuthUrl = () => {
@@ -78,12 +75,6 @@ export function TokenStep({ onTokenReceived }: TokenStepProps) {
     };
     generateAuthUrl();
   }, [toast]);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(authUrl);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
-  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -127,41 +118,23 @@ export function TokenStep({ onTokenReceived }: TokenStepProps) {
           Step 1: Get Access Token
         </CardTitle>
         <CardDescription>
-          First, go to the authorization URL to grant permissions. Then, paste
+          First, click the button below to grant permissions. Then, paste
           the authorization code from the redirect URL to get your access token.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {authUrl && (
-          <div className="space-y-2">
-            <Label>1. Go to this Authorization URL</Label>
-            <div className="flex gap-2 items-center">
-              <Input
-                readOnly
-                value={authUrl}
-                className="font-code text-xs"
-              />
-              <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                onClick={handleCopy}
-                title="Copy URL"
-              >
-                {isCopied ? (
-                  <Check className="h-4 w-4 text-green-500" />
-                ) : (
-                  <ClipboardCopy className="h-4 w-4" />
-                )}
-              </Button>
-              <Button asChild variant="secondary">
-                <a href={authUrl} target="_blank" rel="noopener noreferrer">
-                  <LinkIcon className="mr-2" />
-                  Authorize
-                </a>
-              </Button>
-            </div>
-          </div>
+        {authUrl ? (
+          <Button asChild>
+            <a href={authUrl} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="mr-2" />
+              Authorize with TikTok
+            </a>
+          </Button>
+        ) : (
+          <Button disabled>
+            <ExternalLink className="mr-2" />
+            Generating Authorization URL...
+          </Button>
         )}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -170,7 +143,7 @@ export function TokenStep({ onTokenReceived }: TokenStepProps) {
               name="authCode"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>2. Paste Authorization Code</FormLabel>
+                  <FormLabel>Paste Authorization Code</FormLabel>
                   <FormControl>
                     <Input placeholder="Paste your code here" {...field} />
                   </FormControl>
