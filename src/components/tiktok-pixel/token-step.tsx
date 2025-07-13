@@ -87,9 +87,8 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
 
   return (
     <div className="flex flex-col items-center space-y-4">
-      { (hasInteracted || hasToken || error) && (
+      { (hasInteracted || hasToken || error) && !hasToken && (
         <h2 className="font-headline text-2xl font-semibold flex items-center gap-2">
-          <span className="flex items-center justify-center text-sm w-8 h-8 rounded-full bg-primary text-primary-foreground">1</span>
           Authorize Application
         </h2>
       )}
@@ -112,7 +111,7 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
             <CheckCircle2 className="h-5 w-5" />
             <div>
               <p className="font-bold">Authorization Successful!</p>
-              <p>Access token has been received.</p>
+              <p>You can now create a pixel.</p>
             </div>
           </div>
         )}

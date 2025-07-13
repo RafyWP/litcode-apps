@@ -24,12 +24,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
 import {
   WandSparkles,
   Loader2,
   CheckCircle2,
-  AlertTriangle,
 } from "lucide-react";
 
 const formSchema = z.object({
@@ -45,7 +43,6 @@ export function PixelStep({ accessToken }: PixelStepProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [pixelId, setPixelId] = useState<string | null>(null);
-  const disabled = !accessToken;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -83,10 +80,9 @@ export function PixelStep({ accessToken }: PixelStepProps) {
   }
 
   return (
-    <Card className={cn(disabled && "bg-muted/50")}>
+    <Card>
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2">
-           <span className="flex items-center justify-center text-sm w-8 h-8 rounded-full bg-primary text-primary-foreground">2</span>
           Create Pixel
         </CardTitle>
         <CardDescription>
@@ -95,7 +91,7 @@ export function PixelStep({ accessToken }: PixelStepProps) {
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <fieldset disabled={disabled || isLoading}>
+          <fieldset disabled={isLoading}>
             <CardContent className="space-y-4">
               <div className="grid sm:grid-cols-2 gap-4">
                 <FormField
@@ -137,15 +133,9 @@ export function PixelStep({ accessToken }: PixelStepProps) {
                   </div>
                 </div>
               )}
-              {disabled && (
-                 <div className="flex items-center gap-2 text-sm text-yellow-600 dark:text-yellow-400">
-                  <AlertTriangle className="h-4 w-4" />
-                  <p>Complete Step 1 to enable this section.</p>
-                </div>
-              )}
             </CardContent>
             <CardFooter>
-              <Button type="submit" disabled={disabled || isLoading || !!pixelId}>
+              <Button type="submit" disabled={isLoading || !!pixelId}>
                 {isLoading && (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 )}

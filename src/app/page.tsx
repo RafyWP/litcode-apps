@@ -19,13 +19,13 @@ export default function Home() {
             New TikTok Pixel
           </h1>
           <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">
-            Your one-stop tool to generate TikTok Pixels with ease. Follow the steps below to authorize the app and create a new pixel.
+            Your one-stop tool to generate TikTok Pixels with ease. Authorize the app and create a new pixel.
           </p>
         </header>
 
         <div className="max-w-3xl mx-auto space-y-8">
           <TokenStep onTokenReceived={setAccessToken} accessToken={accessToken} />
-          <PixelStep accessToken={accessToken} />
+          {accessToken && <PixelStep accessToken={accessToken} />}
         </div>
       </div>
     </div>
