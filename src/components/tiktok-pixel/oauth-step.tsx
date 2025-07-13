@@ -70,12 +70,14 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
   useEffect(() => {
     // Moved from useLayoutEffect to useEffect to run on client only after mount
     // to prevent hydration errors.
-    form.setValue("state", crypto.randomUUID());
+    if (typeof window !== "undefined") {
+      form.setValue("state", crypto.randomUUID());
+    }
   }, [form]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const params = new URLSearchParams({
-      client_key: values.clientKey,
+      app_id: values.clientKey,
       scope: values.scope,
       response_type: "code",
       redirect_uri: values.redirectUri,
