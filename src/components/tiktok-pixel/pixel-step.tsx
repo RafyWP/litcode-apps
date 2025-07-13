@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -55,14 +55,6 @@ export function PixelStep({ accessToken, disabled }: PixelStepProps) {
     },
   });
 
-  useEffect(() => {
-    const advertiserId = process.env.NEXT_PUBLIC_TIKTOK_ADVERTISER_ID;
-    if (advertiserId) {
-      form.setValue("advertiserId", advertiserId);
-    }
-  }, [form]);
-
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!accessToken) return;
     setIsLoading(true);
@@ -98,7 +90,7 @@ export function PixelStep({ accessToken, disabled }: PixelStepProps) {
           Step 2: Create Pixel
         </CardTitle>
         <CardDescription>
-          Finally, provide a name for your new pixel. The Advertiser ID is pre-filled.
+          Finally, provide your Advertiser ID and a name for your new pixel.
         </CardDescription>
       </CardHeader>
       <Form {...form}>
@@ -113,7 +105,7 @@ export function PixelStep({ accessToken, disabled }: PixelStepProps) {
                     <FormItem>
                       <FormLabel>Advertiser ID</FormLabel>
                       <FormControl>
-                        <Input placeholder="Your Advertiser ID" {...field} readOnly />
+                        <Input placeholder="Your Advertiser ID" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
