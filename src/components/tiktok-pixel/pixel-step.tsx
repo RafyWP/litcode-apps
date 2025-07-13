@@ -8,7 +8,6 @@ import { createPixel } from "@/app/actions";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -28,6 +27,7 @@ import {
   WandSparkles,
   Loader2,
   CheckCircle2,
+  Copy,
 } from "lucide-react";
 
 const formSchema = z.object({
@@ -36,10 +36,11 @@ const formSchema = z.object({
 });
 
 type PixelStepProps = {
-  accessToken: string | null;
+  accessToken: string;
+  onPixelCreated: () => void;
 };
 
-export function PixelStep({ accessToken }: PixelStepProps) {
+export function PixelStep({ accessToken, onPixelCreated }: PixelStepProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [pixelId, setPixelId] = useState<string | null>(null);
@@ -53,7 +54,6 @@ export function PixelStep({ accessToken }: PixelStepProps) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!accessToken) return;
     setIsLoading(true);
 
     const result = await createPixel({
@@ -64,11 +64,12 @@ export function PixelStep({ accessToken }: PixelStepProps) {
 
     setIsLoading(false);
 
-    if (result.success) {
+    if (result.success && result.data.pixel_id) {
       setPixelId(result.data.pixel_id);
       toast({
         title: "Pixel Created!",
         description: `Your new Pixel ID is ${result.data.pixel_id}.`,
+        className: 'bg-green-600 text-white border-green-600'
       });
     } else {
       toast({
@@ -79,68 +80,86 @@ export function PixelStep({ accessToken }: PixelStepProps) {
     }
   }
 
+  const copyToClipboard = () => {
+    if (pixelId) {
+      navigator.clipboard.writeText(pixelId);
+      toast({
+        title: "Copied!",
+        description: "Pixel ID copied to clipboard.",
+      });
+    }
+  };
+
+  if (pixelId) {
+    return (
+      <Card className="bg-secondary border-t-4 border-primary shadow-lg shadow-primary/20">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-primary-foreground">
+            <CheckCircle2 className="h-6 w-6 text-primary" />
+            Pixel Created Successfully!
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground mb-4">Your new Pixel is ready. Copy the ID below.</p>
+          <div className="flex items-center gap-2 p-3 rounded-md bg-background">
+            <span className="font-mono text-sm text-foreground truncate">{pixelId}</span>
+            <Button variant="ghost" size="icon" onClick={copyToClipboard} className="ml-auto">
+              <Copy className="h-4 w-4" />
+            </Button>
+          </div>
+        </CardContent>
+        <CardFooter>
+            <Button onClick={onPixelCreated} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                Done
+            </Button>
+        </CardFooter>
+      </Card>
+    );
+  }
+
   return (
-    <Card>
+    <Card className="bg-secondary border-t-4 border-accent shadow-lg shadow-accent/20">
       <CardHeader>
-        <CardTitle className="font-headline flex items-center gap-2">
-          Create Pixel
+        <CardTitle className="font-headline flex items-center gap-2 text-primary-foreground">
+          Create Your Pixel
         </CardTitle>
-        <CardDescription>
-          Finally, provide your Advertiser ID and a name for your new pixel.
-        </CardDescription>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <fieldset disabled={isLoading}>
             <CardContent className="space-y-4">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="advertiserId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Advertiser ID</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Your Advertiser ID" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="pixelName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Pixel Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g., My Awesome Pixel" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              {pixelId && (
-                <div className="flex items-center gap-3 rounded-md border border-green-500 bg-green-500/10 p-3 text-sm text-green-700 dark:text-green-400">
-                  <CheckCircle2 className="h-5 w-5" />
-                  <div>
-                    <p className="font-bold">Pixel Created Successfully!</p>
-                    <p className="font-code text-xs opacity-80 break-all">
-                      Pixel ID: {pixelId}
-                    </p>
-                  </div>
-                </div>
-              )}
+              <FormField
+                control={form.control}
+                name="advertiserId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Advertiser ID</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your Advertiser ID" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="pixelName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Pixel Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., My Awesome Pixel" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </CardContent>
             <CardFooter>
-              <Button type="submit" disabled={isLoading || !!pixelId}>
-                {isLoading && (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                )}
+              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold">
+                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 <WandSparkles className="mr-2" />
-                Create Pixel
+                Generate Pixel
               </Button>
             </CardFooter>
           </fieldset>
