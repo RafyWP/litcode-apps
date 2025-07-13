@@ -3,8 +3,6 @@
 import { z } from "zod";
 
 const getAccessTokenSchema = z.object({
-  appId: z.string().min(1, "App ID is required."),
-  secret: z.string().min(1, "Secret is required."),
   authCode: z.string().min(1, "Authorization Code is required."),
 });
 
@@ -13,7 +11,14 @@ export async function getAccessToken(
 ) {
   try {
     const validatedParams = getAccessTokenSchema.parse(params);
-    const { appId, secret, authCode } = validatedParams;
+    const { authCode } = validatedParams;
+
+    const appId = process.env.TIKTOK_APP_ID;
+    const secret = process.env.TIKTOK_SECRET;
+
+    if (!appId || !secret) {
+        return { success: false, error: "App ID or Secret is not configured in environment variables." };
+    }
 
     const response = await fetch("https://business-api.tiktok.com/open_api/v1.3/oauth2/access_token/", {
       method: "POST",

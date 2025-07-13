@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -24,34 +24,66 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
 import {
   LogIn,
   Loader2,
   Code,
   CheckCircle2,
-  AlertTriangle,
+  Link as LinkIcon,
+  ClipboardCopy,
+  Check,
 } from "lucide-react";
-import type { OAuthData } from "./oauth-step";
+import { Label } from "../ui/label";
 
 const formSchema = z.object({
   authCode: z.string().min(1, "Authorization Code is required"),
 });
 
 type TokenStepProps = {
-  oauthData: OAuthData | null;
   onTokenReceived: (token: string) => void;
-  disabled: boolean;
 };
 
-export function TokenStep({
-  oauthData,
-  onTokenReceived,
-  disabled,
-}: TokenStepProps) {
+export function TokenStep({ onTokenReceived }: TokenStepProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useState<string | null>(null);
+  const [authUrl, setAuthUrl] = useState("");
+  const [isCopied, setIsCopied] = useState(false);
+
+  useEffect(() => {
+    const generateAuthUrl = () => {
+      const baseUrl = "https://business-api.tiktok.com/portal/auth";
+      const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
+      const redirectUri = process.env.NEXT_PUBLIC_TIKTOK_REDIRECT_URI;
+      const scope = process.env.NEXT_PUBLIC_TIKTOK_SCOPE;
+      const state = crypto.randomUUID();
+
+      if (!appId || !redirectUri || !scope) {
+        console.error("Missing TikTok environment variables");
+        toast({
+          title: "Configuration Error",
+          description: "TikTok app credentials are not configured.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const params = new URLSearchParams({
+        app_id: appId,
+        state: state,
+        redirect_uri: redirectUri,
+        scope: scope,
+      });
+      setAuthUrl(`${baseUrl}?${params.toString()}`);
+    };
+    generateAuthUrl();
+  }, [toast]);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(authUrl);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
+  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,12 +93,9 @@ export function TokenStep({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!oauthData) return;
     setIsLoading(true);
 
     const result = await getAccessToken({
-      appId: oauthData.appId,
-      secret: oauthData.secret,
       authCode: values.authCode,
     });
 
@@ -91,64 +120,85 @@ export function TokenStep({
   }
 
   return (
-    <Card className={cn(disabled && "bg-muted/50")}>
+    <Card>
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2">
           <Code className="text-accent" />
-          Step 2: Get Access Token
+          Step 1: Get Access Token
         </CardTitle>
         <CardDescription>
-          Paste the authorization code from the redirect URL to get your access
-          token.
+          First, go to the authorization URL to grant permissions. Then, paste
+          the authorization code from the redirect URL to get your access token.
         </CardDescription>
       </CardHeader>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <fieldset disabled={disabled || isLoading}>
-            <CardContent className="space-y-4">
-              <FormField
-                control={form.control}
-                name="authCode"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Authorization Code</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Paste your code here" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+      <CardContent className="space-y-4">
+        {authUrl && (
+          <div className="space-y-2">
+            <Label>1. Go to this Authorization URL</Label>
+            <div className="flex gap-2 items-center">
+              <Input
+                readOnly
+                value={authUrl}
+                className="font-code text-xs"
               />
-              {token && (
-                <div className="flex items-center gap-3 rounded-md border border-green-500 bg-green-500/10 p-3 text-sm text-green-700 dark:text-green-400">
-                  <CheckCircle2 className="h-5 w-5" />
-                  <div>
-                    <p className="font-bold">Access Token Received!</p>
-                    <p className="font-code text-xs opacity-80 break-all">
-                      {token.substring(0, 30)}...
-                    </p>
-                  </div>
-                </div>
-              )}
-               {disabled && (
-                <div className="flex items-center gap-2 text-sm text-yellow-600 dark:text-yellow-400">
-                  <AlertTriangle className="h-4 w-4" />
-                  <p>Complete Step 1 to enable this section.</p>
-                </div>
-              )}
-            </CardContent>
-            <CardFooter>
-              <Button type="submit" disabled={disabled || isLoading || !!token}>
-                {isLoading && (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={handleCopy}
+                title="Copy URL"
+              >
+                {isCopied ? (
+                  <Check className="h-4 w-4 text-green-500" />
+                ) : (
+                  <ClipboardCopy className="h-4 w-4" />
                 )}
+              </Button>
+              <Button asChild variant="secondary">
+                <a href={authUrl} target="_blank" rel="noopener noreferrer">
+                  <LinkIcon className="mr-2" />
+                  Authorize
+                </a>
+              </Button>
+            </div>
+          </div>
+        )}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="authCode"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>2. Paste Authorization Code</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Paste your code here" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {token && (
+              <div className="flex items-center gap-3 rounded-md border border-green-500 bg-green-500/10 p-3 text-sm text-green-700 dark:text-green-400">
+                <CheckCircle2 className="h-5 w-5" />
+                <div>
+                  <p className="font-bold">Access Token Received!</p>
+                  <p className="font-code text-xs opacity-80 break-all">
+                    {token.substring(0, 30)}...
+                  </p>
+                </div>
+              </div>
+            )}
+             <CardFooter className="p-0 pt-4">
+              <Button type="submit" disabled={isLoading || !!token}>
+                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 <LogIn className="mr-2" />
                 Get Access Token
               </Button>
             </CardFooter>
-          </fieldset>
-        </form>
-      </Form>
+          </form>
+        </Form>
+      </CardContent>
     </Card>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -55,6 +55,14 @@ export function PixelStep({ accessToken, disabled }: PixelStepProps) {
     },
   });
 
+  useEffect(() => {
+    const advertiserId = process.env.NEXT_PUBLIC_TIKTOK_ADVERTISER_ID;
+    if (advertiserId) {
+      form.setValue("advertiserId", advertiserId);
+    }
+  }, [form]);
+
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!accessToken) return;
     setIsLoading(true);
@@ -87,10 +95,10 @@ export function PixelStep({ accessToken, disabled }: PixelStepProps) {
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2">
           <WandSparkles className="text-accent" />
-          Step 3: Create Pixel
+          Step 2: Create Pixel
         </CardTitle>
         <CardDescription>
-          Finally, provide an Advertiser ID and a name for your new pixel.
+          Finally, provide a name for your new pixel. The Advertiser ID is pre-filled.
         </CardDescription>
       </CardHeader>
       <Form {...form}>
@@ -105,7 +113,7 @@ export function PixelStep({ accessToken, disabled }: PixelStepProps) {
                     <FormItem>
                       <FormLabel>Advertiser ID</FormLabel>
                       <FormControl>
-                        <Input placeholder="Your Advertiser ID" {...field} />
+                        <Input placeholder="Your Advertiser ID" {...field} readOnly />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -140,7 +148,7 @@ export function PixelStep({ accessToken, disabled }: PixelStepProps) {
               {disabled && (
                  <div className="flex items-center gap-2 text-sm text-yellow-600 dark:text-yellow-400">
                   <AlertTriangle className="h-4 w-4" />
-                  <p>Complete previous steps to enable this section.</p>
+                  <p>Complete the previous step to enable this section.</p>
                 </div>
               )}
             </CardContent>

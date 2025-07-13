@@ -1,15 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { OAuthStep, type OAuthData } from "@/components/tiktok-pixel/oauth-step";
+import { useState, useEffect } from "react";
 import { TokenStep } from "@/components/tiktok-pixel/token-step";
 import { PixelStep } from "@/components/tiktok-pixel/pixel-step";
 import { BotMessageSquare } from "lucide-react";
 
 export default function Home() {
-  const [oauthData, setOAuthData] = useState<OAuthData | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-
+  
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto p-4 sm:p-6 lg:p-8">
@@ -21,21 +19,13 @@ export default function Home() {
             New TikTok Pixel
           </h1>
           <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">
-            Your one-stop tool to generate TikTok Pixels with ease. Follow the steps below to configure OAuth, get your access token, and create a new pixel.
+            Your one-stop tool to generate TikTok Pixels with ease. Follow the steps below to authorize the app and create a new pixel.
           </p>
         </header>
 
         <div className="max-w-3xl mx-auto space-y-8">
-          <OAuthStep onConfigured={setOAuthData} />
-          <TokenStep
-            oauthData={oauthData}
-            onTokenReceived={setAccessToken}
-            disabled={!oauthData}
-          />
-          <PixelStep
-            accessToken={accessToken}
-            disabled={!oauthData || !accessToken}
-          />
+          <TokenStep onTokenReceived={setAccessToken} />
+          <PixelStep accessToken={accessToken} disabled={!accessToken} />
         </div>
       </div>
     </div>
