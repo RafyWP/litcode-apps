@@ -21,9 +21,11 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [authUrl, setAuthUrl] = useState("");
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   const handleGetAccessToken = useCallback(async (authCode: string) => {
     setIsLoading(true);
+    setHasInteracted(true);
     setError(null);
     const result = await getAccessToken({ authCode });
     setIsLoading(false);
@@ -35,7 +37,6 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
         title: "Success!",
         description: "Access token retrieved successfully.",
       });
-      // Clean the URL
       window.history.replaceState(null, "", window.location.pathname);
     } else {
       setError(result.error || "Failed to get access token.");
@@ -58,7 +59,8 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
       if (!appId || !redirectUri || !scope) {
         const errorMsg = "TikTok app credentials are not configured.";
         console.error(errorMsg);
-        setError(errorMsg)
+        setError(errorMsg);
+        setHasInteracted(true);
         return;
       }
 
@@ -85,13 +87,15 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
 
   return (
     <div className="flex flex-col items-center space-y-4">
+      { (hasInteracted || hasToken || error) && (
         <h2 className="font-headline text-2xl font-semibold flex items-center gap-2">
           <span className="flex items-center justify-center text-sm w-8 h-8 rounded-full bg-primary text-primary-foreground">1</span>
           Authorize Application
         </h2>
+      )}
       <div className="space-y-4 text-center">
         {!hasToken && (
-           <Button asChild disabled={!authUrl || isLoading}>
+           <Button asChild disabled={!authUrl || isLoading} onClick={() => setHasInteracted(true)}>
             <a href={authUrl} rel="noopener noreferrer">
               {isLoading ? (
                 <Loader2 className="mr-2 animate-spin" />
