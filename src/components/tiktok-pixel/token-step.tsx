@@ -2,18 +2,10 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { getAccessToken } from "@/app/actions";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import {
   Loader2,
-  Code,
   CheckCircle2,
   ExternalLink,
   AlertTriangle,
@@ -92,17 +84,12 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
   const hasToken = !!accessToken;
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="font-headline flex items-center gap-2">
-          <Code className="text-accent" />
-          Step 1: Authorize & Get Token
-        </CardTitle>
-        <CardDescription>
-          Click the button to authorize with TikTok. You'll be redirected back here, and we'll automatically fetch the access token.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
+    <div className="flex flex-col items-center space-y-4">
+        <h2 className="font-headline text-2xl font-semibold flex items-center gap-2">
+          <span className="flex items-center justify-center text-sm w-8 h-8 rounded-full bg-primary text-primary-foreground">1</span>
+          Authorize Application
+        </h2>
+      <div className="space-y-4 text-center">
         {!hasToken && (
            <Button asChild disabled={!authUrl || isLoading}>
             <a href={authUrl} rel="noopener noreferrer">
@@ -132,7 +119,7 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
             <p>{error}</p>
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

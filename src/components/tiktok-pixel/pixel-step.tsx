@@ -86,8 +86,8 @@ export function PixelStep({ accessToken }: PixelStepProps) {
     <Card className={cn(disabled && "bg-muted/50")}>
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2">
-          <WandSparkles className="text-accent" />
-          Step 2: Create Pixel
+           <span className="flex items-center justify-center text-sm w-8 h-8 rounded-full bg-primary text-primary-foreground">2</span>
+          Create Pixel
         </CardTitle>
         <CardDescription>
           Finally, provide your Advertiser ID and a name for your new pixel.
