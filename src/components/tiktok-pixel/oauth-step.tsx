@@ -81,7 +81,7 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
   function onSubmit(values: z.infer<typeof formSchema>) {
     const baseUrl =
       values.environment === "sandbox"
-        ? "https://www.tiktok.com/v2/sandbox/auth/authorize"
+        ? "https://www.tiktok.com/auth/tt4d"
         : "https://www.tiktok.com/v2/auth/authorize";
 
     const params = new URLSearchParams({
