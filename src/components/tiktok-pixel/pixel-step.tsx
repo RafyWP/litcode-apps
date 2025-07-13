@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -137,6 +138,9 @@ export function PixelStep({ accessToken, onPixelCreated }: PixelStepProps) {
                     <FormControl>
                       <Input placeholder="Enter your Advertiser ID" {...field} />
                     </FormControl>
+                    <FormDescription>
+                      This is your TikTok Ads Manager account ID.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -150,6 +154,9 @@ export function PixelStep({ accessToken, onPixelCreated }: PixelStepProps) {
                     <FormControl>
                       <Input placeholder="e.g., My Awesome Pixel" {...field} />
                     </FormControl>
+                    <FormDescription>
+                      A name to help you identify this pixel later.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
