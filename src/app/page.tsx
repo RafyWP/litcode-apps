@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { TokenStep } from "@/components/tiktok-pixel/token-step";
 import { PixelStep } from "@/components/tiktok-pixel/pixel-step";
 import { BotMessageSquare } from "lucide-react";
@@ -24,8 +24,8 @@ export default function Home() {
         </header>
 
         <div className="max-w-3xl mx-auto space-y-8">
-          <TokenStep onTokenReceived={setAccessToken} />
-          <PixelStep accessToken={accessToken} disabled={!accessToken} />
+          <TokenStep onTokenReceived={setAccessToken} accessToken={accessToken} />
+          <PixelStep accessToken={accessToken} />
         </div>
       </div>
     </div>

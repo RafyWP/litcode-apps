@@ -39,13 +39,13 @@ const formSchema = z.object({
 
 type PixelStepProps = {
   accessToken: string | null;
-  disabled: boolean;
 };
 
-export function PixelStep({ accessToken, disabled }: PixelStepProps) {
+export function PixelStep({ accessToken }: PixelStepProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [pixelId, setPixelId] = useState<string | null>(null);
+  const disabled = !accessToken;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -140,7 +140,7 @@ export function PixelStep({ accessToken, disabled }: PixelStepProps) {
               {disabled && (
                  <div className="flex items-center gap-2 text-sm text-yellow-600 dark:text-yellow-400">
                   <AlertTriangle className="h-4 w-4" />
-                  <p>Complete the previous step to enable this section.</p>
+                  <p>Complete Step 1 to enable this section.</p>
                 </div>
               )}
             </CardContent>
