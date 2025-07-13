@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -29,6 +30,7 @@ import {
   ClipboardCopy,
   Check,
 } from "lucide-react";
+import { Label } from "@/components/ui/label";
 
 const formSchema = z.object({
   clientKey: z.string().min(1, "Client Key is required"),
@@ -66,9 +68,9 @@ export function OAuthStep({ onConfigured }: OAuthStepProps) {
   });
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.crypto) {
-      form.setValue("state", crypto.randomUUID());
-    }
+    // Moved from useLayoutEffect to useEffect to run on client only after mount
+    // to prevent hydration errors.
+    form.setValue("state", crypto.randomUUID());
   }, [form]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
