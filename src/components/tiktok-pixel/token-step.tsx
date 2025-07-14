@@ -21,6 +21,7 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [authUrl, setAuthUrl] = useState("");
+  const [hasCheckedUrl, setHasCheckedUrl] = useState(false);
 
   const handleGetAccessToken = useCallback(
     async (authCode: string) => {
@@ -35,7 +36,6 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
         toast({
           title: "Authorization Successful!",
           description: "You can now create your pixel.",
-          className: "bg-green-600 text-white border-green-600",
         });
         window.history.replaceState(null, "", window.location.pathname);
       } else {
@@ -76,24 +76,28 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
 
     generateAuthUrl();
 
-    const staticAuthCode = process.env.NEXT_PUBLIC_TIKTOK_AUTH_CODE;
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlAuthCode = urlParams.get("auth_code");
+    // This part should only run on the client after mount
+    if (typeof window !== "undefined" && !hasCheckedUrl) {
+      const staticAuthCode = process.env.NEXT_PUBLIC_TIKTOK_AUTH_CODE;
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlAuthCode = urlParams.get("auth_code");
 
-    if (accessToken || isLoading) return;
+      if (accessToken || isLoading) return;
 
-    if (staticAuthCode) {
-      handleGetAccessToken(staticAuthCode);
-    } else if (urlAuthCode) {
-      handleGetAccessToken(urlAuthCode);
-    } else if (urlParams.get("error")) {
-      setError("Authorization was cancelled or failed.");
+      if (staticAuthCode) {
+        handleGetAccessToken(staticAuthCode);
+      } else if (urlAuthCode) {
+        handleGetAccessToken(urlAuthCode);
+      } else if (urlParams.get("error")) {
+        setError("Authorization was cancelled or failed.");
+      }
+      setHasCheckedUrl(true);
     }
-  }, [handleGetAccessToken, accessToken, isLoading]);
+  }, [handleGetAccessToken, accessToken, isLoading, hasCheckedUrl]);
 
   if (accessToken) {
     return (
-      <div className="flex items-center justify-center gap-3 rounded-lg bg-secondary p-4 text-center">
+      <div className="flex items-center justify-center gap-3 rounded-lg bg-green-500/10 border border-green-500/20 p-4 text-center">
         <CheckCircle2 className="h-6 w-6 text-green-500" />
         <div>
           <p className="font-bold text-primary-foreground">Authorized</p>
@@ -143,12 +147,16 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
   }
 
   return (
-    <div className="text-center">
+    <div className="text-center p-6 bg-secondary rounded-xl">
+       <div className="mb-4">
+        <h2 className="text-xl font-bold text-primary-foreground">Authorize to Start</h2>
+        <p className="text-muted-foreground text-sm">You need to connect your TikTok account to proceed.</p>
+      </div>
       <Button
         asChild
         size="lg"
         disabled={!authUrl}
-        className="w-full font-bold text-lg shadow-lg shadow-primary/30"
+        className="w-full font-bold text-lg shadow-lg shadow-primary/30 bg-pink-500 hover:bg-pink-600 text-white"
       >
         <a href={authUrl} rel="noopener noreferrer">
           <ExternalLink className="mr-2" />
