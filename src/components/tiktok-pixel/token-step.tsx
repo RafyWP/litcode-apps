@@ -57,7 +57,6 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
       const baseUrl = "https://business-api.tiktok.com/portal/auth";
       const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
       const redirectUri = process.env.NEXT_PUBLIC_TIKTOK_REDIRECT_URI;
-      const scope = "bc.read,cm.manage";
       const state = crypto.randomUUID();
 
       if (!appId || !redirectUri) {
@@ -71,7 +70,6 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
         app_id: appId,
         state: state,
         redirect_uri: redirectUri,
-        scope: scope,
       });
       setAuthUrl(`${baseUrl}?${params.toString()}`);
     };
