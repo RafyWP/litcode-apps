@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4 font-body">
-      <div className="w-full max-w-lg mx-auto">
+      <div className="w-full max-w-lg mx-auto flex-grow flex flex-col justify-center">
         <header className="text-center mb-10">
           <div className="inline-flex items-center justify-center bg-primary text-primary-foreground p-3 rounded-full mb-4 shadow-lg shadow-primary/30">
             <BotMessageSquare className="h-10 w-10" />
@@ -56,6 +56,9 @@ export default function Home() {
           )}
         </main>
       </div>
+       <footer className="w-full text-center p-4 mt-auto">
+        <p className="text-xs text-muted-foreground">© 2025 B2Bear Marketing</p>
+      </footer>
     </div>
   );
 }
