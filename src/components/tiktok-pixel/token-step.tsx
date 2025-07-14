@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -74,8 +75,12 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
       setAuthUrl(`${baseUrl}?${params.toString()}`);
     };
 
-    generateAuthUrl();
+    if (typeof window !== "undefined") {
+      generateAuthUrl();
+    }
+  }, []);
 
+  useEffect(() => {
     // This part should only run on the client after mount
     if (typeof window !== "undefined" && !hasCheckedUrl) {
       const staticAuthCode = process.env.NEXT_PUBLIC_TIKTOK_AUTH_CODE;
@@ -94,6 +99,13 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
       setHasCheckedUrl(true);
     }
   }, [handleGetAccessToken, accessToken, isLoading, hasCheckedUrl]);
+  
+  const handleTryAgain = () => {
+    setError(null);
+    if (authUrl) {
+      window.location.href = authUrl;
+    }
+  };
 
   if (accessToken) {
     return (
@@ -132,15 +144,13 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
           <p className="text-sm text-destructive">{error}</p>
         </div>
         <Button
-          asChild
           variant="secondary"
           className="mt-2"
-          onClick={() => setError(null)}
+          onClick={handleTryAgain}
+          disabled={!authUrl}
         >
-          <a href={authUrl} rel="noopener noreferrer">
-            <ExternalLink className="mr-2" />
-            Try Again
-          </a>
+          <ExternalLink className="mr-2" />
+          Try Again
         </Button>
       </div>
     );
