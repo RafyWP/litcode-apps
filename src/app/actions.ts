@@ -13,7 +13,7 @@ export async function getAccessToken(
     const validatedParams = getAccessTokenSchema.parse(params);
     const { authCode } = validatedParams;
 
-    const appId = process.env.TIKTOK_APP_ID;
+    const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
     const secret = process.env.TIKTOK_SECRET;
 
     if (!appId || !secret) {
@@ -63,7 +63,7 @@ export async function getAdvertisers(
   try {
     const validatedParams = getAdvertisersSchema.parse(params);
     const { accessToken } = validatedParams;
-    const appId = process.env.TIKTOK_APP_ID;
+    const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
     const secret = process.env.TIKTOK_SECRET;
 
     if (!appId || !secret) {
@@ -71,9 +71,9 @@ export async function getAdvertisers(
     }
 
     const response = await fetch(
-      `https://business-api.tiktok.com/open_api/v1.3/oauth2/advertiser/get/`,
+      `https://business-api.tiktok.com/open_api/v1.3/advertiser/get/`,
       {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Access-Token": accessToken,
@@ -84,8 +84,6 @@ export async function getAdvertisers(
         }),
       }
     );
-
-    console.log(response);
 
     const data = await response.json();
 
