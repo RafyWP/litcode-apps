@@ -9,17 +9,22 @@ export default function Home() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [pixelCreated, setPixelCreated] = useState(false);
 
+  const handleReset = () => {
+    setAccessToken(null);
+    setPixelCreated(false);
+  }
+
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md mx-auto">
-        <header className="text-center mb-8">
-          <div className="inline-flex items-center justify-center bg-primary/10 text-primary p-3 rounded-full mb-4">
+    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4 font-body">
+      <div className="w-full max-w-lg mx-auto">
+        <header className="text-center mb-10">
+          <div className="inline-flex items-center justify-center bg-primary text-primary-foreground p-3 rounded-full mb-4 shadow-lg shadow-primary/30">
             <BotMessageSquare className="h-10 w-10" />
           </div>
-          <h1 className="font-headline text-3xl sm:text-4xl font-bold text-primary-foreground">
+          <h1 className="font-headline text-4xl sm:text-5xl font-bold text-gray-800">
             TikTok Pixel Generator
           </h1>
-          <p className="text-muted-foreground mt-2 text-md max-w-xs mx-auto">
+          <p className="text-muted-foreground mt-3 text-lg max-w-sm mx-auto">
             Create your TikTok pixel for GTM, no e-commerce required.
           </p>
         </header>
@@ -32,20 +37,18 @@ export default function Home() {
                 <PixelStep
                   accessToken={accessToken}
                   onPixelCreated={() => setPixelCreated(true)}
+                  onReset={handleReset}
                 />
               )}
             </>
           ) : (
-            <div className="text-center p-8 bg-secondary rounded-lg flex flex-col items-center gap-4">
+            <div className="text-center p-8 bg-card rounded-xl shadow-lg border flex flex-col items-center gap-4">
               <CheckCircle className="h-16 w-16 text-green-500" />
-              <h2 className="text-2xl font-bold text-primary-foreground">Pixel Created!</h2>
-              <p className="text-muted-foreground">Your TikTok Pixel is ready to use.</p>
+              <h2 className="text-2xl font-bold font-headline text-card-foreground">Pixel Created!</h2>
+              <p className="text-muted-foreground">Your new TikTok Pixel is ready to use.</p>
               <button
-                onClick={() => {
-                  setAccessToken(null);
-                  setPixelCreated(false);
-                }}
-                className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-semibold"
+                onClick={handleReset}
+                className="mt-4 px-6 py-3 bg-accent text-accent-foreground rounded-lg font-semibold hover:bg-accent/90 transition-colors shadow-md"
               >
                 Create Another Pixel
               </button>

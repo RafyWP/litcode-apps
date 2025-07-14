@@ -10,7 +10,9 @@ import {
   CheckCircle2,
   ExternalLink,
   AlertTriangle,
+  KeyRound
 } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../ui/card";
 
 type TokenStepProps = {
   onTokenReceived: (token: string) => void;
@@ -22,7 +24,6 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [authUrl, setAuthUrl] = useState("");
-  const [hasCheckedUrl, setHasCheckedUrl] = useState(false);
 
   const handleGetAccessToken = useCallback(
     async (authCode: string) => {
@@ -32,11 +33,11 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
       setIsLoading(false);
 
       if (result.success && result.data.access_token) {
-        const token = result.data.access_token;
-        onTokenReceived(token);
+        onTokenReceived(result.data.access_token);
         toast({
           title: "Authorization Successful!",
           description: "You can now create your pixel.",
+          className: "bg-green-600 text-white"
         });
         window.history.replaceState(null, "", window.location.pathname);
       } else {
@@ -60,7 +61,7 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
       const state = crypto.randomUUID();
 
       if (!appId || !redirectUri) {
-        const errorMsg = "TikTok app credentials are not configured.";
+        const errorMsg = "TikTok app credentials are not configured in environment variables.";
         console.error(errorMsg);
         setError(errorMsg);
         return;
@@ -75,26 +76,18 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
       setAuthUrl(`${baseUrl}?${params.toString()}`);
     };
 
-    if (typeof window !== "undefined") {
-      generateAuthUrl();
-    }
-  }, []);
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlAuthCode = urlParams.get("auth_code");
 
-  useEffect(() => {
-    if (typeof window !== "undefined" && !hasCheckedUrl) {
-      const urlParams = new URLSearchParams(window.location.search);
-      const urlAuthCode = urlParams.get("auth_code");
+    generateAuthUrl();
 
-      if (accessToken || isLoading) return;
-
-      if (urlAuthCode) {
+    if (urlAuthCode) {
         handleGetAccessToken(urlAuthCode);
-      } else if (urlParams.get("error")) {
+    } else if (urlParams.get("error")) {
         setError("Authorization was cancelled or failed.");
-      }
-      setHasCheckedUrl(true);
     }
-  }, [handleGetAccessToken, accessToken, isLoading, hasCheckedUrl]);
+
+  }, [handleGetAccessToken]);
   
   const handleTryAgain = () => {
     setError(null);
@@ -105,70 +98,86 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
 
   if (accessToken) {
     return (
-      <div className="flex items-center justify-center gap-3 rounded-lg bg-green-500/10 border border-green-500/20 p-4 text-center">
-        <CheckCircle2 className="h-6 w-6 text-green-500" />
-        <div>
-          <p className="font-bold text-primary-foreground">Authorized</p>
-          <p className="text-sm text-muted-foreground">
-            Ready to create pixel.
-          </p>
-        </div>
-      </div>
+      <Card className="bg-card border-t-4 border-green-500 shadow-lg">
+        <CardHeader className="flex-row items-center gap-4 space-y-0">
+          <CheckCircle2 className="h-8 w-8 text-green-500" />
+          <div>
+            <CardTitle className="font-headline">Authorized</CardTitle>
+            <CardDescription>
+              Your application is connected to TikTok.
+            </CardDescription>
+          </div>
+        </CardHeader>
+      </Card>
     );
   }
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center gap-3 rounded-lg bg-secondary p-4 text-center">
-        <Loader2 className="h-6 w-6 animate-spin text-primary" />
-        <div>
-          <p className="font-bold text-primary-foreground">Authorizing...</p>
-          <p className="text-sm text-muted-foreground">Please wait a moment.</p>
-        </div>
-      </div>
+      <Card>
+        <CardContent className="p-6 flex items-center justify-center gap-3 text-center">
+            <Loader2 className="h-6 w-6 animate-spin text-primary" />
+            <div>
+              <p className="font-bold font-headline text-card-foreground">Authorizing...</p>
+              <p className="text-sm text-muted-foreground">Please wait, verifying with TikTok.</p>
+            </div>
+        </CardContent>
+      </Card>
     );
   }
 
   if (error) {
     return (
-      <div className="flex flex-col items-center gap-3 rounded-lg bg-destructive/20 border border-destructive p-4 text-center">
-        <AlertTriangle className="h-6 w-6 text-destructive" />
-        <div>
-          <p className="font-bold text-primary-foreground">
-            Authorization Failed
-          </p>
-          <p className="text-sm text-destructive">{error}</p>
-        </div>
-        <Button
-          variant="secondary"
-          className="mt-2"
-          onClick={handleTryAgain}
-          disabled={!authUrl}
-        >
-          <ExternalLink className="mr-2" />
-          Try Again
-        </Button>
-      </div>
+      <Card className="bg-destructive/10 border-destructive">
+        <CardHeader className="flex-row items-center gap-4 space-y-0">
+          <AlertTriangle className="h-8 w-8 text-destructive" />
+          <div>
+            <CardTitle className="font-headline text-destructive">
+              Authorization Failed
+            </CardTitle>
+            <CardDescription className="text-destructive/80">
+                {error}
+            </CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <Button
+            className="w-full bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            onClick={handleTryAgain}
+            disabled={!authUrl}
+          >
+            <ExternalLink className="mr-2" />
+            Try Authorization Again
+          </Button>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <div className="text-center p-6 bg-secondary rounded-xl">
-       <div className="mb-4">
-        <h2 className="text-xl font-bold text-primary-foreground">Authorize to Start</h2>
-        <p className="text-muted-foreground text-sm">You need to connect your TikTok account to proceed.</p>
-      </div>
-      <Button
-        asChild
-        size="lg"
-        disabled={!authUrl}
-        className="w-full font-bold text-lg shadow-lg shadow-primary/30 bg-pink-500 hover:bg-pink-600 text-white"
-      >
-        <a href={authUrl} rel="noopener noreferrer">
-          <ExternalLink className="mr-2" />
-          Authorize with TikTok
-        </a>
-      </Button>
-    </div>
+    <Card className="bg-card border-t-4 border-primary shadow-lg shadow-primary/20">
+      <CardHeader>
+         <CardTitle className="font-headline flex items-center gap-2">
+            <KeyRound className="text-primary"/>
+            Step 1: Authorize Application
+        </CardTitle>
+        <CardDescription>
+          You need to connect your TikTok account to grant permissions for this app to create pixels on your behalf.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Button
+          asChild
+          size="lg"
+          disabled={!authUrl}
+          className="w-full font-bold text-lg shadow-lg shadow-primary/30 bg-primary hover:bg-primary/90 text-primary-foreground"
+        >
+          <a href={authUrl} rel="noopener noreferrer">
+            <ExternalLink className="mr-2" />
+            Authorize with TikTok
+          </a>
+        </Button>
+      </CardContent>
+    </Card>
   );
 }

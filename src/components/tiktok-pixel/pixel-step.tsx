@@ -51,9 +51,10 @@ const formSchema = z.object({
 type PixelStepProps = {
   accessToken: string;
   onPixelCreated: () => void;
+  onReset: () => void;
 };
 
-export function PixelStep({ accessToken, onPixelCreated }: PixelStepProps) {
+export function PixelStep({ accessToken, onPixelCreated, onReset }: PixelStepProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isFetchingAdvertisers, setIsFetchingAdvertisers] = useState(true);
@@ -100,11 +101,6 @@ export function PixelStep({ accessToken, onPixelCreated }: PixelStepProps) {
 
     if (result.success && result.data.pixel_id) {
       setPixelId(result.data.pixel_id);
-      toast({
-        title: "Pixel Created!",
-        description: `Your new Pixel ID is ${result.data.pixel_id}.`,
-        className: 'bg-green-600 text-white border-green-600'
-      });
     } else {
       toast({
         title: "Error",
@@ -120,31 +116,35 @@ export function PixelStep({ accessToken, onPixelCreated }: PixelStepProps) {
       toast({
         title: "Copied!",
         description: "Pixel ID copied to clipboard.",
+        className: "bg-green-600 text-white"
       });
     }
   };
 
   if (pixelId) {
     return (
-      <Card className="bg-secondary border-t-4 border-primary shadow-lg shadow-primary/20">
+      <Card className="bg-card border-t-4 border-primary shadow-lg shadow-primary/20">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-primary-foreground">
-            <CheckCircle2 className="h-6 w-6 text-primary" />
+          <CardTitle className="font-headline flex items-center gap-2 text-card-foreground">
+            <CheckCircle2 className="h-6 w-6 text-green-500" />
             Pixel Created Successfully!
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground mb-4">Your new Pixel is ready. Copy the ID below.</p>
-          <div className="flex items-center gap-2 p-3 rounded-md bg-background">
-            <span className="font-mono text-sm text-foreground truncate">{pixelId}</span>
+          <p className="text-muted-foreground mb-4">Your new Pixel is ready. Copy the ID below or start over.</p>
+          <div className="flex items-center gap-2 p-3 rounded-md bg-secondary">
+            <span className="font-mono text-sm text-card-foreground truncate">{pixelId}</span>
             <Button variant="ghost" size="icon" onClick={copyToClipboard} className="ml-auto">
               <Copy className="h-4 w-4" />
             </Button>
           </div>
         </CardContent>
-        <CardFooter>
-            <Button onClick={onPixelCreated} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+        <CardFooter className="flex-col sm:flex-row gap-2">
+            <Button onClick={onPixelCreated} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
                 Done
+            </Button>
+             <Button onClick={onReset} variant="outline" className="w-full">
+                Create Another
             </Button>
         </CardFooter>
       </Card>
@@ -152,10 +152,10 @@ export function PixelStep({ accessToken, onPixelCreated }: PixelStepProps) {
   }
 
   return (
-    <Card className="bg-secondary border-t-4 border-accent shadow-lg shadow-accent/20">
+    <Card className="bg-card border-t-4 border-accent shadow-lg shadow-accent/20">
       <CardHeader>
-        <CardTitle className="font-headline flex items-center gap-2 text-primary-foreground">
-          Create Your Pixel
+        <CardTitle className="font-headline flex items-center gap-2 text-card-foreground">
+          Step 2: Create Your Pixel
         </CardTitle>
       </CardHeader>
       <Form {...form}>
@@ -182,11 +182,11 @@ export function PixelStep({ accessToken, onPixelCreated }: PixelStepProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {advertisers.map((ad) => (
+                        {advertisers.length > 0 ? advertisers.map((ad) => (
                           <SelectItem key={ad.advertiser_id} value={ad.advertiser_id}>
                             {ad.advertiser_name} ({ad.advertiser_id})
                           </SelectItem>
-                        ))}
+                        )) : <SelectItem value="none" disabled>No accounts found.</SelectItem>}
                       </SelectContent>
                     </Select>
                     <FormDescription>
@@ -214,7 +214,7 @@ export function PixelStep({ accessToken, onPixelCreated }: PixelStepProps) {
               />
             </CardContent>
             <CardFooter>
-              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold" disabled={isLoading || isFetchingAdvertisers}>
+              <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-bold" disabled={isLoading || isFetchingAdvertisers}>
                 {(isLoading || isFetchingAdvertisers) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 <WandSparkles className="mr-2" />
                 Generate Pixel
