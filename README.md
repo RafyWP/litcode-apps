@@ -35,7 +35,7 @@ Follow these instructions to set up and run the project locally.
 Before running the project, you need to configure your application in the TikTok Developer Portal:
 
 1.  Go to **My Apps** and select your application.
-2.  **Set the Redirect URI**: In your app's settings, find the "Redirect URI" field and set it to the one you will use in your environment configuration (e.g., `https://new-tiktok-pixel.b2bear.com` or `http://localhost:9002/` for local development).
+2.  **Set the Redirect URI**: In your app's settings, find the "Redirect URI" field and set it to the one you will use in your environment configuration (e.g., `https://new-tiktok-pixel.b2bear.com/auth/advertiser/callback` or `http://localhost:9002/auth/advertiser/callback` for local development).
 3.  **Enable Permissions (Scopes)**: Go to the "Permissions" section and ensure the following scopes are enabled:
     *   `bc.read` (Ad Account Management)
     *   `cm.manage` (Pixel Management)
@@ -67,7 +67,7 @@ TIKTOK_SECRET="YOUR_TIKTOK_SECRET"
 # Prefixed with NEXT_PUBLIC_ to be accessible on the client-side (browser).
 # Used to build the authorization URL.
 NEXT_PUBLIC_TIKTOK_APP_ID="YOUR_TIKTOK_APP_ID"
-NEXT_PUBLIC_TIKTOK_REDIRECT_URI="https://new-tiktok-pixel.b2bear.com"
+NEXT_PUBLIC_TIKTOK_REDIRECT_URI="https://new-tiktok-pixel.b2bear.com/auth/advertiser/callback"
 ```
 
 **Note**:
@@ -93,3 +93,5 @@ Open [http://localhost:9002](http://localhost:9002) in your browser to see the a
 5.  **Name Your Pixel**: Enter a descriptive name for your new pixel.
 6.  **Generate**: Click "Generate Pixel".
 7.  **Copy ID**: The new Pixel ID will be displayed. You can copy it and start the process over if needed.
+
+    
