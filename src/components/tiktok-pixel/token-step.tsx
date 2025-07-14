@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -33,7 +32,11 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
       setIsLoading(false);
 
       if (result.success && result.data.access_token) {
-        onTokenReceived(result.data.access_token);
+        const { access_token, expires_in } = result.data;
+        const expiresAt = new Date().getTime() + expires_in * 1000;
+        localStorage.setItem("tiktok_token", JSON.stringify({ token: access_token, expiresAt }));
+
+        onTokenReceived(access_token);
         toast({
           title: "Authorization Successful!",
           description: "You can now create your pixel.",
@@ -70,6 +73,7 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
         app_id: appId,
         state: state,
         redirect_uri: redirectUri,
+        scope: "bc.read,cm.manage"
       });
       setAuthUrl(`${baseUrl}?${params.toString()}`);
     };
@@ -79,13 +83,13 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
 
     generateAuthUrl();
 
-    if (urlAuthCode) {
+    if (urlAuthCode && !accessToken) {
         handleGetAccessToken(urlAuthCode);
     } else if (urlParams.get("error")) {
         setError("Authorization was cancelled or failed.");
     }
 
-  }, [handleGetAccessToken]);
+  }, [handleGetAccessToken, accessToken]);
   
   const handleTryAgain = () => {
     setError(null);

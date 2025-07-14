@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TokenStep } from "@/components/tiktok-pixel/token-step";
 import { PixelStep } from "@/components/tiktok-pixel/pixel-step";
 import { BotMessageSquare, CheckCircle } from "lucide-react";
@@ -10,9 +10,22 @@ export default function Home() {
   const [pixelCreated, setPixelCreated] = useState(false);
 
   const handleReset = () => {
+    localStorage.removeItem("tiktok_token");
     setAccessToken(null);
     setPixelCreated(false);
   }
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("tiktok_token");
+    if (storedToken) {
+      const { token, expiresAt } = JSON.parse(storedToken);
+      if (new Date().getTime() < expiresAt) {
+        setAccessToken(token);
+      } else {
+        localStorage.removeItem("tiktok_token");
+      }
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4 font-body">

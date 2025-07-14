@@ -82,6 +82,9 @@ export function PixelStep({ accessToken, onPixelCreated, onReset }: PixelStepPro
           description: result.error,
           variant: "destructive",
         });
+        if (result.error?.includes("token")) {
+           localStorage.removeItem("tiktok_token");
+        }
       }
       setIsFetchingAdvertisers(false);
     }
