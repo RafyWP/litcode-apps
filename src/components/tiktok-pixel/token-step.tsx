@@ -81,17 +81,13 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
   }, []);
 
   useEffect(() => {
-    // This part should only run on the client after mount
     if (typeof window !== "undefined" && !hasCheckedUrl) {
-      const staticAuthCode = process.env.NEXT_PUBLIC_TIKTOK_AUTH_CODE;
       const urlParams = new URLSearchParams(window.location.search);
       const urlAuthCode = urlParams.get("auth_code");
 
       if (accessToken || isLoading) return;
 
-      if (staticAuthCode) {
-        handleGetAccessToken(staticAuthCode);
-      } else if (urlAuthCode) {
+      if (urlAuthCode) {
         handleGetAccessToken(urlAuthCode);
       } else if (urlParams.get("error")) {
         setError("Authorization was cancelled or failed.");
