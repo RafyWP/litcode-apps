@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { TokenStep } from "@/components/tiktok-pixel/token-step";
 import { PixelStep } from "@/components/tiktok-pixel/pixel-step";
 import { BotMessageSquare, CheckCircle } from "lucide-react";
@@ -11,9 +11,9 @@ export default function Home() {
   const [pixelCreated, setPixelCreated] = useState(false);
   const [debugLogs, setDebugLogs] = useState<DebugLog[]>([]);
 
-  const addDebugLog = (title: string, data: any) => {
+  const addDebugLog = useCallback((title: string, data: any) => {
     setDebugLogs(prev => [...prev, { title, data: JSON.stringify(data, null, 2), timestamp: new Date() }]);
-  };
+  }, []);
 
   const handleReset = () => {
     localStorage.removeItem("tiktok_token");
@@ -40,7 +40,7 @@ export default function Home() {
         addDebugLog("Invalid Token Format", "Could not parse token from localStorage, it was removed.");
       }
     }
-  }, []);
+  }, [addDebugLog]);
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4 font-body">
