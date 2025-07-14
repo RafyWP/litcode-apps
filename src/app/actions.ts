@@ -70,18 +70,18 @@ export async function getAdvertisers(
       return { success: false, error: "App ID or Secret is not configured." };
     }
 
+    const urlParams = new URLSearchParams({
+        app_id: appId,
+        secret: secret,
+    });
+
     const response = await fetch(
-      `https://business-api.tiktok.com/open_api/v1.3/advertiser/get/`,
+      `https://business-api.tiktok.com/open_api/v1.3/oauth2/advertiser/get/?${urlParams.toString()}`,
       {
-        method: "POST",
+        method: "GET",
         headers: {
-          "Content-Type": "application/json",
           "Access-Token": accessToken,
         },
-        body: JSON.stringify({
-            app_id: appId,
-            secret: secret,
-        }),
       }
     );
 
