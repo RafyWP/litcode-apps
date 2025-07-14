@@ -16,7 +16,7 @@ export default function Home() {
   }, []);
 
   const handleReset = () => {
-    localStorage.removeItem("tiktok_token");
+    localStorage.removeItem("tiktok_access_token");
     setAccessToken(null);
     setPixelCreated(false);
     setDebugLogs([]);
@@ -24,7 +24,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("tiktok_token");
+    const storedToken = localStorage.getItem("tiktok_access_token");
     if (storedToken) {
       try {
         const { token, expiresAt } = JSON.parse(storedToken);
@@ -32,11 +32,11 @@ export default function Home() {
           setAccessToken(token);
           addDebugLog("Token Loaded from localStorage", { token: `${token.substring(0, 10)}...`, expiresAt: new Date(expiresAt).toLocaleString() });
         } else {
-          localStorage.removeItem("tiktok_token");
+          localStorage.removeItem("tiktok_access_token");
           addDebugLog("Expired Token Removed", "Token found in localStorage has expired and was removed.");
         }
       } catch (e) {
-        localStorage.removeItem("tiktok_token");
+        localStorage.removeItem("tiktok_access_token");
         addDebugLog("Invalid Token Format", "Could not parse token from localStorage, it was removed.");
       }
     }

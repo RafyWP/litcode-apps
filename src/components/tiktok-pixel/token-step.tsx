@@ -39,7 +39,7 @@ export function TokenStep({ onTokenReceived, accessToken, addDebugLog }: TokenSt
         const expiresAt = new Date().getTime() + expires_in * 1000;
         
         try {
-            localStorage.setItem("tiktok_token", JSON.stringify({ token: access_token, expiresAt }));
+            localStorage.setItem("tiktok_access_token", JSON.stringify({ token: access_token, expiresAt }));
         } catch (e) {
             addDebugLog("localStorage Error", "Failed to save token to localStorage.");
         }
