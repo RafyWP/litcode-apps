@@ -52,9 +52,10 @@ type PixelStepProps = {
   accessToken: string;
   onPixelCreated: () => void;
   onReset: () => void;
+  addDebugLog: (title: string, data: any) => void;
 };
 
-export function PixelStep({ accessToken, onPixelCreated, onReset }: PixelStepProps) {
+export function PixelStep({ accessToken, onPixelCreated, onReset, addDebugLog }: PixelStepProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isFetchingAdvertisers, setIsFetchingAdvertisers] = useState(true);
@@ -72,11 +73,14 @@ export function PixelStep({ accessToken, onPixelCreated, onReset }: PixelStepPro
   useEffect(() => {
     async function fetchAdvertisers() {
       if (!accessToken) return;
+      addDebugLog("Fetching Advertisers...", { tokenUsed: `${accessToken.substring(0,10)}...`});
       setIsFetchingAdvertisers(true);
       const result = await getAdvertisers({ accessToken });
       if (result.success) {
+        addDebugLog("Fetch Advertisers Success", result);
         setAdvertisers(result.data || []);
       } else {
+        addDebugLog("Fetch Advertisers Error", result);
         toast({
           title: "Error fetching advertisers",
           description: result.error,
@@ -86,10 +90,11 @@ export function PixelStep({ accessToken, onPixelCreated, onReset }: PixelStepPro
       setIsFetchingAdvertisers(false);
     }
     fetchAdvertisers();
-  }, [accessToken, toast]);
+  }, [accessToken, toast, addDebugLog]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
+    addDebugLog("Creating Pixel...", { values });
 
     const result = await createPixel({
       accessToken: accessToken,
@@ -100,8 +105,10 @@ export function PixelStep({ accessToken, onPixelCreated, onReset }: PixelStepPro
     setIsLoading(false);
 
     if (result.success && result.data.pixel_id) {
+      addDebugLog("Create Pixel Success", result);
       setPixelId(result.data.pixel_id);
     } else {
+      addDebugLog("Create Pixel Error", result);
       toast({
         title: "Error",
         description: result.error || "Failed to create pixel.",
@@ -118,6 +125,7 @@ export function PixelStep({ accessToken, onPixelCreated, onReset }: PixelStepPro
         description: "Pixel ID copied to clipboard.",
         className: "bg-green-600 text-white"
       });
+      addDebugLog("Copied to Clipboard", { pixelId });
     }
   };
 

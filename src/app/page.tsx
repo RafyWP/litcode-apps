@@ -4,25 +4,40 @@ import { useState, useEffect } from "react";
 import { TokenStep } from "@/components/tiktok-pixel/token-step";
 import { PixelStep } from "@/components/tiktok-pixel/pixel-step";
 import { BotMessageSquare, CheckCircle } from "lucide-react";
+import { DebugInfo, type DebugLog } from "@/components/tiktok-pixel/debug-info";
 
 export default function Home() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [pixelCreated, setPixelCreated] = useState(false);
+  const [debugLogs, setDebugLogs] = useState<DebugLog[]>([]);
+
+  const addDebugLog = (title: string, data: any) => {
+    setDebugLogs(prev => [...prev, { title, data: JSON.stringify(data, null, 2), timestamp: new Date() }]);
+  };
 
   const handleReset = () => {
     localStorage.removeItem("tiktok_token");
     setAccessToken(null);
     setPixelCreated(false);
+    setDebugLogs([]);
+    addDebugLog("System Reset", "Application state and local storage cleared.");
   }
 
   useEffect(() => {
     const storedToken = localStorage.getItem("tiktok_token");
     if (storedToken) {
-      const { token, expiresAt } = JSON.parse(storedToken);
-      if (new Date().getTime() < expiresAt) {
-        setAccessToken(token);
-      } else {
+      try {
+        const { token, expiresAt } = JSON.parse(storedToken);
+        if (new Date().getTime() < expiresAt) {
+          setAccessToken(token);
+          addDebugLog("Token Loaded from localStorage", { token: `${token.substring(0, 10)}...`, expiresAt: new Date(expiresAt).toLocaleString() });
+        } else {
+          localStorage.removeItem("tiktok_token");
+          addDebugLog("Expired Token Removed", "Token found in localStorage has expired and was removed.");
+        }
+      } catch (e) {
         localStorage.removeItem("tiktok_token");
+        addDebugLog("Invalid Token Format", "Could not parse token from localStorage, it was removed.");
       }
     }
   }, []);
@@ -45,12 +60,17 @@ export default function Home() {
         <main className="space-y-6">
           {!pixelCreated ? (
             <>
-              <TokenStep onTokenReceived={setAccessToken} accessToken={accessToken} />
+              <TokenStep 
+                onTokenReceived={setAccessToken} 
+                accessToken={accessToken}
+                addDebugLog={addDebugLog}
+              />
               {accessToken && (
                 <PixelStep
                   accessToken={accessToken}
                   onPixelCreated={() => setPixelCreated(true)}
                   onReset={handleReset}
+                  addDebugLog={addDebugLog}
                 />
               )}
             </>
@@ -68,6 +88,9 @@ export default function Home() {
             </div>
           )}
         </main>
+      </div>
+      <div className="w-full max-w-lg mx-auto mt-8">
+        <DebugInfo logs={debugLogs} />
       </div>
        <footer className="w-full text-center p-4 mt-auto space-y-2">
         <a href="https://app.netlify.com/projects/new-tiktok-pixel/deploys" target="_blank" rel="noopener noreferrer">
