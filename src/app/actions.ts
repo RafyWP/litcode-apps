@@ -13,11 +13,11 @@ export async function getAccessToken(
     const validatedParams = getAccessTokenSchema.parse(params);
     const { authCode } = validatedParams;
 
-    const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
+    const appId = process.env.TIKTOK_APP_ID;
     const secret = process.env.TIKTOK_SECRET;
 
     if (!appId || !secret) {
-        return { success: false, error: "App ID or Secret is not configured in environment variables." };
+        return { success: false, error: "App ID or Secret is not configured in server environment variables." };
     }
 
     const response = await fetch("https://business-api.tiktok.com/open_api/v1.3/oauth2/access_token/", {
@@ -63,11 +63,11 @@ export async function getAdvertisers(
   try {
     const validatedParams = getAdvertisersSchema.parse(params);
     const { accessToken } = validatedParams;
-    const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
+    const appId = process.env.TIKTOK_APP_ID;
     const secret = process.env.TIKTOK_SECRET;
 
     if (!appId || !secret) {
-      return { success: false, error: "App ID or Secret is not configured." };
+      return { success: false, error: "App ID or Secret is not configured in server environment variables." };
     }
 
     const urlParams = new URLSearchParams({

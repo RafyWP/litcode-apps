@@ -92,12 +92,12 @@ export default function Home() {
       <div className="w-full max-w-lg mx-auto mt-8">
         <DebugInfo logs={debugLogs} />
       </div>
-       <footer className="w-full text-center p-4 mt-auto space-y-2">
+       <footer className="w-full text-center p-4 mt-auto space-y-2 shrink-0">
         <a href="https://app.netlify.com/projects/new-tiktok-pixel/deploys" target="_blank" rel="noopener noreferrer">
           <img src="https://api.netlify.com/api/v1/badges/4bd762fb-404f-4d5e-b4fe-365ac159f28c/deploy-status" alt="Netlify Status" className="mx-auto" />
         </a>
         <p className="text-xs text-muted-foreground">
-          © 2025 <a href="https://b2bear.com" target="_blank" rel="noopener noreferrer" className="hover:underline">B2Bear Marketing</a>
+          © {new Date().getFullYear()} <a href="https://b2bear.com" target="_blank" rel="noopener noreferrer" className="hover:underline">B2Bear Marketing</a>
         </p>
       </footer>
     </div>

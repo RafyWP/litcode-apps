@@ -35,7 +35,7 @@ Follow these instructions to set up and run the project locally.
 Before running the project, you need to configure your application in the TikTok Developer Portal:
 
 1.  Go to **My Apps** and select your application.
-2.  **Set the Redirect URI**: In your app's settings, find the "Redirect URI" field and set it to the one you will use in your environment configuration (e.g., `https://new-tiktok-pixel.b2bear.com/auth/advertiser/callback` or `http://localhost:9002/auth/advertiser/callback` for local development).
+2.  **Set the Redirect URI**: In your app's settings, find the "Redirect URI" field and set it to the one you will use in your environment configuration (e.g., `http://localhost:9002/`).
 3.  **Enable Permissions (Scopes)**: Go to the "Permissions" section and ensure the following scopes are enabled:
     *   `bc.read` (Ad Account Management)
     *   `cm.manage` (Pixel Management)
@@ -59,20 +59,22 @@ npm install
 
 Create a file named `.env.local` in the root of the project and add your TikTok application credentials. You can find your `App ID` and `Secret` in the TikTok Developer Portal.
 
+**Crucially, you need to define `TIKTOK_APP_ID` for server-side actions and `NEXT_PUBLIC_TIKTOK_APP_ID` for the client-side code. Both should have the same value.**
+
 ```env
-# Used by server-side actions to exchange the auth code for an access token.
+# Used by server-side actions ONLY.
+TIKTOK_APP_ID="YOUR_TIKTOK_APP_ID"
 TIKTOK_SECRET="YOUR_TIKTOK_SECRET"
 
 # Prefixed with NEXT_PUBLIC_ to be accessible on the client-side (browser).
 # Used to build the authorization URL.
 NEXT_PUBLIC_TIKTOK_APP_ID="YOUR_TIKTOK_APP_ID"
-NEXT_PUBLIC_TIKTOK_REDIRECT_URI="https://new-tiktok-pixel.b2bear.com/auth/advertiser/callback"
+NEXT_PUBLIC_TIKTOK_REDIRECT_URI="http://localhost:9002/"
 ```
 
 **Note**:
 - Replace `"YOUR_TIKTOK_APP_ID"` and `"YOUR_TIKTOK_SECRET"` with your actual credentials.
 - The `NEXT_PUBLIC_TIKTOK_REDIRECT_URI` must exactly match the URI you configured in the TikTok Developer Portal.
-- The server actions will use `NEXT_PUBLIC_TIKTOK_APP_ID` and `TIKTOK_SECRET`.
 
 ### 5. Run the Development Server
 
@@ -93,3 +95,4 @@ Open [http://localhost:9002](http://localhost:9002) in your browser to see the a
 5.  **Name Your Pixel**: Enter a descriptive name for your new pixel.
 6.  **Generate**: Click "Generate Pixel".
 7.  **Copy ID**: The new Pixel ID will be displayed. You can copy it and start the process over if needed.
+```

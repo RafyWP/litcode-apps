@@ -79,6 +79,13 @@ export function PixelStep({ accessToken, onPixelCreated, onReset, addDebugLog }:
       if (result.success) {
         addDebugLog("Fetch Advertisers Success", result);
         setAdvertisers(result.data || []);
+        if (!result.data || result.data.length === 0) {
+           toast({
+             title: "No Advertiser Accounts Found",
+             description: "We couldn't find any advertiser accounts linked to your TikTok profile.",
+             variant: "destructive",
+           });
+        }
       } else {
         addDebugLog("Fetch Advertisers Error", result);
         toast({
@@ -110,8 +117,8 @@ export function PixelStep({ accessToken, onPixelCreated, onReset, addDebugLog }:
     } else {
       addDebugLog("Create Pixel Error", result);
       toast({
-        title: "Error",
-        description: result.error || "Failed to create pixel.",
+        title: "Error Creating Pixel",
+        description: result.error || "An unknown error occurred.",
         variant: "destructive",
       });
     }
@@ -139,10 +146,10 @@ export function PixelStep({ accessToken, onPixelCreated, onReset, addDebugLog }:
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground mb-4">Your new Pixel is ready. Copy the ID below or start over.</p>
+          <p className="text-muted-foreground mb-4">Your new Pixel is ready. Copy the ID below.</p>
           <div className="flex items-center gap-2 p-3 rounded-md bg-secondary">
             <span className="font-mono text-sm text-card-foreground truncate">{pixelId}</span>
-            <Button variant="ghost" size="icon" onClick={copyToClipboard} className="ml-auto">
+            <Button variant="ghost" size="icon" onClick={copyToClipboard} className="ml-auto flex-shrink-0">
               <Copy className="h-4 w-4" />
             </Button>
           </div>
@@ -180,7 +187,7 @@ export function PixelStep({ accessToken, onPixelCreated, onReset, addDebugLog }:
                       <FormControl>
                         <SelectTrigger disabled={isFetchingAdvertisers}>
                           {isFetchingAdvertisers ? (
-                            <span className="flex items-center">
+                            <span className="flex items-center text-muted-foreground">
                               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                               Loading Accounts...
                             </span>

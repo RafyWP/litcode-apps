@@ -34,12 +34,13 @@ export function TokenStep({ onTokenReceived, accessToken, addDebugLog }: TokenSt
       setIsLoading(false);
 
       if (result.success && result.data.access_token) {
-        addDebugLog("Access Token Success", result);
+        addDebugLog("Access Token Success", result.data);
         const { access_token, expires_in } = result.data;
         const expiresAt = new Date().getTime() + expires_in * 1000;
         
         try {
             localStorage.setItem("tiktok_access_token", JSON.stringify({ token: access_token, expiresAt }));
+            addDebugLog("Token Saved to localStorage", { expiresAt: new Date(expiresAt).toLocaleString() });
         } catch (e) {
             addDebugLog("localStorage Error", "Failed to save token to localStorage.");
         }
@@ -72,7 +73,7 @@ export function TokenStep({ onTokenReceived, accessToken, addDebugLog }: TokenSt
       const state = crypto.randomUUID();
 
       if (!appId || !redirectUri) {
-        const errorMsg = "TikTok app credentials are not configured in environment variables.";
+        const errorMsg = "Client-side TikTok credentials are not configured (NEXT_PUBLIC_TIKTOK_APP_ID or NEXT_PUBLIC_TIKTOK_REDIRECT_URI).";
         console.error(errorMsg);
         setError(errorMsg);
         addDebugLog("Configuration Error", { error: errorMsg, env: { NEXT_PUBLIC_TIKTOK_APP_ID: !!appId, NEXT_PUBLIC_TIKTOK_REDIRECT_URI: !!redirectUri } });
@@ -117,7 +118,7 @@ export function TokenStep({ onTokenReceived, accessToken, addDebugLog }: TokenSt
         <CardHeader className="flex-row items-center gap-4 space-y-0">
           <CheckCircle2 className="h-8 w-8 text-green-500" />
           <div>
-            <CardTitle className="font-headline">Authorized</CardTitle>
+            <CardTitle className="font-headline">Step 1: Authorized</CardTitle>
             <CardDescription>
               Your application is connected to TikTok.
             </CardDescription>
@@ -133,8 +134,8 @@ export function TokenStep({ onTokenReceived, accessToken, addDebugLog }: TokenSt
         <CardContent className="p-6 flex items-center justify-center gap-3 text-center">
             <Loader2 className="h-6 w-6 animate-spin text-primary" />
             <div>
-              <p className="font-bold font-headline text-card-foreground">Authorizing...</p>
-              <p className="text-sm text-muted-foreground">Please wait, verifying with TikTok.</p>
+              <p className="font-bold font-headline text-card-foreground">Authorizing with TikTok...</p>
+              <p className="text-sm text-muted-foreground">Exchanging authorization code for an access token.</p>
             </div>
         </CardContent>
       </Card>
@@ -177,7 +178,7 @@ export function TokenStep({ onTokenReceived, accessToken, addDebugLog }: TokenSt
             Step 1: Authorize Application
         </CardTitle>
         <CardDescription>
-          You need to connect your TikTok account to grant permissions for this app to create pixels on your behalf.
+          Connect your TikTok account to grant permissions for this app to create pixels on your behalf.
         </CardDescription>
       </CardHeader>
       <CardContent>
