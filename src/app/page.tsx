@@ -57,10 +57,10 @@ export default function Home() {
         </main>
       </div>
        <footer className="w-full text-center p-4 mt-auto space-y-2">
-        <p className="text-xs text-muted-foreground">© 2025 B2Bear Marketing</p>
         <a href="https://app.netlify.com/projects/new-tiktok-pixel/deploys" target="_blank" rel="noopener noreferrer">
-          <img src="https://api.netlify.com/api/v1/badges/4bd762fb-404f-4d5e-b4fe-365ac159f28c/deploy-status" alt="Netlify Status" />
+          <img src="https://api.netlify.com/api/v1/badges/4bd762fb-404f-4d5e-b4fe-365ac159f28c/deploy-status" alt="Netlify Status" className="mx-auto" />
         </a>
+        <p className="text-xs text-muted-foreground">© 2025 B2Bear Marketing</p>
       </footer>
     </div>
   );
