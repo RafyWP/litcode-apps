@@ -71,7 +71,7 @@ export async function getAdvertisers(
     }
 
     const response = await fetch(
-      `https://business-api.tiktok.com/open_api/v1.3/advertiser/get/`,
+      `https://business-api.tiktok.com/open_api/v1.3/oauth2/advertiser/get/`,
       {
         method: "GET",
         headers: {
