@@ -71,11 +71,17 @@ export async function getAdvertisers(
     }
 
     const response = await fetch(
-      `https://business-api.tiktok.com/open_api/v1.3/advertiser/get/?app_id=${appId}&secret=${secret}`,
+      `https://business-api.tiktok.com/open_api/v1.3/advertiser/get/`,
       {
+        method: "GET",
         headers: {
+          "Content-Type": "application/json",
           "Access-Token": accessToken,
         },
+        body: JSON.stringify({
+            app_id: appId,
+            secret: secret,
+        }),
       }
     );
 
