@@ -85,6 +85,8 @@ export async function getAdvertisers(
       }
     );
 
+    console.log(response);
+
     const data = await response.json();
 
     if (data.code !== 0) {
