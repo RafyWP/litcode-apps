@@ -21,7 +21,7 @@ export default function Home() {
           <div className="inline-flex items-center justify-center bg-primary text-primary-foreground p-3 rounded-full mb-4 shadow-lg shadow-primary/30">
             <BotMessageSquare className="h-10 w-10" />
           </div>
-          <h1 className="font-headline text-4xl sm:text-5xl font-bold text-gray-800">
+          <h1 className="font-headline text-4xl sm:text-5xl font-bold text-card-foreground">
             TikTok Pixel Generator
           </h1>
           <p className="text-muted-foreground mt-3 text-lg max-w-sm mx-auto">
