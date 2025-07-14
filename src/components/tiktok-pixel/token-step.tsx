@@ -21,32 +21,34 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [authUrl, setAuthUrl] = useState("");
-  const [hasAttemptedAuth, setHasAttemptedAuth] = useState(false);
 
-  const handleGetAccessToken = useCallback(async (authCode: string) => {
-    setIsLoading(true);
-    setError(null);
-    const result = await getAccessToken({ authCode });
-    setIsLoading(false);
+  const handleGetAccessToken = useCallback(
+    async (authCode: string) => {
+      setIsLoading(true);
+      setError(null);
+      const result = await getAccessToken({ authCode });
+      setIsLoading(false);
 
-    if (result.success && result.data.access_token) {
-      const token = result.data.access_token;
-      onTokenReceived(token);
-      toast({
-        title: "Authorization Successful!",
-        description: "You can now create your pixel.",
-        className: 'bg-green-600 text-white border-green-600'
-      });
-      window.history.replaceState(null, "", window.location.pathname);
-    } else {
-      setError(result.error || "Failed to get access token.");
-      toast({
-        title: "Authorization Error",
-        description: result.error || "Could not retrieve access token.",
-        variant: "destructive",
-      });
-    }
-  }, [onTokenReceived, toast]);
+      if (result.success && result.data.access_token) {
+        const token = result.data.access_token;
+        onTokenReceived(token);
+        toast({
+          title: "Authorization Successful!",
+          description: "You can now create your pixel.",
+          className: "bg-green-600 text-white border-green-600",
+        });
+        window.history.replaceState(null, "", window.location.pathname);
+      } else {
+        setError(result.error || "Failed to get access token.");
+        toast({
+          title: "Authorization Error",
+          description: result.error || "Could not retrieve access token.",
+          variant: "destructive",
+        });
+      }
+    },
+    [onTokenReceived, toast]
+  );
 
   useEffect(() => {
     const generateAuthUrl = () => {
@@ -74,18 +76,20 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
 
     generateAuthUrl();
 
+    const staticAuthCode = process.env.NEXT_PUBLIC_TIKTOK_AUTH_CODE;
     const urlParams = new URLSearchParams(window.location.search);
-    const authCode = urlParams.get("auth_code");
+    const urlAuthCode = urlParams.get("auth_code");
 
-    if (authCode && !accessToken && !isLoading) {
-      setHasAttemptedAuth(true);
-      handleGetAccessToken(authCode);
+    if (accessToken || isLoading) return;
+
+    if (staticAuthCode) {
+      handleGetAccessToken(staticAuthCode);
+    } else if (urlAuthCode) {
+      handleGetAccessToken(urlAuthCode);
     } else if (urlParams.get("error")) {
-        setError("Authorization was cancelled or failed.");
-        setHasAttemptedAuth(true);
+      setError("Authorization was cancelled or failed.");
     }
   }, [handleGetAccessToken, accessToken, isLoading]);
-
 
   if (accessToken) {
     return (
@@ -93,48 +97,62 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
         <CheckCircle2 className="h-6 w-6 text-green-500" />
         <div>
           <p className="font-bold text-primary-foreground">Authorized</p>
-          <p className="text-sm text-muted-foreground">Ready to create pixel.</p>
+          <p className="text-sm text-muted-foreground">
+            Ready to create pixel.
+          </p>
         </div>
       </div>
     );
   }
 
   if (isLoading) {
-     return (
-        <div className="flex items-center justify-center gap-3 rounded-lg bg-secondary p-4 text-center">
-            <Loader2 className="h-6 w-6 animate-spin text-primary" />
-            <div>
-                <p className="font-bold text-primary-foreground">Authorizing...</p>
-                <p className="text-sm text-muted-foreground">Please wait a moment.</p>
-            </div>
+    return (
+      <div className="flex items-center justify-center gap-3 rounded-lg bg-secondary p-4 text-center">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+        <div>
+          <p className="font-bold text-primary-foreground">Authorizing...</p>
+          <p className="text-sm text-muted-foreground">Please wait a moment.</p>
         </div>
-     )
+      </div>
+    );
   }
-  
+
   if (error) {
     return (
-        <div className="flex flex-col items-center gap-3 rounded-lg bg-destructive/20 border border-destructive p-4 text-center">
-            <AlertTriangle className="h-6 w-6 text-destructive" />
-            <div>
-                <p className="font-bold text-primary-foreground">Authorization Failed</p>
-                <p className="text-sm text-destructive">{error}</p>
-            </div>
-            <Button asChild variant="secondary" className="mt-2" onClick={() => setError(null)}>
-                 <a href={authUrl} rel="noopener noreferrer">
-                    <ExternalLink className="mr-2" />
-                    Try Again
-                </a>
-            </Button>
+      <div className="flex flex-col items-center gap-3 rounded-lg bg-destructive/20 border border-destructive p-4 text-center">
+        <AlertTriangle className="h-6 w-6 text-destructive" />
+        <div>
+          <p className="font-bold text-primary-foreground">
+            Authorization Failed
+          </p>
+          <p className="text-sm text-destructive">{error}</p>
         </div>
-    )
+        <Button
+          asChild
+          variant="secondary"
+          className="mt-2"
+          onClick={() => setError(null)}
+        >
+          <a href={authUrl} rel="noopener noreferrer">
+            <ExternalLink className="mr-2" />
+            Try Again
+          </a>
+        </Button>
+      </div>
+    );
   }
 
   return (
     <div className="text-center">
-       <Button asChild size="lg" disabled={!authUrl} className="w-full font-bold text-lg shadow-lg shadow-primary/30">
+      <Button
+        asChild
+        size="lg"
+        disabled={!authUrl}
+        className="w-full font-bold text-lg shadow-lg shadow-primary/30"
+      >
         <a href={authUrl} rel="noopener noreferrer">
-            <ExternalLink className="mr-2" />
-            Authorize with TikTok
+          <ExternalLink className="mr-2" />
+          Authorize with TikTok
         </a>
       </Button>
     </div>
