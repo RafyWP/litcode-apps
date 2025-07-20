@@ -21,6 +21,7 @@ import {
   Leaf,
   Link as LinkIcon,
   CreditCard,
+  ShieldCheck,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
@@ -155,7 +156,7 @@ export default function HomePage() {
               engagement, and conversions on TikTok, effortlessly. Get Started Now!
             </p>
             <div className="flex items-center justify-center pt-4 -space-x-4">
-              {Array.from({ length: 12 }).map((_, index) => (
+              {Array.from({ length: 8 }).map((_, index) => (
                 <Image
                   key={index}
                   src={`https://placehold.co/48x48.png`}
@@ -166,6 +167,10 @@ export default function HomePage() {
                   className="h-12 w-12 rounded-full border-2 border-background"
                 />
               ))}
+            </div>
+            <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+              <ShieldCheck className="h-5 w-5 text-green-500" />
+              <span>30-day money-back guarantee</span>
             </div>
           </div>
         </div>
