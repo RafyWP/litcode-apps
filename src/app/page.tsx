@@ -20,7 +20,6 @@ import {
   Briefcase,
   Leaf,
   Link as LinkIcon,
-  CreditCard,
   ShieldCheck,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -156,7 +155,7 @@ export default function HomePage() {
               engagement, and conversions on TikTok, effortlessly. Start using our applications for free!
             </p>
             <div className="flex items-center justify-center pt-4 -space-x-4">
-              {Array.from({ length: 8 }).map((_, index) => (
+              {Array.from({ length: 9 }).map((_, index) => (
                 <Image
                   key={index}
                   src={`https://placehold.co/48x48.png`}
