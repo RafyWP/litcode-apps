@@ -5,13 +5,12 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { PixelStep } from "@/components/tiktok-pixel/pixel-step";
 import { EventStep } from "@/components/tiktok-pixel/event-step";
-import { BotMessageSquare, CheckCircle, RefreshCw } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { BotMessageSquare, CheckCircle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/contexts/auth-context";
 
 export default function TikTokVideoAnchorPage() {
-  const { accessToken, isLoading, logout, pixelId, setPixelId, advertiserId, setAdvertiserId, pixelCode, setPixelCode, eventSent, setEventSent } = useAuth();
+  const { accessToken, isLoading, pixelId, setPixelId, advertiserId, setAdvertiserId, pixelCode, setPixelCode, eventSent, setEventSent } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -19,11 +18,6 @@ export default function TikTokVideoAnchorPage() {
       router.replace("/");
     }
   }, [isLoading, accessToken, router]);
-
-  const handleReset = () => {
-    logout();
-    router.push("/");
-  };
 
   if (isLoading || !accessToken) {
     return (
@@ -80,15 +74,8 @@ export default function TikTokVideoAnchorPage() {
                 Process Complete!
               </h2>
               <p className="text-muted-foreground">
-                The pixel was created and a test event was sent successfully.
+                The pixel was created and a test event was sent successfully. You can now log out via the header.
               </p>
-              <Button
-                onClick={handleReset}
-                className="mt-4 px-6 py-3 bg-accent text-accent-foreground rounded-lg font-semibold hover:bg-accent/90 transition-colors shadow-md"
-              >
-                <RefreshCw className="mr-2" />
-                Start Over
-              </Button>
             </div>
           )}
         </main>
