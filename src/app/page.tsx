@@ -17,7 +17,6 @@ import {
   ArrowRight,
   Anchor,
   LogIn,
-  Briefcase,
   Leaf,
   Link as LinkIcon,
   ShieldCheck,
@@ -111,10 +110,6 @@ export default function HomePage() {
                 Anchor every item in your videos with clickable links that convert views into sales.
               </CardDescription>
               <div className="mt-4 flex space-x-6 text-xs text-muted-foreground">
-                <div className="flex items-center gap-1.5">
-                  <Briefcase className="h-3.5 w-3.5" />
-                  <span>TikTok Business</span>
-                </div>
                 <div className="flex items-center gap-1.5">
                   <Leaf className="h-3.5 w-3.5" />
                   <span>Organic Growth</span>
