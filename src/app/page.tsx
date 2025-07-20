@@ -15,12 +15,7 @@ import {
 import {
   Loader2,
   ArrowRight,
-  Anchor,
   LogIn,
-  Briefcase,
-  Leaf,
-  Link as LinkIcon,
-  Gift,
   PlayCircle,
   ShieldCheck,
 } from "lucide-react";
@@ -114,7 +109,7 @@ export default function HomePage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
           <div className="text-center lg:text-left">
-            <p className="text-base font-semibold uppercase tracking-wider text-primary">
+            <p className="text-sm font-semibold uppercase tracking-wider text-primary">
               Unlock Your Video's Potential
             </p>
             <h1 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-card-foreground">
