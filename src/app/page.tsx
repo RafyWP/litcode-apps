@@ -103,8 +103,8 @@ export default function HomePage() {
       <div className="w-full max-w-lg">
         <h2 className="text-3xl font-bold text-center mb-6 font-headline">Our Applications</h2>
         <Card className="hover:border-primary/80 transition-colors">
-          <CardHeader className="flex flex-row items-start gap-4">
-            <div className="bg-primary/10 p-4 rounded-lg border">
+          <CardHeader className="flex flex-col items-start gap-4 text-center sm:flex-row sm:text-left">
+            <div className="bg-primary/10 p-4 rounded-lg border mx-auto sm:mx-0">
               <Anchor className="h-10 w-10 text-primary" />
             </div>
             <div className="flex-1">
@@ -112,7 +112,7 @@ export default function HomePage() {
               <CardDescription>
                 Anchor every item in your videos with clickable links that convert views into sales.
               </CardDescription>
-              <div className="mt-4 flex space-x-6 text-xs text-muted-foreground">
+              <div className="mt-4 flex flex-wrap justify-center sm:justify-start gap-x-6 gap-y-2 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1.5">
                   <Leaf className="h-3.5 w-3.5" />
                   <span>Organic Growth</span>
