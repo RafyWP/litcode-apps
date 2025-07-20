@@ -4,7 +4,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import { Button } from "@/components/ui/button";
 import { LogIn, LogOut } from "lucide-react";
 
 export default function Header() {
@@ -32,17 +31,21 @@ export default function Header() {
         </div>
         <div className="flex flex-1 items-center justify-end space-x-2">
           {accessToken ? (
-            <Button variant="ghost" onClick={handleLogout}>
-              <LogOut className="mr-2" />
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
+            >
+              <LogOut className="h-4 w-4" />
               Logout
-            </Button>
+            </button>
           ) : (
-            <Button variant="ghost" asChild>
-              <Link href="/">
-                <LogIn className="mr-2" />
-                Login
-              </Link>
-            </Button>
+            <Link
+              href="/"
+              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
+            >
+              <LogIn className="h-4 w-4" />
+              Login
+            </Link>
           )}
         </div>
       </div>
