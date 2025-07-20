@@ -33,12 +33,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import {
-  WandSparkles,
-  Loader2,
-  Copy,
-  CheckCircle2,
-} from "lucide-react";
+import { WandSparkles, Loader2, Copy, CheckCircle2 } from "lucide-react";
 import { Label } from "../ui/label";
 
 type Advertiser = {
@@ -53,22 +48,25 @@ const formSchema = z.object({
 
 type PixelStepProps = {
   accessToken: string;
-  onPixelCreated: (pixelId: string, advertiserId: string, pixelCode: string) => void;
-  onReset: () => void;
+  onPixelCreated: (
+    pixelId: string,
+    advertiserId: string,
+    pixelCode: string
+  ) => void;
+  pixelId: string | null;
+  pixelCode: string | null;
 };
 
 export function PixelStep({
   accessToken,
   onPixelCreated,
-  onReset,
+  pixelId,
+  pixelCode,
 }: PixelStepProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isFetchingAdvertisers, setIsFetchingAdvertisers] = useState(true);
   const [advertisers, setAdvertisers] = useState<Advertiser[]>([]);
-  const [createdPixelId, setCreatedPixelId] = useState<string | null>(null);
-  const [createdPixelCode, setCreatedPixelCode] = useState<string | null>(null);
-
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -117,9 +115,11 @@ export function PixelStep({
     setIsLoading(false);
 
     if (result.success && result.data.pixel_id && result.data.pixel_code) {
-      setCreatedPixelId(result.data.pixel_id);
-      setCreatedPixelCode(result.data.pixel_code);
-      onPixelCreated(result.data.pixel_id, values.advertiserId, result.data.pixel_code);
+      onPixelCreated(
+        result.data.pixel_id,
+        values.advertiserId,
+        result.data.pixel_code
+      );
     } else {
       toast({
         title: "Error Creating Pixel",
@@ -140,29 +140,31 @@ export function PixelStep({
     }
   };
 
-  if (createdPixelId) {
+  if (pixelId && pixelCode) {
     return (
       <Card className="bg-card border-t-4 border-primary shadow-lg shadow-primary/20">
-        <CardHeader>
-          <CardTitle className="font-headline flex items-center gap-2 text-card-foreground">
-            <CheckCircle2 className="h-6 w-6 text-green-500" />
-            Pixel Criado com Sucesso!
-          </CardTitle>
+        <CardHeader className="flex-row items-center gap-4 space-y-0">
+          <CheckCircle2 className="h-8 w-8 text-green-500" />
+          <div>
+            <CardTitle className="font-headline flex items-center gap-2 text-card-foreground">
+              Step 2: Pixel Criado com Sucesso!
+            </CardTitle>
+            <CardDescription>
+              Seu novo Pixel está pronto. Copie o ID e o Código abaixo.
+            </CardDescription>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-muted-foreground">
-            Seu novo Pixel está pronto. Copie o ID e o Código abaixo.
-          </p>
           <div>
             <Label className="text-xs text-muted-foreground">Pixel ID</Label>
             <div className="flex items-center gap-2 p-3 rounded-md bg-secondary">
               <span className="font-mono text-sm text-card-foreground truncate">
-                {createdPixelId}
+                {pixelId}
               </span>
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => copyToClipboard(createdPixelId)}
+                onClick={() => copyToClipboard(pixelId)}
                 className="ml-auto flex-shrink-0"
               >
                 <Copy className="h-4 w-4" />
@@ -173,12 +175,12 @@ export function PixelStep({
             <Label className="text-xs text-muted-foreground">Pixel Code</Label>
             <div className="flex items-center gap-2 p-3 rounded-md bg-secondary">
               <span className="font-mono text-sm text-card-foreground truncate">
-                {createdPixelCode}
+                {pixelCode}
               </span>
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => copyToClipboard(createdPixelCode)}
+                onClick={() => copyToClipboard(pixelCode)}
                 className="ml-auto flex-shrink-0"
               >
                 <Copy className="h-4 w-4" />
@@ -186,11 +188,6 @@ export function PixelStep({
             </div>
           </div>
         </CardContent>
-        <CardFooter>
-          <p className="text-xs text-muted-foreground">
-            Avançando para o envio de evento de teste...
-          </p>
-        </CardFooter>
       </Card>
     );
   }

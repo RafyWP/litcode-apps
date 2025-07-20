@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { TokenStep } from "@/components/tiktok-pixel/token-step";
 import { PixelStep } from "@/components/tiktok-pixel/pixel-step";
 import { EventStep } from "@/components/tiktok-pixel/event-step";
-import { BotMessageSquare, CheckCircle } from "lucide-react";
+import { BotMessageSquare, CheckCircle, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
@@ -38,70 +38,10 @@ export default function Home() {
     setPixelCode(null);
     setAdvertiserId(null);
     setEventSent(false);
-    
+
     const url = new URL(window.location.href);
-    url.searchParams.delete('auth_code');
+    url.searchParams.delete("auth_code");
     window.history.replaceState(null, "", url.toString());
-  };
-
-
-  const renderStep = () => {
-    if (eventSent) {
-      return (
-        <div className="text-center p-8 bg-card rounded-xl shadow-lg border flex flex-col items-center gap-4">
-          <CheckCircle className="h-16 w-16 text-green-500" />
-          <h2 className="text-2xl font-bold font-headline text-card-foreground">
-            Processo Concluído!
-          </h2>
-          <p className="text-muted-foreground">
-            O pixel foi criado e um evento de teste foi enviado com sucesso.
-          </p>
-          <Button
-            onClick={handleReset}
-            className="mt-4 px-6 py-3 bg-accent text-accent-foreground rounded-lg font-semibold hover:bg-accent/90 transition-colors shadow-md"
-          >
-            Começar Novamente
-          </Button>
-        </div>
-      );
-    }
-
-    if (accessToken && pixelId && advertiserId && pixelCode) {
-      return (
-        <EventStep
-          accessToken={accessToken}
-          pixelCode={pixelCode}
-          onEventSent={() => setEventSent(true)}
-        />
-      );
-    }
-
-    if (accessToken) {
-      return (
-        <>
-          <TokenStep
-            onTokenReceived={setAccessToken}
-            accessToken={accessToken}
-          />
-          <PixelStep
-            accessToken={accessToken}
-            onPixelCreated={(newPixelId, newAdvertiserId, newPixelCode) => {
-              setPixelId(newPixelId);
-              setAdvertiserId(newAdvertiserId);
-              setPixelCode(newPixelCode);
-            }}
-            onReset={handleReset}
-          />
-        </>
-      );
-    }
-    
-    return (
-      <TokenStep
-        onTokenReceived={setAccessToken}
-        accessToken={accessToken}
-      />
-    );
   };
 
   return (
@@ -119,9 +59,53 @@ export default function Home() {
           </p>
         </header>
 
-        <main className="space-y-6">{renderStep()}</main>
+        <main className="space-y-6">
+          <TokenStep
+            onTokenReceived={setAccessToken}
+            accessToken={accessToken}
+          />
+          {accessToken && (
+            <PixelStep
+              accessToken={accessToken}
+              onPixelCreated={(newPixelId, newAdvertiserId, newPixelCode) => {
+                setPixelId(newPixelId);
+                setAdvertiserId(newAdvertiserId);
+                setPixelCode(newPixelCode);
+              }}
+              pixelId={pixelId}
+              pixelCode={pixelCode}
+            />
+          )}
+          {accessToken && pixelId && advertiserId && pixelCode && (
+            <EventStep
+              accessToken={accessToken}
+              pixelCode={pixelCode}
+              onEventSent={() => setEventSent(true)}
+              eventSent={eventSent}
+            />
+          )}
+
+          {eventSent && (
+            <div className="text-center p-8 bg-card rounded-xl shadow-lg border-2 border-dashed border-green-500 flex flex-col items-center gap-4">
+              <CheckCircle className="h-16 w-16 text-green-500" />
+              <h2 className="text-2xl font-bold font-headline text-card-foreground">
+                Processo Concluído!
+              </h2>
+              <p className="text-muted-foreground">
+                O pixel foi criado e um evento de teste foi enviado com sucesso.
+              </p>
+              <Button
+                onClick={handleReset}
+                className="mt-4 px-6 py-3 bg-accent text-accent-foreground rounded-lg font-semibold hover:bg-accent/90 transition-colors shadow-md"
+              >
+                <RefreshCw className="mr-2" />
+                Começar Novamente
+              </Button>
+            </div>
+          )}
+        </main>
       </div>
-      
+
       <footer className="w-full text-center p-4 mt-auto space-y-2 shrink-0">
         <p className="text-xs text-muted-foreground">
           © {new Date().getFullYear()}{" "}
