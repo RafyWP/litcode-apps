@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
@@ -9,6 +10,31 @@ import { LogIn, LogOut } from "lucide-react";
 export default function Header() {
   const { accessToken, logout } = useAuth();
   const router = useRouter();
+  const [authUrl, setAuthUrl] = useState("");
+
+  useEffect(() => {
+    const generateAuthUrl = () => {
+      const baseUrl = "https://business-api.tiktok.com/portal/auth";
+      const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
+      const redirectUri = process.env.NEXT_PUBLIC_TIKTOK_REDIRECT_URI;
+      const state = crypto.randomUUID();
+
+      if (!appId || !redirectUri) {
+        console.error("Client-side TikTok credentials are not configured.");
+        return;
+      }
+
+      const params = new URLSearchParams({
+        app_id: appId,
+        state: state,
+        redirect_uri: redirectUri,
+        scope: "bc.read,cm.manage",
+      });
+      setAuthUrl(`${baseUrl}?${params.toString()}`);
+    };
+
+    generateAuthUrl();
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -39,13 +65,13 @@ export default function Header() {
               Logout
             </button>
           ) : (
-            <Link
-              href="/"
+            <a
+              href={authUrl}
               className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:text-foreground/70"
             >
               <LogIn className="h-4 w-4" />
               Login
-            </Link>
+            </a>
           )}
         </div>
       </div>
