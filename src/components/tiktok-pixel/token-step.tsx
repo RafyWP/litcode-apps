@@ -43,7 +43,7 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
         try {
             localStorage.setItem("tiktok_access_token", JSON.stringify({ token: access_token, expiresAt }));
         } catch (e) {
-            console.error("Failed to save token to localStorage.");
+            // LocalStorage might be disabled.
         }
 
         onTokenReceived(access_token);
@@ -55,6 +55,7 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
         
         const url = new URL(window.location.href);
         url.searchParams.delete('auth_code');
+        url.searchParams.delete('error');
         window.history.replaceState(null, "", url.toString());
 
       } else {
@@ -70,6 +71,11 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
   );
 
   useEffect(() => {
+    // If we already have a token from props, do nothing.
+    if (accessToken) {
+      return;
+    }
+
     const generateAuthUrl = () => {
       const baseUrl = "https://business-api.tiktok.com/portal/auth";
       const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
@@ -96,7 +102,7 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
 
     generateAuthUrl();
 
-    if (urlAuthCode && !accessToken) {
+    if (urlAuthCode) {
         handleGetAccessToken(urlAuthCode);
     } else if (urlParams.get("error")) {
         const authError = "Authorization was cancelled or failed.";
