@@ -176,13 +176,58 @@ export default function HomePage() {
         </section>
 
         <section className="container mx-auto px-4 md:px-6 pb-12 md:pb-24">
-           <div className="grid grid-cols-2 items-center gap-4 text-muted-foreground w-full max-w-sm mx-auto">
-            <span className="text-right font-semibold text-lg">First lesson free</span>
+           <div className="flex items-center justify-center">
             <button
               onClick={() => setIsVideoOpen(true)}
-              className="flex items-center justify-start group"
+              className="group relative"
+              aria-label="Play First Lesson Free Video"
             >
-              <PlayCircle className="h-16 w-16 text-primary animate-pulse group-hover:text-primary/80 transition-colors" />
+              <svg
+                className="w-48 h-48"
+                viewBox="0 0 200 200"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <style>
+                  {`
+                    @keyframes rotate {
+                      from {
+                        transform: rotate(0deg);
+                      }
+                      to {
+                        transform: rotate(360deg);
+                      }
+                    }
+                    .rotating-text {
+                      animation: rotate 20s linear infinite;
+                      transform-origin: center;
+                    }
+                  `}
+                </style>
+                <defs>
+                  <path
+                    id="circlePath"
+                    d="
+                      M 100, 100
+                      m -75, 0
+                      a 75,75 0 1,1 150,0
+                      a 75,75 0 1,1 -150,0
+                    "
+                    fill="none"
+                  />
+                </defs>
+                
+                <g className="rotating-text">
+                  <text fill="hsl(var(--muted-foreground))" className="text-lg font-semibold tracking-wider uppercase">
+                    <textPath href="#circlePath" startOffset="50%" textAnchor="middle">
+                      First lesson free • First lesson free •
+                    </textPath>
+                  </text>
+                </g>
+                
+                <foreignObject x="60" y="60" width="80" height="80">
+                  <PlayCircle className="h-20 w-20 text-primary group-hover:text-primary/80 transition-colors" />
+                </foreignObject>
+              </svg>
             </button>
           </div>
         </section>
