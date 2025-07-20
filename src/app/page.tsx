@@ -103,21 +103,21 @@ export default function HomePage() {
     return (
       <div className="w-full max-w-lg">
         <h2 className="text-3xl font-bold text-center mb-6 font-headline">Our Applications</h2>
-        <Card className="hover:border-primary/80 transition-colors aspect-[9/16] flex flex-col text-center">
-          <div>
-            <CardHeader className="items-center">
-              <div className="bg-primary/10 p-4 rounded-lg border">
-                <Anchor className="h-10 w-10 text-primary" />
-              </div>
-              <CardTitle className="font-headline text-xl font-bold tracking-tight">
+        <Card className="hover:border-primary/80 transition-colors aspect-[9/16] flex flex-col">
+          <div className="p-6 flex items-start gap-4">
+            {/* Coluna do Ícone */}
+            <div className="bg-primary/10 p-3 rounded-lg border shrink-0">
+              <Anchor className="h-8 w-8 text-primary" />
+            </div>
+            {/* Coluna do Conteúdo */}
+            <div className="flex flex-col">
+              <CardTitle className="font-headline text-xl font-bold tracking-tight text-left">
                 TikTok Video Anchor
               </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="mb-4">
+              <CardDescription className="mt-1 mb-3 text-left">
                 Anchor every item in your videos with clickable links that convert views into sales.
               </CardDescription>
-              <div className="flex flex-col items-center gap-2 text-xs text-muted-foreground">
+              <div className="flex flex-col items-start gap-1.5 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1.5">
                   <Leaf className="h-3.5 w-3.5" />
                   <span>Organic Growth</span>
@@ -127,9 +127,9 @@ export default function HomePage() {
                   <span>1,200+ Links Gen.</span>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </div>
-          <CardFooter className="mt-auto">
+          <CardFooter className="mt-auto p-6">
             <Button className="w-full" asChild>
               <a href={authUrl}>
                 <LogIn className="mr-2" />
@@ -224,7 +224,7 @@ export default function HomePage() {
                 <g className="rotating-text">
                   <text fill="hsl(var(--muted-foreground))" className="text-[16px] font-semibold uppercase">
                     <textPath href="#circlePath" startOffset="50%" textAnchor="middle">
-                      First lesson free • First lesson free • First lesson free •
+                      First lesson free • First lesson free • First lesson free • 
                     </textPath>
                   </text>
                 </g>
