@@ -145,12 +145,12 @@ export default function HomePage() {
           <div className="container mx-auto px-4 text-center md:px-6">
             <div className="flex flex-col items-center space-y-4">
               <p className="text-sm font-semibold tracking-wider uppercase text-primary">
-                Welcome to LitCode Store
+                Learn once and for all
               </p>
               <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
                 How to Sell on TikTok
               </h1>
-              <p className="max-w-prose text-base md:text-lg text-muted-foreground">
+              <p className="max-w-prose text-base text-muted-foreground md:text-lg">
                 Our suite of tools is designed to help you maximize your reach,
                 engagement, and conversions on TikTok, effortlessly. Start using our applications for free!
               </p>
