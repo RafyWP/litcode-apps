@@ -82,9 +82,8 @@ export function EventStep({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     const payload = {
-      accessToken: accessToken,
-      pixelId: pixelId,
-      advertiserId: advertiserId,
+      accessToken,
+      pixelId,
       userAgent: userAgent,
       ...values,
     };
@@ -204,7 +203,7 @@ export function EventStep({
                 name="externalId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>External ID</FormLabel>
+                    <FormLabel>External ID (Opcional)</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder="ID do usuário no seu sistema" />
                     </FormControl>
