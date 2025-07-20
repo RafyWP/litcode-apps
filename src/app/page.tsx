@@ -9,6 +9,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -102,36 +103,38 @@ export default function HomePage() {
     return (
       <div className="w-full max-w-lg">
         <h2 className="text-3xl font-bold text-center mb-6 font-headline">Our Applications</h2>
-        <Card className="hover:border-primary/80 transition-colors">
-          <CardHeader className="flex flex-col items-start gap-4 text-center sm:flex-row sm:text-left">
-            <div className="bg-primary/10 p-4 rounded-lg border mx-auto sm:mx-0">
+        <Card className="hover:border-primary/80 transition-colors aspect-[9/16] flex flex-col text-center">
+          <CardHeader className="items-center">
+            <div className="bg-primary/10 p-4 rounded-lg border">
               <Anchor className="h-10 w-10 text-primary" />
             </div>
-            <div className="flex-1">
-              <h3 className="font-headline text-xl font-bold mb-2 tracking-tight">TikTok Video Anchor</h3>
-              <CardDescription>
-                Anchor every item in your videos with clickable links that convert views into sales.
-              </CardDescription>
-              <div className="mt-4 flex flex-wrap justify-center sm:justify-start gap-x-6 gap-y-2 text-xs text-muted-foreground">
-                <div className="flex items-center gap-1.5">
-                  <Leaf className="h-3.5 w-3.5" />
-                  <span>Organic Growth</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <LinkIcon className="h-3.5 w-3.5" />
-                  <span>1,200+ Links Gen.</span>
-                </div>
+            <CardTitle className="font-headline text-xl font-bold tracking-tight">
+              TikTok Video Anchor
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="flex-1 flex flex-col justify-center items-center">
+            <CardDescription className="mb-4">
+              Anchor every item in your videos with clickable links that convert views into sales.
+            </CardDescription>
+            <div className="flex flex-col items-center gap-2 text-xs text-muted-foreground">
+              <div className="flex items-center gap-1.5">
+                <Leaf className="h-3.5 w-3.5" />
+                <span>Organic Growth</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <LinkIcon className="h-3.5 w-3.5" />
+                <span>1,200+ Links Gen.</span>
               </div>
             </div>
-          </CardHeader>
-          <CardContent>
+          </CardContent>
+          <CardFooter>
             <Button className="w-full" asChild>
               <a href={authUrl}>
                 <LogIn className="mr-2" />
                 Login with TikTok
               </a>
             </Button>
-          </CardContent>
+          </CardFooter>
         </Card>
       </div>
     );
