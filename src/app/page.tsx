@@ -224,8 +224,8 @@ export default function HomePage() {
                   </text>
                 </g>
                 
-                <foreignObject x="60" y="60" width="80" height="80">
-                  <PlayCircle className="h-20 w-20 text-primary group-hover:text-primary/80 transition-colors" />
+                <foreignObject x="56.5" y="56.5" width="87" height="87">
+                  <PlayCircle className="h-full w-full text-primary group-hover:text-primary/80 transition-colors" />
                 </foreignObject>
               </svg>
             </button>
