@@ -69,14 +69,14 @@ export default function HomePage() {
 
     return (
       <div className="w-full max-w-lg">
-        <h2 className="text-2xl font-bold text-center mb-6">Our Applications</h2>
+        <h2 className="text-2xl font-bold text-center mb-6 font-headline">Our Applications</h2>
         <Card className="hover:border-primary/80 transition-colors">
           <CardHeader className="flex flex-row items-center gap-4">
             <div className="bg-primary/10 p-3 rounded-lg border">
               <BotMessageSquare className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <CardTitle>TikTok Video Anchor</CardTitle>
+              <CardTitle className="font-headline">TikTok Video Anchor</CardTitle>
               <CardDescription>
                 Anchor every item in your videos with clickable links that convert views into sales.
               </CardDescription>
