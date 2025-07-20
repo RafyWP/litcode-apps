@@ -20,7 +20,7 @@ import {
   Link as LinkIcon,
   ShieldCheck,
   PlayCircle,
-  Quote,
+  Bot,
   TrendingUp,
   Users,
 } from "lucide-react";
@@ -147,7 +147,7 @@ export default function HomePage() {
             <div className="flex flex-col h-full">
               <div className="flex items-start gap-4">
                 <div className="bg-accent/10 p-2 rounded-lg border shrink-0">
-                  <Quote className="h-6 w-6 md:h-8 md:w-8 text-accent" />
+                  <Bot className="h-6 w-6 md:h-8 md:w-8 text-accent" />
                 </div>
                 <div className="flex flex-col overflow-hidden">
                   <CardTitle className="font-headline text-base md:text-xl font-bold tracking-tight text-left">
