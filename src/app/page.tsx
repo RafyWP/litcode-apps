@@ -153,7 +153,7 @@ export default function HomePage() {
             </h1>
             <p className="max-w-prose text-lg text-muted-foreground">
               Our suite of tools is designed to help you maximize your reach,
-              engagement, and conversions on TikTok, effortlessly. Get Started Now!
+              engagement, and conversions on TikTok, effortlessly. Start using our applications for free!
             </p>
             <div className="flex items-center justify-center pt-4 -space-x-4">
               {Array.from({ length: 8 }).map((_, index) => (
