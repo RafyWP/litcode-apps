@@ -10,17 +10,8 @@ import {
   CheckCircle2,
   ExternalLink,
   AlertTriangle,
-  KeyRound,
   ArrowRight,
 } from "lucide-react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 
 export default function HomePage() {
@@ -88,102 +79,50 @@ export default function HomePage() {
   const renderContent = () => {
     if (isLoading) {
       return (
-        <Card>
-          <CardContent className="p-6 flex items-center justify-center gap-3 text-center">
-            <Loader2 className="h-6 w-6 animate-spin text-primary" />
-            <div>
-              <p className="font-bold font-headline text-card-foreground">
-                Checking authorization...
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="flex items-center justify-center gap-3 text-center">
+          <Loader2 className="h-6 w-6 animate-spin text-primary" />
+          <p className="font-bold font-headline text-card-foreground">
+            Checking authorization...
+          </p>
+        </div>
       );
     }
 
     if (accessToken) {
       return (
-        <Card className="bg-card border-t-4 border-green-500 shadow-lg shadow-green-500/20">
-          <CardHeader className="flex-row items-center gap-4 space-y-0">
-            <CheckCircle2 className="h-8 w-8 text-green-500" />
-            <div>
-              <CardTitle className="font-headline">Authorized</CardTitle>
-              <CardDescription>
-                Your application is connected to TikTok.
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">
-              You have successfully authenticated your account. You can now proceed to the TikTok Video Anchor tool.
-            </p>
-          </CardContent>
-          <CardFooter>
-            <Button asChild size="lg" className="w-full">
-              <Link href="/tiktok-video-anchor">
-                Go to TikTok Video Anchor
-                <ArrowRight className="ml-2" />
-              </Link>
-            </Button>
-          </CardFooter>
-        </Card>
+        <Button asChild size="lg" className="w-full max-w-sm">
+          <Link href="/tiktok-video-anchor">
+            Go to TikTok Video Anchor
+            <ArrowRight className="ml-2" />
+          </Link>
+        </Button>
       );
     }
 
     if (error) {
       return (
-        <Card className="bg-destructive/10 border-destructive">
-          <CardHeader className="flex-row items-center gap-4 space-y-0">
-            <AlertTriangle className="h-8 w-8 text-destructive" />
-            <div>
-              <CardTitle className="font-headline text-destructive">
-                Authorization Failed
-              </CardTitle>
-              <CardDescription className="text-destructive/80">
-                {error}
-              </CardDescription>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <Button
-              className="w-full bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              onClick={handleTryAgain}
-              disabled={!authUrl}
-            >
-              <ExternalLink className="mr-2" />
-              Try Authorization Again
-            </Button>
-          </CardContent>
-        </Card>
+        <div className="text-center">
+          <div className="flex items-center justify-center gap-2 text-destructive mb-4">
+            <AlertTriangle className="h-6 w-6" />
+            <p className="font-bold font-headline">{error}</p>
+          </div>
+          <Button
+            onClick={handleTryAgain}
+            disabled={!authUrl}
+            variant="destructive"
+          >
+            <ExternalLink className="mr-2" />
+            Try Authorization Again
+          </Button>
+        </div>
       );
     }
 
     return (
-      <Card className="bg-card border-t-4 border-primary shadow-lg shadow-primary/20">
-        <CardHeader>
-          <CardTitle className="font-headline flex items-center gap-2">
-            <KeyRound className="text-primary" />
-            Authorize Application
-          </CardTitle>
-          <CardDescription>
-            Connect your TikTok account to grant permissions for this app to
-            create pixels on your behalf.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Button
-            asChild
-            size="lg"
-            disabled={!authUrl}
-            className="w-full font-bold text-lg shadow-lg shadow-primary/30 bg-primary hover:bg-primary/90 text-primary-foreground"
-          >
-            <a href={authUrl} rel="noopener noreferrer">
-              <ExternalLink className="mr-2" />
-              Authorize with TikTok
-            </a>
-          </Button>
-        </CardContent>
-      </Card>
+       <a href={authUrl} rel="noopener noreferrer" className="text-lg text-primary hover:underline font-semibold flex items-center gap-2">
+          <ExternalLink />
+          Login with TikTok
+       </a>
     );
   };
 
@@ -197,7 +136,7 @@ export default function HomePage() {
           Your one-stop shop for powerful application tools.
         </p>
       </header>
-      <main className="w-full max-w-lg">{renderContent()}</main>
+      <main className="w-full max-w-lg flex items-center justify-center">{renderContent()}</main>
     </div>
   );
 }
