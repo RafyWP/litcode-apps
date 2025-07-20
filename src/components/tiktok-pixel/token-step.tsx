@@ -35,8 +35,9 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
       if (result.success && result.data.access_token) {
         const { access_token, expires_in } = result.data;
         
-        // TikTok expires_in is in seconds. Default to 24 hours if not provided.
-        const expiresInMs = (expires_in || 86400) * 1000;
+        // TikTok expires_in is in seconds. Default to 24 hours (86400s) if not provided or is shorter.
+        const expiresInSeconds = expires_in && expires_in > 5 ? expires_in : 86400;
+        const expiresInMs = expiresInSeconds * 1000;
         const expiresAt = new Date().getTime() + expiresInMs;
         
         try {
