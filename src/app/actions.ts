@@ -203,6 +203,36 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
     const eventId = `${event.toLowerCase()}_${eventTime}_${Math.random()
       .toString(36)
       .substring(2, 9)}`;
+      
+    const requestBody = {
+      event_source: "web",
+      event_source_id: pixelId,
+      data: [
+        {
+          event: event,
+          event_time: eventTime,
+          event_id: eventId,
+          user: {
+            external_id: externalId || null,
+            email: email || null,
+            phone: phone || null,
+            user_agent: userAgent,
+          },
+          properties: {
+            currency: currency,
+            value: value,
+            contents: [
+              {
+                price: value,
+                quantity: 1,
+                content_id: contentId,
+                content_name: contentName,
+              },
+            ],
+          },
+        },
+      ],
+    };
 
     const response = await fetch(
       "https://business-api.tiktok.com/open_api/v1.3/event/track/",
@@ -212,35 +242,7 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
           "Content-Type": "application/json",
           "Access-Token": accessToken,
         },
-        body: JSON.stringify({
-          event_source: "web",
-          event_source_id: pixelId,
-          data: [
-            {
-              event: event,
-              event_time: eventTime,
-              event_id: eventId,
-              user: {
-                external_id: externalId || null,
-                email: email || null,
-                phone: phone || null,
-                user_agent: userAgent,
-              },
-              properties: {
-                currency: currency,
-                value: value,
-                contents: [
-                  {
-                    price: value,
-                    quantity: 1,
-                    content_id: contentId,
-                    content_name: contentName,
-                  },
-                ],
-              },
-            },
-          ],
-        }),
+        body: JSON.stringify(requestBody),
       }
     );
 
@@ -251,12 +253,14 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
         success: false,
         error: data.message || "Failed to track event.",
         details: data,
+        requestPayload: requestBody,
       };
     }
 
     return {
       success: true,
       data: data,
+      requestPayload: requestBody,
     };
   } catch (error) {
     if (error instanceof z.ZodError) {

@@ -87,9 +87,15 @@ export function EventStep({
       userAgent: userAgent,
       ...values,
     };
-    addDebugLog("Tracking Event...", payload);
+    addDebugLog("Calling trackEvent with params:", payload);
 
     const result = await trackEvent(payload);
+    
+    // @ts-ignore
+    if(result.requestPayload) {
+        // @ts-ignore
+        addDebugLog("Sent Payload to TikTok API:", result.requestPayload);
+    }
 
     setIsLoading(false);
 
@@ -216,9 +222,9 @@ export function EventStep({
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>E-mail (Opcional, SHA-256)</FormLabel>
+                    <FormLabel>E-mail (Opcional)</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="E-mail do usuário (hash SHA-256)" />
+                      <Input {...field} placeholder="E-mail do usuário (sem hash)" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -229,9 +235,9 @@ export function EventStep({
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Telefone (Opcional, SHA-256)</FormLabel>
+                    <FormLabel>Telefone (Opcional)</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Telefone do usuário (hash SHA-256)" />
+                      <Input {...field} placeholder="Telefone do usuário (sem hash)" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
