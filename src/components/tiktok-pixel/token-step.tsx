@@ -35,8 +35,8 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
       if (result.success && result.data.access_token) {
         const { access_token, expires_in } = result.data;
         
-        // TikTok expires_in is in seconds. Default to 24 hours (86400s) if not provided or is shorter.
-        const expiresInSeconds = expires_in && expires_in > 5 ? expires_in : 86400;
+        // TikTok expires_in is in seconds. Default to 24 hours (86400s) if not provided.
+        const expiresInSeconds = expires_in || 86400;
         const expiresInMs = expiresInSeconds * 1000;
         const expiresAt = new Date().getTime() + expiresInMs;
         
@@ -77,8 +77,7 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
       const state = crypto.randomUUID();
 
       if (!appId || !redirectUri) {
-        const errorMsg = "Client-side TikTok credentials are not configured (NEXT_PUBLIC_TIKTOK_APP_ID or NEXT_PUBLIC_TIKTOK_REDIRECT_URI).";
-        console.error(errorMsg);
+        const errorMsg = "Client-side TikTok credentials are not configured.";
         setError(errorMsg);
         return;
       }
@@ -115,7 +114,7 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
 
   if (accessToken) {
     return (
-      <Card className="bg-card border-t-4 border-green-500 shadow-lg">
+      <Card className="bg-card border-t-4 border-green-500 shadow-lg shadow-green-500/20">
         <CardHeader className="flex-row items-center gap-4 space-y-0">
           <CheckCircle2 className="h-8 w-8 text-green-500" />
           <div>

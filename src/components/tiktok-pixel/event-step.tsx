@@ -97,8 +97,11 @@ export function EventStep({
           className="w-full bg-green-600 hover:bg-green-600/90 text-white font-bold"
           disabled={isLoading}
         >
-          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          <Send className="mr-2" />
+          {isLoading ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Send className="mr-2" />
+          )}
           Send Test Event
         </Button>
       </CardFooter>
