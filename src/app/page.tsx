@@ -134,11 +134,6 @@ export default function HomePage() {
             <p className="mt-4 text-sm text-muted-foreground">
               No credit card required.
             </p>
-
-            <div className="mt-6 flex items-center justify-center lg:justify-start gap-2 text-sm text-muted-foreground">
-              <ShieldCheck className="h-5 w-5 text-green-500" />
-              <span>Satisfaction guaranteed</span>
-            </div>
           </div>
 
           <div className="relative group flex items-center justify-center">
