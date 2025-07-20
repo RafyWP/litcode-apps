@@ -102,15 +102,15 @@ export default function HomePage() {
       <div className="w-full max-w-lg">
         <h2 className="text-3xl font-bold text-center mb-6 font-headline">Our Applications</h2>
         <Card className="hover:border-primary/80 transition-colors aspect-[9/16] flex flex-col">
-          <div className="p-6 flex items-start gap-4">
-            <div className="bg-primary/10 p-2 md:p-3 rounded-lg border shrink-0">
-              <Anchor className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+          <div className="p-4 md:p-6 flex items-start gap-4">
+            <div className="bg-primary/10 p-2 rounded-lg border shrink-0">
+              <Anchor className="h-6 w-6 text-primary" />
             </div>
-            <div className="flex flex-col">
-              <CardTitle className="font-headline text-lg md:text-xl font-bold tracking-tight text-left">
+            <div className="flex flex-col overflow-hidden">
+              <CardTitle className="font-headline text-lg font-bold tracking-tight text-left">
                 TikTok Video Anchor
               </CardTitle>
-              <CardDescription className="mt-1 mb-3 text-left hidden md:block">
+              <CardDescription className="mt-1 mb-3 text-left truncate">
                 Anchor every item in your videos with clickable links that convert views into sales.
               </CardDescription>
               <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground">
@@ -125,7 +125,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <CardFooter className="mt-auto p-6">
+          <CardFooter className="mt-auto p-4 md:p-6">
             <Button className="w-full" asChild>
               <a href={authUrl}>
                 <LogIn className="mr-2" />
@@ -220,7 +220,7 @@ export default function HomePage() {
                 <g className="rotating-text">
                   <text fill="hsl(var(--muted-foreground))" className="text-[16px] font-semibold uppercase">
                     <textPath href="#circlePath" startOffset="50%" textAnchor="middle">
-                      First lesson free • First lesson free • First lesson free •
+                      First lesson free • First lesson free • First lesson free • 
                     </textPath>
                   </text>
                 </g>
