@@ -2,7 +2,7 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
-import { Inter, Space_Grotesk } from 'next/font/google';
+import { Inter, Montserrat } from 'next/font/google';
 import { AuthProvider } from '@/contexts/auth-context';
 import Header from '@/components/layout/header';
 
@@ -12,10 +12,10 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-const spaceGrotesk = Space_Grotesk({
+const montserrat = Montserrat({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-space-grotesk',
+  variable: '--font-montserrat',
 });
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} dark`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${montserrat.variable} dark`} suppressHydrationWarning>
       <head>
       </head>
       <body className="font-body antialiased">
