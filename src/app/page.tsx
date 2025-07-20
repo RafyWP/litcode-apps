@@ -17,9 +17,9 @@ import {
   ArrowRight,
   Anchor,
   LogIn,
-  BadgeCheck,
-  Server,
-  LifeBuoy,
+  Award,
+  Leaf,
+  Link as LinkIcon,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -110,16 +110,16 @@ export default function HomePage() {
               </CardDescription>
               <div className="mt-4 flex space-x-6 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1.5">
-                  <BadgeCheck className="h-3.5 w-3.5" />
-                  <span>1,200+ Pixels</span>
+                  <Award className="h-3.5 w-3.5" />
+                  <span>Free App</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Server className="h-3.5 w-3.5" />
-                  <span>98% Uptime</span>
+                  <Leaf className="h-3.5 w-3.5" />
+                  <span>Organic Growth</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <LifeBuoy className="h-3.5 w-3.5" />
-                  <span>24/7 Support</span>
+                  <LinkIcon className="h-3.5 w-3.5" />
+                  <span>1,200+ Links Gen.</span>
                 </div>
               </div>
             </div>
