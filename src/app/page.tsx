@@ -139,21 +139,21 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center -mt-16">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground -mt-16">
       <section className="w-full py-12 md:py-24 lg:py-32">
-        <div className="container px-4 md:px-6">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center">
+        <div className="container mx-auto px-4 text-center md:px-6">
+          <div className="flex flex-col items-center space-y-4">
             <p className="text-sm font-semibold tracking-wider uppercase text-primary">
               Welcome to LitCode Store
             </p>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
+            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
               Unlock Your TikTok Potential
             </h1>
             <p className="max-w-prose text-lg text-muted-foreground">
               Our suite of tools is designed to help you maximize your reach,
               engagement, and conversions on TikTok, effortlessly.
             </p>
-            <div className="flex flex-col items-center space-y-3 pt-4">
+            <div className="flex flex-col items-center pt-4 space-y-3">
               <Button size="lg">
                 Get Started Now
                 <ArrowRight className="ml-2" />
@@ -167,7 +167,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <main className="w-full max-w-lg flex items-center justify-center pb-24">
+      <main className="flex items-center justify-center w-full max-w-lg pb-24">
         {renderContent()}
       </main>
     </div>
