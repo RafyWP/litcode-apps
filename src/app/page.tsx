@@ -122,7 +122,7 @@ export default function HomePage() {
                   <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground mt-2">
                     <div className="flex items-center gap-1.5">
                       <Leaf className="h-3.5 w-3.5" />
-                      <span>Organic Growth</span>
+                      <span>Conversion</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <LinkIcon className="h-3.5 w-3.5" />
