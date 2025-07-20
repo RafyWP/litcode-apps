@@ -104,7 +104,7 @@ export default function HomePage() {
               <Anchor className="h-10 w-10 text-primary" />
             </div>
             <div className="flex-1">
-              <CardTitle className="font-headline mb-2">TikTok Video Anchor</CardTitle>
+              <h3 className="font-headline text-xl font-bold mb-2 tracking-tight">TikTok Video Anchor</h3>
               <CardDescription>
                 Anchor every item in your videos with clickable links that convert views into sales.
               </CardDescription>
