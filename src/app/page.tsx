@@ -142,7 +142,7 @@ export default function HomePage() {
     <>
       <VideoPopup open={isVideoOpen} onOpenChange={setIsVideoOpen} />
       <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground -mt-16">
-        <section className="w-full py-12 md:py-24">
+        <section className="w-full py-16 md:py-24">
           <div className="container mx-auto px-4 text-center md:px-6">
             <div className="flex flex-col items-center space-y-4">
               <p className="text-sm font-semibold tracking-wider uppercase text-primary">
