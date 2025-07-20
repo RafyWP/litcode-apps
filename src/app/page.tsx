@@ -17,11 +17,9 @@ import {
   ArrowRight,
   BotMessageSquare,
   LogIn,
-  Users,
-  PieChart,
-  LifeBuoy,
   BadgeCheck,
   Server,
+  LifeBuoy,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -76,35 +74,32 @@ export default function HomePage() {
       <div className="w-full max-w-lg">
         <h2 className="text-2xl font-bold text-center mb-6 font-headline">Our Applications</h2>
         <Card className="hover:border-primary/80 transition-colors">
-          <CardHeader className="flex flex-row items-start gap-4 pb-4">
+          <CardHeader className="flex flex-row items-start gap-4">
             <div className="bg-primary/10 p-3 rounded-lg border">
               <BotMessageSquare className="h-8 w-8 text-primary" />
             </div>
-            <div>
-              <CardTitle className="font-headline mb-2">TikTok Video Anchor</CardTitle>
+            <div className="flex-1">
+              <CardTitle className="font-headline mb-1">TikTok Video Anchor</CardTitle>
               <CardDescription>
                 Anchor every item in your videos with clickable links that convert views into sales.
               </CardDescription>
+              <div className="mt-4 flex space-x-6 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1.5">
+                  <BadgeCheck className="h-3.5 w-3.5" />
+                  <span>1,200+ Pixels</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Server className="h-3.5 w-3.5" />
+                  <span>98% Uptime</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <LifeBuoy className="h-3.5 w-3.5" />
+                  <span>24/7 Support</span>
+                </div>
+              </div>
             </div>
           </CardHeader>
           <CardContent>
-            <div className="border-t pt-4 mb-4 grid grid-cols-3 gap-4 text-center">
-              <div className="flex flex-col items-center gap-1">
-                <BadgeCheck className="h-6 w-6 text-primary" />
-                <p className="text-sm font-semibold">1,200+</p>
-                <p className="text-xs text-muted-foreground">Pixels Created</p>
-              </div>
-              <div className="flex flex-col items-center gap-1">
-                <Server className="h-6 w-6 text-primary" />
-                <p className="text-sm font-semibold">98%</p>
-                <p className="text-xs text-muted-foreground">Uptime</p>
-              </div>
-              <div className="flex flex-col items-center gap-1">
-                <LifeBuoy className="h-6 w-6 text-primary" />
-                <p className="text-sm font-semibold">24/7</p>
-                <p className="text-xs text-muted-foreground">Support</p>
-              </div>
-            </div>
             <p className="text-sm text-muted-foreground mb-4">
               You must be logged in to your TikTok Business account to use this application.
             </p>
