@@ -210,9 +210,9 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
                 "context": {
                     "ad": { "callback": advertiserId },
                     "user": {
-                        "external_id": "c4ca4238a0b923820dcc509a6f75849b", // SHA256 of "1"
-                        "phone": "257b4f2b18a595c52402ba69130545931de61346f041e1713532a24534f31835", // SHA256 of "1112223333"
-                        "email": "123456405862e402eb76a70f8a26fc732d07c32931e9fae9ab1582911d2e8a3b", // SHA256 of test@example.com
+                        "external_id": "c4ca4238a0b923820dcc509a6f75849b",
+                        "phone": "257b4f2b18a595c52402ba69130545931de61346f041e1713532a24534f31835",
+                        "email": "123456405862e402eb76a70f8a26fc732d07c32931e9fae9ab1582911d2e8a3b",
                         "ip": "127.0.0.1",
                         "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
                         "locale": "en_US"
@@ -260,3 +260,5 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
         };
     }
 }
+
+    

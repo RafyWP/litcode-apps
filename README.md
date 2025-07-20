@@ -1,3 +1,4 @@
+
 # TikTok Pixel Generator
 
 A simple and efficient web application designed to help users create a TikTok Pixel for their advertising accounts. This tool is particularly useful for those who need a pixel ID for integration with Google Tag Manager (GTM) but do not have a standard e-commerce platform that would typically generate one automatically.
@@ -95,4 +96,5 @@ Open [http://localhost:9002](http://localhost:9002) in your browser to see the a
 5.  **Name Your Pixel**: Enter a descriptive name for your new pixel.
 6.  **Generate**: Click "Generate Pixel".
 7.  **Copy ID**: The new Pixel ID will be displayed. You can copy it and start the process over if needed.
-```
+
+    
