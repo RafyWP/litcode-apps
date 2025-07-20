@@ -51,7 +51,7 @@ export default function Header() {
             </span>
             <span className="h-4 w-px bg-border" aria-hidden="true" />
             <span className="font-semibold text-muted-foreground sm:inline-block">
-              TikTok
+              TikTok-integrated Web App Store
             </span>
           </Link>
         </div>
