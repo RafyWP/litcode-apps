@@ -16,13 +16,13 @@ import {
   ArrowRight,
   Anchor,
   LogIn,
-  Leaf,
   Link as LinkIcon,
   ShieldCheck,
   PlayCircle,
   Bot,
   TrendingUp,
   Users,
+  BellRing,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
@@ -121,7 +121,7 @@ export default function HomePage() {
                   </CardDescription>
                   <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground mt-2">
                     <div className="flex items-center gap-1.5">
-                      <Leaf className="h-3.5 w-3.5" />
+                      <BellRing className="h-3.5 w-3.5" />
                       <span>Conversion</span>
                     </div>
                     <div className="flex items-center gap-1.5">
