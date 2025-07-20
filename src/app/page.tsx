@@ -171,16 +171,19 @@ export default function HomePage() {
                 <ShieldCheck className="h-5 w-5 text-green-500" />
                 <span>30-day money-back guarantee</span>
               </div>
-              <div className="mt-6 grid grid-cols-2 items-center gap-4 text-sm text-muted-foreground w-full max-w-sm">
-                <span className="text-right font-semibold">First lesson for free</span>
-                <button
-                  onClick={() => setIsVideoOpen(true)}
-                  className="flex items-center justify-start group"
-                >
-                  <PlayCircle className="h-10 w-10 text-primary animate-pulse group-hover:text-primary/80 transition-colors" />
-                </button>
-              </div>
             </div>
+          </div>
+        </section>
+
+        <section className="container mx-auto px-4 md:px-6 pb-12">
+           <div className="grid grid-cols-2 items-center gap-4 text-muted-foreground w-full max-w-sm mx-auto">
+            <span className="text-right font-semibold text-lg">Primeira aula grátis</span>
+            <button
+              onClick={() => setIsVideoOpen(true)}
+              className="flex items-center justify-start group"
+            >
+              <PlayCircle className="h-16 w-16 text-primary animate-pulse group-hover:text-primary/80 transition-colors" />
+            </button>
           </div>
         </section>
 
