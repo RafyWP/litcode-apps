@@ -103,19 +103,17 @@ export default function HomePage() {
         <h2 className="text-3xl font-bold text-center mb-6 font-headline">Our Applications</h2>
         <Card className="hover:border-primary/80 transition-colors aspect-[9/16] flex flex-col">
           <div className="p-6 flex items-start gap-4">
-            {/* Coluna do Ícone */}
-            <div className="bg-primary/10 p-3 rounded-lg border shrink-0">
-              <Anchor className="h-8 w-8 text-primary" />
+            <div className="bg-primary/10 p-2 md:p-3 rounded-lg border shrink-0">
+              <Anchor className="h-6 w-6 md:h-8 md:w-8 text-primary" />
             </div>
-            {/* Coluna do Conteúdo */}
             <div className="flex flex-col">
-              <CardTitle className="font-headline text-xl font-bold tracking-tight text-left">
+              <CardTitle className="font-headline text-lg md:text-xl font-bold tracking-tight text-left">
                 TikTok Video Anchor
               </CardTitle>
-              <CardDescription className="mt-1 mb-3 text-left">
+              <CardDescription className="mt-1 mb-3 text-left hidden md:block">
                 Anchor every item in your videos with clickable links that convert views into sales.
               </CardDescription>
-              <div className="flex items-start gap-4 text-xs text-muted-foreground">
+              <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1.5">
                   <Leaf className="h-3.5 w-3.5" />
                   <span>Organic Growth</span>
