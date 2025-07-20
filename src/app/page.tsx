@@ -20,14 +20,17 @@ import {
   Leaf,
   Link as LinkIcon,
   ShieldCheck,
+  PlayCircle,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
+import { VideoPopup } from "@/components/video-popup";
 
 export default function HomePage() {
   const { toast } = useToast();
   const { accessToken, isLoading, login } = useAuth();
   const [authUrl, setAuthUrl] = useState("");
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
 
   useEffect(() => {
     const generateAuthUrl = () => {
@@ -135,44 +138,56 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground -mt-16">
-      <section className="w-full py-12 md:py-24 lg:py-32">
-        <div className="container mx-auto px-4 text-center md:px-6">
-          <div className="flex flex-col items-center space-y-4">
-            <p className="text-sm font-semibold tracking-wider uppercase text-primary">
-              Welcome to LitCode Store
-            </p>
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-              Learn How to Sell on TikTok
-            </h1>
-            <p className="max-w-prose text-lg text-muted-foreground">
-              Our suite of tools is designed to help you maximize your reach,
-              engagement, and conversions on TikTok, effortlessly. Start using our applications for free!
-            </p>
-            <div className="flex items-center justify-center pt-4 -space-x-4">
-              {Array.from({ length: 9 }).map((_, index) => (
-                <Image
-                  key={index}
-                  src={`https://placehold.co/48x48.png`}
-                  data-ai-hint="avatar"
-                  alt={`User ${index + 1}`}
-                  width={48}
-                  height={48}
-                  className="h-12 w-12 rounded-full border-2 border-background"
-                />
-              ))}
-            </div>
-            <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-              <ShieldCheck className="h-5 w-5 text-green-500" />
-              <span>30-day money-back guarantee</span>
+    <>
+      <VideoPopup open={isVideoOpen} onOpenChange={setIsVideoOpen} />
+      <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground -mt-16">
+        <section className="w-full py-12 md:py-24 lg:py-32">
+          <div className="container mx-auto px-4 text-center md:px-6">
+            <div className="flex flex-col items-center space-y-4">
+              <p className="text-sm font-semibold tracking-wider uppercase text-primary">
+                Welcome to LitCode Store
+              </p>
+              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+                Learn How to Sell on TikTok
+              </h1>
+              <p className="max-w-prose text-lg text-muted-foreground">
+                Our suite of tools is designed to help you maximize your reach,
+                engagement, and conversions on TikTok, effortlessly. Start using our applications for free!
+              </p>
+              <div className="flex items-center justify-center pt-4 -space-x-4">
+                {Array.from({ length: 9 }).map((_, index) => (
+                  <Image
+                    key={index}
+                    src={`https://placehold.co/48x48.png`}
+                    data-ai-hint="avatar"
+                    alt={`User ${index + 1}`}
+                    width={48}
+                    height={48}
+                    className="h-12 w-12 rounded-full border-2 border-background"
+                  />
+                ))}
+              </div>
+              <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                <ShieldCheck className="h-5 w-5 text-green-500" />
+                <span>30-day money-back guarantee</span>
+              </div>
+              <div className="mt-6 grid grid-cols-2 items-center gap-4 text-sm text-muted-foreground w-full max-w-sm">
+                <span className="text-right font-semibold">First lesson for free</span>
+                <button
+                  onClick={() => setIsVideoOpen(true)}
+                  className="flex items-center justify-start group"
+                >
+                  <PlayCircle className="h-10 w-10 text-primary animate-pulse group-hover:text-primary/80 transition-colors" />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <main className="flex items-center justify-center w-full max-w-lg pb-24">
-        {renderContent()}
-      </main>
-    </div>
+        <main className="flex items-center justify-center w-full max-w-lg pb-24">
+          {renderContent()}
+        </main>
+      </div>
+    </>
   );
 }

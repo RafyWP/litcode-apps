@@ -71,11 +71,16 @@ TIKTOK_SECRET="YOUR_TIKTOK_SECRET"
 # Used to build the authorization URL.
 NEXT_PUBLIC_TIKTOK_APP_ID="YOUR_TIKTOK_APP_ID"
 NEXT_PUBLIC_TIKTOK_REDIRECT_URI="http://localhost:9002/tiktok-video-anchor"
+
+# URL for the embedded YouTube video on the homepage.
+# Must be an "embed" URL, e.g., https://www.youtube.com/embed/VIDEO_ID
+NEXT_PUBLIC_YOUTUBE_VIDEO_URL="https://www.youtube.com/embed/dQw4w9WgXcQ"
 ```
 
 **Note**:
 - Replace `"YOUR_TIKTOK_APP_ID"` and `"YOUR_TIKTOK_SECRET"` with your actual credentials.
 - The `NEXT_PUBLIC_TIKTOK_REDIRECT_URI` must exactly match the URI you configured in the TikTok Developer Portal.
+- Replace the `NEXT_PUBLIC_YOUTUBE_VIDEO_URL` with your own YouTube embed URL.
 
 ### 5. Run the Development Server
 
@@ -97,4 +102,3 @@ Open [http://localhost:9002](http://localhost:9002) in your browser to see the a
 6.  **Generate**: Click "Generate Pixel".
 7.  **Copy ID**: The new Pixel ID will be displayed. You can copy it and start the process over if needed.
 
-```
