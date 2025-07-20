@@ -147,7 +147,7 @@ export default function HomePage() {
               <p className="text-sm font-semibold tracking-wider uppercase text-primary">
                 Welcome to LitCode Store
               </p>
-              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+              <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight lg:text-6xl">
                 Learn How to Sell on TikTok
               </h1>
               <p className="max-w-prose text-lg text-muted-foreground">
@@ -163,7 +163,7 @@ export default function HomePage() {
                     alt={`User ${index + 1}`}
                     width={48}
                     height={48}
-                    className="h-12 w-12 rounded-full border-2 border-background"
+                    className="h-10 w-10 sm:h-12 sm:w-12 rounded-full border-2 border-background"
                   />
                 ))}
               </div>
@@ -183,7 +183,7 @@ export default function HomePage() {
               aria-label="Play First Lesson Free Video"
             >
               <svg
-                className="w-48 h-48"
+                className="w-40 h-40 md:w-48 md:h-48"
                 viewBox="0 0 200 200"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -232,7 +232,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <main className="flex items-center justify-center w-full max-w-lg pb-24">
+        <main className="flex items-center justify-center w-full max-w-lg pb-24 px-4">
           {renderContent()}
         </main>
       </div>
