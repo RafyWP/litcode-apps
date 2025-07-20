@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -101,8 +100,8 @@ export default function HomePage() {
     return (
       <div className="w-full max-w-lg">
         <h2 className="text-3xl font-bold text-center mb-6 font-headline">Our Applications</h2>
-        <Card className="hover:border-primary/80 transition-colors aspect-[9/16] flex flex-col">
-          <div className="p-4 md:p-6 flex items-start gap-4">
+        <Card className="hover:border-primary/80 transition-colors aspect-[9/16] flex flex-col p-4 md:p-6">
+          <div className="flex items-start gap-4">
             <div className="bg-primary/10 p-2 rounded-lg border shrink-0">
               <Anchor className="h-6 w-6 md:h-8 md:w-8 text-primary" />
             </div>
@@ -125,7 +124,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <CardFooter className="mt-auto p-4 md:p-6">
+          <CardFooter className="mt-auto p-0 pt-4 md:pt-6">
             <Button className="w-full" asChild>
               <a href={authUrl}>
                 <LogIn className="mr-2" />
@@ -151,7 +150,7 @@ export default function HomePage() {
               <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
                 How to Sell on TikTok
               </h1>
-              <p className="max-w-prose text-lg text-muted-foreground">
+              <p className="max-w-prose text-base md:text-lg text-muted-foreground">
                 Our suite of tools is designed to help you maximize your reach,
                 engagement, and conversions on TikTok, effortlessly. Start using our applications for free!
               </p>
