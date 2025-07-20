@@ -154,7 +154,7 @@ export default function HomePage() {
                     CopyTok
                   </CardTitle>
                   <CardDescription className="md:mt-1 text-left truncate md:overflow-visible md:whitespace-normal">
-                    Legendas virais para TikTok.
+                    Viral captions for TikTok.
                   </CardDescription>
                   <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground mt-2">
                     <div className="flex items-center gap-1.5">
@@ -171,7 +171,7 @@ export default function HomePage() {
               <CardFooter className="mt-auto p-0 pt-4">
                 <Button variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground" asChild>
                   <a href="https://copytok.b2bear.com" target="_blank" rel="noopener noreferrer">
-                    Gerar Legendas para o TikTok
+                    Generate TikTok Captions
                   </a>
                 </Button>
               </CardFooter>
