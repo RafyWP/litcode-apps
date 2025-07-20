@@ -30,7 +30,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { createPixel, getAdvertisers, trackEvent } from "@/app/actions";
 import {
-  BotMessageSquare,
+  Anchor,
   CheckCircle,
   Copy,
   Loader2,
@@ -66,7 +66,7 @@ export default function TikTokVideoAnchorPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       advertiserId: "",
-      pixelName: "",
+      pixelName: "LitCode TikTok",
     },
   });
 
@@ -183,7 +183,7 @@ export default function TikTokVideoAnchorPage() {
       <div className="w-full max-w-lg mx-auto flex-grow flex flex-col justify-center">
         <header className="text-center mb-10">
           <div className="inline-flex items-center justify-center bg-primary text-primary-foreground p-3 rounded-full mb-4 shadow-lg shadow-primary/30">
-            <BotMessageSquare className="h-10 w-10" />
+            <Anchor className="h-10 w-10" />
           </div>
           <h1 className="font-headline text-4xl sm:text-5xl font-bold text-card-foreground">
             TikTok Video Anchor

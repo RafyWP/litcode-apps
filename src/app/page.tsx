@@ -15,7 +15,7 @@ import {
 import {
   Loader2,
   ArrowRight,
-  BotMessageSquare,
+  Anchor,
   LogIn,
   BadgeCheck,
   Server,
@@ -76,7 +76,7 @@ export default function HomePage() {
         <Card className="hover:border-primary/80 transition-colors">
           <CardHeader className="flex flex-row items-start gap-4">
             <div className="bg-primary/10 p-3 rounded-lg border">
-              <BotMessageSquare className="h-8 w-8 text-primary" />
+              <Anchor className="h-8 w-8 text-primary" />
             </div>
             <div className="flex-1">
               <CardTitle className="font-headline mb-1">TikTok Video Anchor</CardTitle>
