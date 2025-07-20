@@ -127,7 +127,7 @@ export default function HomePage() {
             <Button className="w-full" asChild>
               <a href={authUrl}>
                 <LogIn className="mr-2" />
-                Login with TikTok Business
+                Login with TikTok
               </a>
             </Button>
           </CardContent>
@@ -207,9 +207,9 @@ export default function HomePage() {
                     id="circlePath"
                     d="
                       M 100, 100
-                      m -70, 0
-                      a 70,70 0 1,1 140,0
-                      a 70,70 0 1,1 -140,0
+                      m -75, 0
+                      a 75,75 0 1,1 150,0
+                      a 75,75 0 1,1 -150,0
                     "
                     fill="none"
                   />
