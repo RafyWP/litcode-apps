@@ -15,16 +15,6 @@ export default function Home() {
   const [advertiserId, setAdvertiserId] = useState<string | null>(null);
   const [eventSent, setEventSent] = useState(false);
 
-  const handleReset = () => {
-    localStorage.removeItem("tiktok_access_token");
-    setAccessToken(null);
-    setPixelId(null);
-    setPixelCode(null);
-    setAdvertiserId(null);
-    setEventSent(false);
-    window.history.replaceState(null, "", window.location.pathname);
-  };
-
   useEffect(() => {
     const storedToken = localStorage.getItem("tiktok_access_token");
     if (storedToken) {
@@ -40,6 +30,20 @@ export default function Home() {
       }
     }
   }, []);
+
+  const handleReset = () => {
+    localStorage.removeItem("tiktok_access_token");
+    setAccessToken(null);
+    setPixelId(null);
+    setPixelCode(null);
+    setAdvertiserId(null);
+    setEventSent(false);
+    
+    const url = new URL(window.location.href);
+    url.searchParams.delete('auth_code');
+    window.history.replaceState(null, "", url.toString());
+  };
+
 
   const renderStep = () => {
     if (eventSent) {

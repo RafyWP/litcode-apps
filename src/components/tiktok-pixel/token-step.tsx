@@ -34,7 +34,10 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
 
       if (result.success && result.data.access_token) {
         const { access_token, expires_in } = result.data;
-        const expiresAt = new Date().getTime() + expires_in * 1000;
+        
+        // TikTok expires_in is in seconds, usually 86400 (24 hours).
+        const expiresInMs = expires_in * 1000;
+        const expiresAt = new Date().getTime() + expiresInMs;
         
         try {
             localStorage.setItem("tiktok_access_token", JSON.stringify({ token: access_token, expiresAt }));
@@ -48,7 +51,11 @@ export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
           description: "You can now create your pixel.",
           className: "bg-green-600 text-white"
         });
-        window.history.replaceState(null, "", window.location.pathname);
+        
+        const url = new URL(window.location.href);
+        url.searchParams.delete('auth_code');
+        window.history.replaceState(null, "", url.toString());
+
       } else {
         setError(result.error || "Failed to get access token.");
         toast({
