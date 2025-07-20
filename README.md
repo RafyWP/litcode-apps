@@ -38,7 +38,7 @@ Before running the project, you need to configure your application in the TikTok
 1.  Go to **My Apps** and select your application.
 2.  **Set the Redirect URI**: In your app's settings, find the "Redirect URI" field. 
     - For **local development**, set it to `http://localhost:9002/tiktok-video-anchor`.
-    - For **production**, set it to your Firebase App Hosting URL (e.g., `https://<your-app-name>.firebaseapp.com/tiktok-video-anchor`).
+    - For **production on Netlify**, set it to your Netlify site URL (e.g., `https://<your-site-name>.netlify.app/tiktok-video-anchor`).
 3.  **Enable Permissions (Scopes)**: Go to the "Permissions" section and ensure the following scopes are enabled:
     *   `bc.read` (Ad Account Management)
     *   `cm.manage` (Pixel Management)
@@ -74,7 +74,7 @@ TIKTOK_SECRET="YOUR_TIKTOK_SECRET"
 NEXT_PUBLIC_TIKTOK_APP_ID="YOUR_TIKTOK_APP_ID"
 
 # Use http://localhost:9002/tiktok-video-anchor for local development.
-# For production, use your live Firebase URL.
+# For production, use your live Netlify URL.
 NEXT_PUBLIC_TIKTOK_REDIRECT_URI="http://localhost:9002/tiktok-video-anchor"
 
 # URL for the embedded YouTube video on the homepage.
@@ -85,7 +85,7 @@ NEXT_PUBLIC_YOUTUBE_VIDEO_URL="https://www.youtube.com/embed/dQw4w9WgXcQ"
 **Note**:
 - Replace `"YOUR_TIKTOK_APP_ID"` and `"YOUR_TIKTOK_SECRET"` with your actual credentials.
 - The `NEXT_PUBLIC_TIKTOK_REDIRECT_URI` must exactly match the URI you configured in the TikTok Developer Portal for the respective environment (local or production).
-- When deploying to Firebase App Hosting, you must set these environment variables in the Firebase console, not in the `.env.local` file.
+- When deploying to Netlify, you must set these environment variables in the Netlify dashboard under "Site settings" > "Build & deploy" > "Environment", not in the `.env.local` file.
 
 ### 5. Run the Development Server
 
