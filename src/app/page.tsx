@@ -17,7 +17,7 @@ import {
   ArrowRight,
   Anchor,
   LogIn,
-  Award,
+  Gift,
   Leaf,
   Link as LinkIcon,
 } from "lucide-react";
@@ -110,7 +110,7 @@ export default function HomePage() {
               </CardDescription>
               <div className="mt-4 flex space-x-6 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1.5">
-                  <Award className="h-3.5 w-3.5" />
+                  <Gift className="h-3.5 w-3.5" />
                   <span>Free App</span>
                 </div>
                 <div className="flex items-center gap-1.5">
