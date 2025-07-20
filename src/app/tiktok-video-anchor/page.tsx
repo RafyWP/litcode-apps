@@ -2,11 +2,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { TokenStep } from "@/components/tiktok-pixel/token-step";
+import { useRouter } from "next/navigation";
 import { PixelStep } from "@/components/tiktok-pixel/pixel-step";
 import { EventStep } from "@/components/tiktok-pixel/event-step";
 import { BotMessageSquare, CheckCircle, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function TikTokVideoAnchorPage() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -14,6 +15,8 @@ export default function TikTokVideoAnchorPage() {
   const [pixelCode, setPixelCode] = useState<string | null>(null);
   const [advertiserId, setAdvertiserId] = useState<string | null>(null);
   const [eventSent, setEventSent] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const storedToken = localStorage.getItem("tiktok_access_token");
@@ -24,12 +27,17 @@ export default function TikTokVideoAnchorPage() {
           setAccessToken(token);
         } else {
           localStorage.removeItem("tiktok_access_token");
+          router.replace("/");
         }
       } catch (e) {
         localStorage.removeItem("tiktok_access_token");
+        router.replace("/");
       }
+    } else {
+      router.replace("/");
     }
-  }, []);
+    setIsLoading(false);
+  }, [router]);
 
   const handleReset = () => {
     localStorage.removeItem("tiktok_access_token");
@@ -38,12 +46,20 @@ export default function TikTokVideoAnchorPage() {
     setPixelCode(null);
     setAdvertiserId(null);
     setEventSent(false);
-
-    const url = new URL(window.location.href);
-    url.searchParams.delete("auth_code");
-    url.searchParams.delete("error");
-    window.history.replaceState(null, "", url.toString());
+    router.push("/");
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="w-full max-w-lg space-y-4">
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-40 w-full" />
+          <Skeleton className="h-40 w-full" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4 font-body">
@@ -56,15 +72,12 @@ export default function TikTokVideoAnchorPage() {
             TikTok Video Anchor
           </h1>
           <p className="text-muted-foreground mt-3 text-lg max-w-sm mx-auto">
-            Create your pixel, test events, and integrate with GTM without an e-commerce platform.
+            Create your pixel, test events, and integrate with GTM without an
+            e-commerce platform.
           </p>
         </header>
 
         <main className="space-y-6">
-          <TokenStep
-            onTokenReceived={setAccessToken}
-            accessToken={accessToken}
-          />
           {accessToken && (
             <PixelStep
               accessToken={accessToken}
