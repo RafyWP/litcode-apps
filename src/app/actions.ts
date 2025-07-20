@@ -85,6 +85,7 @@ export async function getAdvertisers(
     const urlParams = new URLSearchParams({
       app_id: appId,
       secret: secret,
+      fields: '["advertiser_id", "advertiser_name"]',
     });
 
     const response = await fetch(

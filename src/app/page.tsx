@@ -30,6 +30,7 @@ export default function Home() {
     setAdvertiserId(null);
     setEventSent(false);
     setDebugLogs([]);
+    window.history.replaceState(null, "", window.location.pathname);
     addDebugLog("System Reset", "Application state and local storage cleared.");
   };
 
@@ -87,7 +88,6 @@ export default function Home() {
         <EventStep
           accessToken={accessToken}
           pixelId={pixelId}
-          advertiserId={advertiserId}
           onEventSent={() => setEventSent(true)}
           addDebugLog={addDebugLog}
         />
