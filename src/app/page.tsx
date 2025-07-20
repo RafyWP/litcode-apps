@@ -207,9 +207,9 @@ export default function HomePage() {
                     id="circlePath"
                     d="
                       M 100, 100
-                      m -64, 0
-                      a 64,64 0 1,1 128,0
-                      a 64,64 0 1,1 -128,0
+                      m -70, 0
+                      a 70,70 0 1,1 140,0
+                      a 70,70 0 1,1 -140,0
                     "
                     fill="none"
                   />
