@@ -9,6 +9,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -18,6 +19,8 @@ import {
   LogIn,
   PlayCircle,
   ShieldCheck,
+  Briefcase,
+  ChevronRight,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
@@ -86,28 +89,27 @@ export default function HomePage() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4 -mt-16">
         <Card className="w-full max-w-md text-center">
-            <CardHeader>
-                <CardTitle>Welcome Back!</CardTitle>
-                <CardDescription>You are already logged in.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <Button asChild size="lg" className="w-full">
-                    <Link href="/tiktok-video-anchor">
-                        Go to TikTok Video Anchor
-                        <ArrowRight className="ml-2" />
-                    </Link>
-                </Button>
-            </CardContent>
+          <CardHeader>
+            <CardTitle>Welcome Back!</CardTitle>
+            <CardDescription>You are already logged in.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild size="lg" className="w-full">
+              <Link href="/tiktok-video-anchor">
+                Go to TikTok Video Anchor
+                <ArrowRight className="ml-2" />
+              </Link>
+            </Button>
+          </CardContent>
         </Card>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col justify-center -mt-16">
-      <main className="container mx-auto px-4 py-16 sm:py-24">
+    <div className="min-h-screen bg-background text-foreground">
+      <main className="container mx-auto px-4 pt-16 sm:pt-24 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          
           <div className="text-center lg:text-left">
             <p className="text-sm font-semibold uppercase tracking-wider text-primary">
               Unlock Your Video's Potential
@@ -116,18 +118,19 @@ export default function HomePage() {
               Turn TikTok Views into Sales Instantly
             </h1>
             <p className="mt-6 text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0">
-              Anchor every item in your videos with clickable links that convert. No complex setups, just direct results.
+              Anchor every item in your videos with clickable links that
+              convert. No complex setups, just direct results.
             </p>
-            
+
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
               <Button size="lg" className="w-full sm:w-auto" asChild>
                 <a href={authUrl}>
                   <LogIn className="mr-2" />
-                  Login with TikTok Business
+                  Get Started Now
                 </a>
               </Button>
             </div>
-            
+
             <p className="mt-4 text-sm text-muted-foreground">
               No credit card required.
             </p>
@@ -151,9 +154,42 @@ export default function HomePage() {
               <PlayCircle className="h-20 w-20 text-white/80" />
             </div>
           </div>
-
         </div>
       </main>
+
+      <section className="py-16 sm:py-24 bg-secondary">
+        <div className="container mx-auto px-4">
+          <Card className="w-full max-w-md mx-auto">
+            <CardHeader>
+              <h2 className="text-3xl font-bold text-center">
+                Our Applications
+              </h2>
+              <CardDescription className="text-center">
+                Select an application to get started.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <Link href={authUrl} passHref>
+                  <div className="flex items-center space-x-4 rounded-md border p-4 transition-all hover:shadow-md cursor-pointer bg-card">
+                    <div className="flex-shrink-0">
+                      <Briefcase className="h-8 w-8 text-primary" />
+                    </div>
+                    <div className="flex-1 space-y-1">
+                      <h3 className="text-lg font-bold">TikTok Business</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Create your TikTok pixel for GTM, no e-commerce
+                        required.
+                      </p>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
     </div>
   );
 }
