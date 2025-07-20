@@ -5,37 +5,11 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import { LogIn, LogOut } from "lucide-react";
-import { Button } from "../ui/button";
+import { LogOut } from "lucide-react";
 
 export default function Header() {
   const { accessToken, logout } = useAuth();
   const router = useRouter();
-  const [authUrl, setAuthUrl] = useState("");
-
-  useEffect(() => {
-    const generateAuthUrl = () => {
-      const baseUrl = "https://business-api.tiktok.com/portal/auth";
-      const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
-      const redirectUri = process.env.NEXT_PUBLIC_TIKTOK_REDIRECT_URI;
-      const state = crypto.randomUUID();
-
-      if (!appId || !redirectUri) {
-        console.error("Client-side TikTok credentials are not configured.");
-        return;
-      }
-
-      const params = new URLSearchParams({
-        app_id: appId,
-        state: state,
-        redirect_uri: redirectUri,
-        scope: "bc.read,cm.manage",
-      });
-      setAuthUrl(`${baseUrl}?${params.toString()}`);
-    };
-
-    generateAuthUrl();
-  }, []);
 
   const handleLogout = () => {
     logout();
@@ -47,11 +21,11 @@ export default function Header() {
       <div className="container flex h-14 items-center justify-between px-4 md:px-8">
         <div className="flex items-center">
           <Link href="/" className="mr-6 flex items-center space-x-3">
-            <span className="font-bold sm:inline-block">
+            <span className="font-bold sm:inline-block leading-none">
               LitCode Store
             </span>
             <span className="h-4 w-px self-center bg-border" aria-hidden="true" />
-            <span className="font-semibold text-muted-foreground sm:inline-block">
+            <span className="font-semibold text-muted-foreground sm:inline-block leading-none">
               TikTok-integrated Web App Store
             </span>
           </Link>
