@@ -189,7 +189,7 @@ export default function TikTokVideoAnchorPage() {
             TikTok Video Anchor
           </h1>
           <p className="text-muted-foreground mt-3 text-lg max-w-sm mx-auto">
-            Create your pixel and test events for GTM integration.
+            Anchor every item in your videos with clickable links that convert views into sales.
           </p>
         </header>
 

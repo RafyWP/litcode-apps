@@ -78,7 +78,7 @@ export default function HomePage() {
             <div>
               <CardTitle>TikTok Video Anchor</CardTitle>
               <CardDescription>
-                Create your pixel and test events for GTM integration.
+                Anchor every item in your videos with clickable links that convert views into sales.
               </CardDescription>
             </div>
           </CardHeader>
