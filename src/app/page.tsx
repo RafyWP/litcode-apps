@@ -6,8 +6,17 @@ import Link from "next/link";
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
   Loader2,
   ArrowRight,
+  BotMessageSquare,
+  LogIn,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -59,10 +68,30 @@ export default function HomePage() {
     }
 
     return (
-      <div className="text-center">
-        <p className="text-muted-foreground">
-          You must be logged in your TikTok Business account to access the applications.
-        </p>
+      <div className="w-full max-w-lg">
+        <h2 className="text-2xl font-bold text-center mb-6">Our Applications</h2>
+        <Card className="hover:border-primary/80 transition-colors">
+          <CardHeader className="flex flex-row items-center gap-4">
+            <div className="bg-primary/10 p-3 rounded-lg border">
+              <BotMessageSquare className="h-6 w-6 text-primary" />
+            </div>
+            <div>
+              <CardTitle>TikTok Video Anchor</CardTitle>
+              <CardDescription>
+                Create your pixel and test events for GTM integration.
+              </CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground mb-4">
+              You must be logged in to your TikTok Business account to use this application.
+            </p>
+            <Button className="w-full" disabled>
+              <LogIn className="mr-2" />
+              Please login via the header to continue
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   };
