@@ -141,7 +141,7 @@ export default function HomePage() {
     <>
       <VideoPopup open={isVideoOpen} onOpenChange={setIsVideoOpen} />
       <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground -mt-16">
-        <section className="w-full py-12 md:py-24 lg:py-32">
+        <section className="w-full py-12 md:py-24">
           <div className="container mx-auto px-4 text-center md:px-6">
             <div className="flex flex-col items-center space-y-4">
               <p className="text-sm font-semibold tracking-wider uppercase text-primary">
@@ -175,7 +175,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="container mx-auto px-4 md:px-6 pb-12">
+        <section className="container mx-auto px-4 md:px-6 pb-12 md:pb-24">
            <div className="grid grid-cols-2 items-center gap-4 text-muted-foreground w-full max-w-sm mx-auto">
             <span className="text-right font-semibold text-lg">Primeira aula grátis</span>
             <button
