@@ -102,7 +102,7 @@ export default function HomePage() {
       <div className="w-full max-w-lg">
         <h2 className="text-3xl font-bold text-center mb-6 font-headline">Our Applications</h2>
         <Card className="hover:border-primary/80 transition-colors aspect-[9/16] flex flex-col p-4 md:p-6 relative overflow-hidden">
-          <div className="absolute inset-0 z-0 opacity-[0.03] [mask-image:radial-gradient(circle_at_center,white,transparent_80%)]">
+          <div className="absolute inset-0 z-0 opacity-[0.05]">
             <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <style>
