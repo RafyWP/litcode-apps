@@ -8,8 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Loader2,
   ArrowRight,
-  AlertTriangle,
-  ExternalLink,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -63,7 +61,7 @@ export default function HomePage() {
     return (
       <div className="text-center">
         <p className="text-muted-foreground">
-          You must be logged in to access the applications.
+          You must be logged in your TikTok Business account to access the applications.
         </p>
       </div>
     );
