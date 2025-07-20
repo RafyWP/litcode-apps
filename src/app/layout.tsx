@@ -2,15 +2,9 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
-import { Inter, Sofia_Sans } from 'next/font/google';
+import { Sofia_Sans } from 'next/font/google';
 import { AuthProvider } from '@/contexts/auth-context';
 import Header from '@/components/layout/header';
-
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-});
 
 const sofiaSans = Sofia_Sans({
   subsets: ['latin'],
@@ -29,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${sofiaSans.variable} dark`} suppressHydrationWarning>
+    <html lang="en" className={`${sofiaSans.variable} dark`} suppressHydrationWarning>
       <head>
       </head>
       <body className="font-body antialiased">
