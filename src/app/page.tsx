@@ -20,6 +20,9 @@ import {
   Link as LinkIcon,
   ShieldCheck,
   PlayCircle,
+  Quote,
+  TrendingUp,
+  Users,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
@@ -99,110 +102,157 @@ export default function HomePage() {
     }
 
     return (
-      <div className="w-full max-w-lg">
+      <div className="w-full max-w-4xl">
         <h2 className="text-3xl font-bold text-center mb-6 font-headline">Our Applications</h2>
-        <Card className="hover:border-primary/80 transition-colors aspect-square flex flex-col p-4 md:p-6 relative overflow-hidden">
-          <div className="absolute inset-0 z-0 opacity-[0.05]">
-            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <style>
-                  {`
-                    @keyframes click-animation {
-                      0%, 25% {
-                        transform: translate(25px, 90px);
-                        opacity: 1;
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* TikTok Video Anchor Card */}
+          <Card className="hover:border-primary/80 transition-colors aspect-square flex flex-col p-4 relative overflow-hidden">
+            <div className="absolute inset-0 z-0 opacity-[0.05]">
+              <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <style>
+                    {`
+                      @keyframes click-animation {
+                        0%, 25% {
+                          transform: translate(25px, 90px);
+                          opacity: 1;
+                        }
+                        35% {
+                          transform: translate(90px, 35px);
+                          opacity: 1;
+                        }
+                        40% {
+                          transform: translate(90px, 35px);
+                          opacity: 1;
+                        }
+                        45% {
+                          transform: translate(90px, 35px);
+                          opacity: 1;
+                        }
+                        50%, 100% {
+                          transform: translate(90px, 35px);
+                          opacity: 1;
+                        }
                       }
-                      35% {
-                        transform: translate(90px, 35px);
-                        opacity: 1;
+                      @keyframes click-effect {
+                        0%, 40% {
+                          opacity: 0;
+                          transform: scale(0.5);
+                        }
+                        45% {
+                          opacity: 1;
+                          transform: scale(1);
+                        }
+                        50%, 100% {
+                          opacity: 0;
+                          transform: scale(1.2);
+                        }
                       }
-                      40% {
-                        transform: translate(90px, 35px);
-                        opacity: 1;
+                      .cursor {
+                        animation: click-animation 5s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
+                        fill: currentColor;
                       }
-                      45% {
-                        transform: translate(90px, 35px);
-                        opacity: 1;
+                      .click-circle {
+                        animation: click-effect 5s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
+                        fill: currentColor;
+                        transform-origin: center;
                       }
-                      50%, 100% {
-                        transform: translate(90px, 35px);
-                        opacity: 1;
+                      .link-icon {
+                        stroke: currentColor;
                       }
-                    }
-                    @keyframes click-effect {
-                      0%, 40% {
-                        opacity: 0;
-                        transform: scale(0.5);
-                      }
-                      45% {
-                        opacity: 1;
-                        transform: scale(1);
-                      }
-                      50%, 100% {
-                        opacity: 0;
-                        transform: scale(1.2);
-                      }
-                    }
-                    .cursor {
-                      animation: click-animation 5s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
-                      fill: currentColor;
-                    }
-                    .click-circle {
-                      animation: click-effect 5s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
-                      fill: currentColor;
-                      transform-origin: center;
-                    }
-                    .link-icon {
-                      stroke: currentColor;
-                    }
-                  `}
-                </style>
-              </defs>
-              <g className="text-foreground">
-                <path className="link-icon" d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" transform="translate(80, 25) scale(1.2)"/>
-                <path className="link-icon" d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" transform="translate(80, 25) scale(1.2)"/>
-                
-                <circle className="click-circle" cx="98" cy="33" r="10" />
-
-                <path className="cursor" d="M15.33 16.25l-4.1-1.32.79-3.44 3.31 4.76z" />
-                <path className="cursor" d="M11.23 14.93l-3.23-3.23 4.54-1.2 2.15 4.59-3.46-.16z"/>
-              </g>
-            </svg>
-          </div>
-          <div className="relative z-10 flex flex-col h-full">
-            <div className="flex items-start gap-4">
-              <div className="bg-primary/10 p-2 rounded-lg border shrink-0">
-                <Anchor className="h-6 w-6 md:h-8 md:w-8 text-primary" />
-              </div>
-              <div className="flex flex-col overflow-hidden">
-                <CardTitle className="font-headline text-base md:text-xl font-bold tracking-tight text-left">
-                  TikTok Video Anchor
-                </CardTitle>
-                <CardDescription className="md:mt-1 text-left truncate md:overflow-visible md:whitespace-normal">
-                  Anchor every item in your videos with clickable links that convert views into sales.
-                </CardDescription>
-                <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground mt-2">
-                  <div className="flex items-center gap-1.5">
-                    <Leaf className="h-3.5 w-3.5" />
-                    <span>Organic Growth</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <LinkIcon className="h-3.5 w-3.5" />
-                    <span>1,200+ Links Gen.</span>
+                    `}
+                  </style>
+                </defs>
+                <g className="text-foreground">
+                  <path className="link-icon" d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" transform="translate(80, 25) scale(1.2)"/>
+                  <path className="link-icon" d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" transform="translate(80, 25) scale(1.2)"/>
+                  <circle className="click-circle" cx="98" cy="33" r="10" />
+                  <path className="cursor" d="M15.33 16.25l-4.1-1.32.79-3.44 3.31 4.76z" />
+                  <path className="cursor" d="M11.23 14.93l-3.23-3.23 4.54-1.2 2.15 4.59-3.46-.16z"/>
+                </g>
+              </svg>
+            </div>
+            <div className="relative z-10 flex flex-col h-full">
+              <div className="flex items-start gap-4">
+                <div className="bg-primary/10 p-2 rounded-lg border shrink-0">
+                  <Anchor className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+                </div>
+                <div className="flex flex-col overflow-hidden">
+                  <CardTitle className="font-headline text-base md:text-xl font-bold tracking-tight text-left">
+                    TikTok Video Anchor
+                  </CardTitle>
+                  <CardDescription className="md:mt-1 text-left truncate md:overflow-visible md:whitespace-normal">
+                    Anchor every item in your videos with clickable links that convert views into sales.
+                  </CardDescription>
+                  <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground mt-2">
+                    <div className="flex items-center gap-1.5">
+                      <Leaf className="h-3.5 w-3.5" />
+                      <span>Organic Growth</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <LinkIcon className="h-3.5 w-3.5" />
+                      <span>1,200+ Links Gen.</span>
+                    </div>
                   </div>
                 </div>
               </div>
+              <CardFooter className="mt-auto p-0 pt-4">
+                <Button className="w-full" asChild>
+                  <a href={authUrl}>
+                    <LogIn className="mr-2" />
+                    Login with TikTok Business
+                  </a>
+                </Button>
+              </CardFooter>
             </div>
-            <CardFooter className="mt-auto p-0 pt-4 md:pt-6">
-              <Button className="w-full" asChild>
-                <a href={authUrl}>
-                  <LogIn className="mr-2" />
-                  Login with TikTok Business
-                </a>
-              </Button>
-            </CardFooter>
-          </div>
-        </Card>
+          </Card>
+          
+          {/* CopyTok Card */}
+          <Card className="hover:border-accent/80 transition-colors aspect-square flex flex-col p-4 relative overflow-hidden">
+             <div className="absolute inset-0 z-0 opacity-[0.05]">
+              <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                <g transform="translate(100 100)" className="text-foreground">
+                  <path d="M 40 -40 C 60 -40 60 -20 60 0 C 60 20 60 40 40 40 L -40 40 C -60 40 -60 20 -60 0 C -60 -20 -60 -40 -40 -40 Z" fill="none" stroke="currentColor" strokeWidth="3"></path>
+                  <text textAnchor="middle" dy="0.35em" fill="currentColor" className="font-sans text-4xl font-bold">
+                    <tspan>#</tspan>
+                  </text>
+                </g>
+              </svg>
+            </div>
+            <div className="relative z-10 flex flex-col h-full">
+              <div className="flex items-start gap-4">
+                <div className="bg-accent/10 p-2 rounded-lg border shrink-0">
+                  <Quote className="h-6 w-6 md:h-8 md:w-8 text-accent" />
+                </div>
+                <div className="flex flex-col overflow-hidden">
+                  <CardTitle className="font-headline text-base md:text-xl font-bold tracking-tight text-left">
+                    CopyTok
+                  </CardTitle>
+                  <CardDescription className="md:mt-1 text-left truncate md:overflow-visible md:whitespace-normal">
+                    Legendas virais para TikTok.
+                  </CardDescription>
+                  <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground mt-2">
+                    <div className="flex items-center gap-1.5">
+                      <TrendingUp className="h-3.5 w-3.5" />
+                      <span>Viral Growth</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Users className="h-3.5 w-3.5" />
+                      <span>15k+ Captions Gen.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <CardFooter className="mt-auto p-0 pt-4">
+                <Button variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground" asChild>
+                  <a href="https://copytok.b2bear.com" target="_blank" rel="noopener noreferrer">
+                    Gerar Legendas para o TikTok
+                  </a>
+                </Button>
+              </CardFooter>
+            </div>
+          </Card>
+        </div>
       </div>
     );
   };
@@ -302,7 +352,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <main className="flex items-center justify-center w-full max-w-lg pb-24 px-4">
+        <main className="flex items-center justify-center w-full pb-24 px-4">
           {renderContent()}
         </main>
       </div>
