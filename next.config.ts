@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/auth/advertiser/callback',
-        destination: '/apps/tiktok-video-anchor',
+        destination: '/tiktok-video-anchor',
         permanent: true,
       },
     ]

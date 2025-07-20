@@ -14,7 +14,7 @@ export default function Home() {
           Your one-stop shop for powerful application tools.
         </p>
         <Button asChild size="lg">
-          <Link href="/apps/tiktok-video-anchor">
+          <Link href="/tiktok-video-anchor">
             Go to TikTok Video Anchor
             <ArrowRight className="ml-2" />
           </Link>
