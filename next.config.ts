@@ -1,3 +1,4 @@
+
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
@@ -6,7 +7,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/auth/advertiser/callback',
-        destination: '/',
+        destination: '/apps/tiktok-video-anchor',
         permanent: true,
       },
     ]
