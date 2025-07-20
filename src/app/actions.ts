@@ -178,6 +178,9 @@ const trackEventSchema = z.object({
   contentId: z.string(),
   contentName: z.string(),
   userAgent: z.string(),
+  externalId: z.string().optional(),
+  email: z.string().optional(),
+  phone: z.string().optional(),
 });
 
 export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
@@ -193,6 +196,9 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
       contentId,
       contentName,
       userAgent,
+      externalId,
+      email,
+      phone,
     } = validatedParams;
 
     // Using a timestamp in seconds
@@ -200,6 +206,11 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
     const eventId = `${event.toLowerCase()}_${eventTime}_${Math.random()
       .toString(36)
       .substring(2, 9)}`;
+
+    const userPayload: { [key: string]: string } = {};
+    if (externalId) userPayload.external_id = externalId;
+    if (email) userPayload.email = email;
+    if (phone) userPayload.phone = phone;
 
     const response = await fetch(
       "https://business-api.tiktok.com/open_api/v1.3/pixel/track/",
@@ -217,6 +228,7 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
           context: {
             ad: { callback: advertiserId },
             user: {
+              ...userPayload,
               user_agent: userAgent,
             },
             properties: {

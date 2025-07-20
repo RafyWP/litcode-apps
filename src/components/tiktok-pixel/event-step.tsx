@@ -34,6 +34,9 @@ const formSchema = z.object({
   currency: z.string().min(3, "Currency code is required.").max(3),
   contentId: z.string().min(1, "Content ID is required."),
   contentName: z.string().min(1, "Content Name is required."),
+  externalId: z.string().optional(),
+  email: z.string().optional(),
+  phone: z.string().optional(),
 });
 
 type EventStepProps = {
@@ -70,6 +73,9 @@ export function EventStep({
       currency: "USD",
       contentId: "12345",
       contentName: "Fancy-AirMax2.0 Black",
+      externalId: "user_12345678",
+      email: "",
+      phone: "",
     },
   });
 
@@ -85,14 +91,15 @@ export function EventStep({
     addDebugLog("Tracking Event...", payload);
 
     const result = await trackEvent(payload);
-    
+
     setIsLoading(false);
 
     if (result.success) {
       addDebugLog("Track Event Success", result);
       toast({
         title: "Evento de Teste Enviado!",
-        description: "O evento 'Purchase' foi enviado com sucesso para o seu pixel.",
+        description:
+          "O evento 'Purchase' foi enviado com sucesso para o seu pixel.",
         className: "bg-green-600 text-white",
       });
       onEventSent();
@@ -113,7 +120,8 @@ export function EventStep({
           Step 3: Enviar Evento de Teste
         </CardTitle>
         <CardDescription>
-          Envie um evento de teste 'Purchase' para verificar se o seu pixel está recebendo dados corretamente.
+          Envie um evento de teste 'Purchase' para verificar se o seu pixel está
+          recebendo dados corretamente.
         </CardDescription>
       </CardHeader>
       <Form {...form}>
@@ -129,15 +137,16 @@ export function EventStep({
                     <FormControl>
                       <Input {...field} disabled />
                     </FormControl>
-                     <FormDescription>
-                      Atualmente, apenas o evento 'Purchase' é suportado para teste.
+                    <FormDescription>
+                      Atualmente, apenas o evento 'Purchase' é suportado para
+                      teste.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <div className="grid grid-cols-2 gap-4">
-                 <FormField
+                <FormField
                   control={form.control}
                   name="value"
                   render={({ field }) => (
@@ -150,50 +159,95 @@ export function EventStep({
                     </FormItem>
                   )}
                 />
-                 <FormField
+                <FormField
                   control={form.control}
                   name="currency"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Moeda</FormLabel>
                       <FormControl>
-                         <Input {...field} placeholder="USD" />
+                        <Input {...field} placeholder="USD" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
+              <FormField
+                control={form.control}
+                name="contentName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nome do Conteúdo</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Nome do Produto" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="contentId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>ID do Conteúdo</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="SKU do Produto" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="externalId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>External ID</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="ID do usuário no seu sistema" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>E-mail (Opcional, SHA-256)</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="E-mail do usuário (hash SHA-256)" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
                <FormField
-                  control={form.control}
-                  name="contentName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nome do Conteúdo</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Nome do Produto" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                 <FormField
-                  control={form.control}
-                  name="contentId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>ID do Conteúdo</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="SKU do Produto" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Telefone (Opcional, SHA-256)</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Telefone do usuário (hash SHA-256)" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </CardContent>
             <CardFooter>
-              <Button type="submit" className="w-full bg-green-600 hover:bg-green-600/90 text-white font-bold" disabled={isLoading || !userAgent}>
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              <Button
+                type="submit"
+                className="w-full bg-green-600 hover:bg-green-600/90 text-white font-bold"
+                disabled={isLoading || !userAgent}
+              >
+                {isLoading && (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                )}
                 <Send className="mr-2" />
                 Enviar Evento de Teste
               </Button>
