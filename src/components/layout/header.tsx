@@ -1,11 +1,10 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import { LogOut } from "lucide-react";
+import { LogOut, Sparkles } from "lucide-react";
 
 export default function Header() {
   const { accessToken, logout } = useAuth();
@@ -24,6 +23,7 @@ export default function Header() {
             href="/"
             className="mr-6 flex items-center space-x-3 pt-[3px]"
           >
+            <Sparkles className="h-5 w-5 text-yellow-500" />
             <span className="font-bold sm:inline-block leading-none">
               LitCode Store
             </span>
