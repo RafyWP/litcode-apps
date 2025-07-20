@@ -217,7 +217,7 @@ export default function HomePage() {
                 </defs>
                 
                 <g className="rotating-text">
-                  <text fill="hsl(var(--muted-foreground))" className="text-[13px] font-semibold uppercase">
+                  <text fill="hsl(var(--muted-foreground))" className="text-[16px] font-semibold uppercase">
                     <textPath href="#circlePath" startOffset="50%" textAnchor="middle">
                       First lesson free • First lesson free • First lesson free
                     </textPath>
