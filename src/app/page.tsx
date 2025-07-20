@@ -110,7 +110,7 @@ export default function HomePage() {
               <CardTitle className="font-headline text-base md:text-xl font-bold tracking-tight text-left">
                 TikTok Video Anchor
               </CardTitle>
-              <CardDescription className="mb-3 md:mt-1 text-left truncate md:overflow-visible md:whitespace-normal">
+              <CardDescription className="md:mt-1 text-left truncate md:overflow-visible md:whitespace-normal">
                 Anchor every item in your videos with clickable links that convert views into sales.
               </CardDescription>
               <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground">
@@ -148,8 +148,8 @@ export default function HomePage() {
               <p className="text-sm font-semibold tracking-wider uppercase text-primary">
                 Welcome to LitCode Store
               </p>
-              <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight lg:text-6xl">
-                Learn How to Sell on TikTok
+              <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
+                How to Sell on TikTok
               </h1>
               <p className="max-w-prose text-lg text-muted-foreground">
                 Our suite of tools is designed to help you maximize your reach,
