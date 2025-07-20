@@ -7,10 +7,8 @@ import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import {
@@ -117,7 +115,7 @@ export default function HomePage() {
               <CardDescription className="mt-1 mb-3 text-left">
                 Anchor every item in your videos with clickable links that convert views into sales.
               </CardDescription>
-              <div className="flex flex-col items-start gap-1.5 text-xs text-muted-foreground">
+              <div className="flex items-start gap-4 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1.5">
                   <Leaf className="h-3.5 w-3.5" />
                   <span>Organic Growth</span>
@@ -224,7 +222,7 @@ export default function HomePage() {
                 <g className="rotating-text">
                   <text fill="hsl(var(--muted-foreground))" className="text-[16px] font-semibold uppercase">
                     <textPath href="#circlePath" startOffset="50%" textAnchor="middle">
-                      First lesson free • First lesson free • First lesson free • 
+                      First lesson free • First lesson free • First lesson free •
                     </textPath>
                   </text>
                 </g>
