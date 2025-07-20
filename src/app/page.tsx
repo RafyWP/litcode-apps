@@ -104,30 +104,32 @@ export default function HomePage() {
       <div className="w-full max-w-lg">
         <h2 className="text-3xl font-bold text-center mb-6 font-headline">Our Applications</h2>
         <Card className="hover:border-primary/80 transition-colors aspect-[9/16] flex flex-col text-center">
-          <CardHeader className="items-center">
-            <div className="bg-primary/10 p-4 rounded-lg border">
-              <Anchor className="h-10 w-10 text-primary" />
-            </div>
-            <CardTitle className="font-headline text-xl font-bold tracking-tight">
-              TikTok Video Anchor
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="flex-1 flex flex-col justify-center items-center">
-            <CardDescription className="mb-4">
-              Anchor every item in your videos with clickable links that convert views into sales.
-            </CardDescription>
-            <div className="flex flex-col items-center gap-2 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1.5">
-                <Leaf className="h-3.5 w-3.5" />
-                <span>Organic Growth</span>
+          <div>
+            <CardHeader className="items-center">
+              <div className="bg-primary/10 p-4 rounded-lg border">
+                <Anchor className="h-10 w-10 text-primary" />
               </div>
-              <div className="flex items-center gap-1.5">
-                <LinkIcon className="h-3.5 w-3.5" />
-                <span>1,200+ Links Gen.</span>
+              <CardTitle className="font-headline text-xl font-bold tracking-tight">
+                TikTok Video Anchor
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="mb-4">
+                Anchor every item in your videos with clickable links that convert views into sales.
+              </CardDescription>
+              <div className="flex flex-col items-center gap-2 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1.5">
+                  <Leaf className="h-3.5 w-3.5" />
+                  <span>Organic Growth</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <LinkIcon className="h-3.5 w-3.5" />
+                  <span>1,200+ Links Gen.</span>
+                </div>
               </div>
-            </div>
-          </CardContent>
-          <CardFooter>
+            </CardContent>
+          </div>
+          <CardFooter className="mt-auto">
             <Button className="w-full" asChild>
               <a href={authUrl}>
                 <LogIn className="mr-2" />
