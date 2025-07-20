@@ -52,7 +52,7 @@ const formSchema = z.object({
 
 type PixelStepProps = {
   accessToken: string;
-  onPixelCreated: (pixelId: string, advertiserId: string) => void;
+  onPixelCreated: (pixelId: string, advertiserId: string, pixelCode: string) => void;
   onReset: () => void;
   addDebugLog: (title: string, data: any) => void;
 };
@@ -68,6 +68,8 @@ export function PixelStep({
   const [isFetchingAdvertisers, setIsFetchingAdvertisers] = useState(true);
   const [advertisers, setAdvertisers] = useState<Advertiser[]>([]);
   const [createdPixelId, setCreatedPixelId] = useState<string | null>(null);
+  const [createdPixelCode, setCreatedPixelCode] = useState<string | null>(null);
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -121,10 +123,11 @@ export function PixelStep({
 
     setIsLoading(false);
 
-    if (result.success && result.data.pixel_id) {
+    if (result.success && result.data.pixel_id && result.data.pixel_code) {
       addDebugLog("Create Pixel Success", result);
       setCreatedPixelId(result.data.pixel_id);
-      onPixelCreated(result.data.pixel_id, values.advertiserId);
+      setCreatedPixelCode(result.data.pixel_code);
+      onPixelCreated(result.data.pixel_id, values.advertiserId, result.data.pixel_code);
     } else {
       addDebugLog("Create Pixel Error", result);
       toast({
@@ -135,15 +138,15 @@ export function PixelStep({
     }
   }
 
-  const copyToClipboard = () => {
-    if (createdPixelId) {
-      navigator.clipboard.writeText(createdPixelId);
+  const copyToClipboard = (textToCopy: string | null) => {
+    if (textToCopy) {
+      navigator.clipboard.writeText(textToCopy);
       toast({
         title: "Copiado!",
-        description: "ID do Pixel copiado para a área de transferência.",
+        description: "Informação copiada para a área de transferência.",
         className: "bg-green-600 text-white",
       });
-      addDebugLog("Copied to Clipboard", { pixelId: createdPixelId });
+      addDebugLog("Copied to Clipboard", { copiedText: textToCopy });
     }
   };
 
@@ -156,22 +159,41 @@ export function PixelStep({
             Pixel Criado com Sucesso!
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground mb-4">
-            Seu novo Pixel ID está pronto. Você pode copiá-lo abaixo.
+        <CardContent className="space-y-4">
+          <p className="text-muted-foreground">
+            Seu novo Pixel está pronto. Copie o ID e o Código abaixo.
           </p>
-          <div className="flex items-center gap-2 p-3 rounded-md bg-secondary">
-            <span className="font-mono text-sm text-card-foreground truncate">
-              {createdPixelId}
-            </span>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={copyToClipboard}
-              className="ml-auto flex-shrink-0"
-            >
-              <Copy className="h-4 w-4" />
-            </Button>
+          <div>
+            <Label className="text-xs text-muted-foreground">Pixel ID</Label>
+            <div className="flex items-center gap-2 p-3 rounded-md bg-secondary">
+              <span className="font-mono text-sm text-card-foreground truncate">
+                {createdPixelId}
+              </span>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => copyToClipboard(createdPixelId)}
+                className="ml-auto flex-shrink-0"
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+          <div>
+            <Label className="text-xs text-muted-foreground">Pixel Code</Label>
+            <div className="flex items-center gap-2 p-3 rounded-md bg-secondary">
+              <span className="font-mono text-sm text-card-foreground truncate">
+                {createdPixelCode}
+              </span>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => copyToClipboard(createdPixelCode)}
+                className="ml-auto flex-shrink-0"
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </CardContent>
         <CardFooter>

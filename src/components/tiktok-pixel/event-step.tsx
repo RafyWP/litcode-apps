@@ -17,14 +17,14 @@ import { Loader2, Send } from "lucide-react";
 
 type EventStepProps = {
   accessToken: string;
-  pixelId: string;
+  pixelCode: string;
   onEventSent: () => void;
   addDebugLog: (title: string, data: any) => void;
 };
 
 export function EventStep({
   accessToken,
-  pixelId,
+  pixelCode,
   onEventSent,
   addDebugLog,
 }: EventStepProps) {
@@ -35,7 +35,7 @@ export function EventStep({
     setIsLoading(true);
     const payload = {
       accessToken,
-      pixelId,
+      pixelCode,
     };
     addDebugLog("Calling trackEvent with params:", payload);
 

@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 export default function Home() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [pixelId, setPixelId] = useState<string | null>(null);
+  const [pixelCode, setPixelCode] = useState<string | null>(null);
   const [advertiserId, setAdvertiserId] = useState<string | null>(null);
   const [eventSent, setEventSent] = useState(false);
   const [debugLogs, setDebugLogs] = useState<DebugLog[]>([]);
@@ -27,6 +28,7 @@ export default function Home() {
     localStorage.removeItem("tiktok_access_token");
     setAccessToken(null);
     setPixelId(null);
+    setPixelCode(null);
     setAdvertiserId(null);
     setEventSent(false);
     setDebugLogs([]);
@@ -83,11 +85,11 @@ export default function Home() {
       );
     }
 
-    if (accessToken && pixelId && advertiserId) {
+    if (accessToken && pixelId && advertiserId && pixelCode) {
       return (
         <EventStep
           accessToken={accessToken}
-          pixelId={pixelId}
+          pixelCode={pixelCode}
           onEventSent={() => setEventSent(true)}
           addDebugLog={addDebugLog}
         />
@@ -104,9 +106,10 @@ export default function Home() {
           />
           <PixelStep
             accessToken={accessToken}
-            onPixelCreated={(newPixelId, newAdvertiserId) => {
+            onPixelCreated={(newPixelId, newAdvertiserId, newPixelCode) => {
               setPixelId(newPixelId);
               setAdvertiserId(newAdvertiserId);
+              setPixelCode(newPixelCode);
             }}
             onReset={handleReset}
             addDebugLog={addDebugLog}

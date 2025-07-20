@@ -171,13 +171,13 @@ export async function createPixel(params: z.infer<typeof createPixelSchema>) {
 
 const trackEventSchema = z.object({
   accessToken: z.string(),
-  pixelId: z.string(),
+  pixelCode: z.string(),
 });
 
 export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
   try {
     const validatedParams = trackEventSchema.parse(params);
-    const { accessToken, pixelId } = validatedParams;
+    const { accessToken, pixelCode } = validatedParams;
 
     const eventName = "Purchase";
     const eventTime = Math.floor(new Date().getTime() / 1000);
@@ -187,7 +187,7 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
 
     const requestBody = {
       event_source: "web",
-      event_source_id: pixelId,
+      event_source_id: pixelCode,
       data: [
         {
           event: eventName,
