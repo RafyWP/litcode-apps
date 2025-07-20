@@ -104,13 +104,13 @@ export default function HomePage() {
         <Card className="hover:border-primary/80 transition-colors aspect-[9/16] flex flex-col">
           <div className="p-4 md:p-6 flex items-start gap-4">
             <div className="bg-primary/10 p-2 rounded-lg border shrink-0">
-              <Anchor className="h-6 w-6 text-primary" />
+              <Anchor className="h-6 w-6 md:h-8 md:w-8 text-primary" />
             </div>
             <div className="flex flex-col overflow-hidden">
-              <CardTitle className="font-headline text-lg font-bold tracking-tight text-left">
+              <CardTitle className="font-headline text-lg md:text-xl font-bold tracking-tight text-left">
                 TikTok Video Anchor
               </CardTitle>
-              <CardDescription className="mt-1 mb-3 text-left truncate">
+              <CardDescription className="mt-1 mb-3 text-left truncate md:overflow-visible md:whitespace-normal">
                 Anchor every item in your videos with clickable links that convert views into sales.
               </CardDescription>
               <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground">
