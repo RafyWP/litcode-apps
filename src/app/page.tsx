@@ -177,7 +177,7 @@ export default function HomePage() {
 
         <section className="container mx-auto px-4 md:px-6 pb-12 md:pb-24">
            <div className="grid grid-cols-2 items-center gap-4 text-muted-foreground w-full max-w-sm mx-auto">
-            <span className="text-right font-semibold text-lg">Primeira aula grátis</span>
+            <span className="text-right font-semibold text-lg">First lesson free</span>
             <button
               onClick={() => setIsVideoOpen(true)}
               className="flex items-center justify-start group"
