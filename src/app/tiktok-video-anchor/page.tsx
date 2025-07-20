@@ -179,7 +179,7 @@ export default function TikTokVideoAnchorPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4 font-body">
+    <div className="min-h-full bg-background text-foreground flex flex-col items-center justify-center p-4 font-body">
       <div className="w-full max-w-lg mx-auto flex-grow flex flex-col justify-center">
         <header className="text-center mb-10">
           <div className="inline-flex items-center justify-center bg-primary text-primary-foreground p-3 rounded-full mb-4 shadow-lg shadow-primary/30">
@@ -361,20 +361,6 @@ export default function TikTokVideoAnchorPage() {
           )}
         </main>
       </div>
-
-      <footer className="w-full text-center p-4 mt-auto space-y-2 shrink-0">
-        <p className="text-xs text-muted-foreground">
-          © {new Date().getFullYear()}{" "}
-          <a
-            href="https://b2bear.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:underline"
-          >
-            B2Bear Marketing
-          </a>
-        </p>
-      </footer>
     </div>
   );
 }
