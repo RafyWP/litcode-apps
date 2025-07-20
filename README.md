@@ -36,7 +36,9 @@ Follow these instructions to set up and run the project locally.
 Before running the project, you need to configure your application in the TikTok Developer Portal:
 
 1.  Go to **My Apps** and select your application.
-2.  **Set the Redirect URI**: In your app's settings, find the "Redirect URI" field and set it to the one you will use in your environment configuration (e.g., `http://localhost:9002/tiktok-video-anchor`).
+2.  **Set the Redirect URI**: In your app's settings, find the "Redirect URI" field. 
+    - For **local development**, set it to `http://localhost:9002/tiktok-video-anchor`.
+    - For **production on Netlify**, set it to your Netlify site URL (e.g., `https://<your-site-name>.netlify.app/tiktok-video-anchor`).
 3.  **Enable Permissions (Scopes)**: Go to the "Permissions" section and ensure the following scopes are enabled:
     *   `bc.read` (Ad Account Management)
     *   `cm.manage` (Pixel Management)
@@ -70,12 +72,20 @@ TIKTOK_SECRET="YOUR_TIKTOK_SECRET"
 # Prefixed with NEXT_PUBLIC_ to be accessible on the client-side (browser).
 # Used to build the authorization URL.
 NEXT_PUBLIC_TIKTOK_APP_ID="YOUR_TIKTOK_APP_ID"
+
+# Use http://localhost:9002/tiktok-video-anchor for local development.
+# For production, use your live Netlify URL.
 NEXT_PUBLIC_TIKTOK_REDIRECT_URI="http://localhost:9002/tiktok-video-anchor"
+
+# URL for the embedded YouTube video on the homepage.
+# Must be an "embed" URL, e.g., https://www.youtube.com/embed/VIDEO_ID
+NEXT_PUBLIC_YOUTUBE_VIDEO_URL="https://www.youtube.com/embed/dQw4w9WgXcQ"
 ```
 
 **Note**:
 - Replace `"YOUR_TIKTOK_APP_ID"` and `"YOUR_TIKTOK_SECRET"` with your actual credentials.
-- The `NEXT_PUBLIC_TIKTOK_REDIRECT_URI` must exactly match the URI you configured in the TikTok Developer Portal.
+- The `NEXT_PUBLIC_TIKTOK_REDIRECT_URI` must exactly match the URI you configured in the TikTok Developer Portal for the respective environment (local or production).
+- When deploying to Netlify, you must set these environment variables in the Netlify dashboard under "Site settings" > "Build & deploy" > "Environment", not in the `.env.local` file.
 
 ### 5. Run the Development Server
 
@@ -96,5 +106,3 @@ Open [http://localhost:9002](http://localhost:9002) in your browser to see the a
 5.  **Name Your Pixel**: Enter a descriptive name for your new pixel.
 6.  **Generate**: Click "Generate Pixel".
 7.  **Copy ID**: The new Pixel ID will be displayed. You can copy it and start the process over if needed.
-
-```
