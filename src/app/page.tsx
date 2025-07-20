@@ -154,7 +154,7 @@ export default function HomePage() {
                     CopyTok
                   </CardTitle>
                   <CardDescription className="md:mt-1 text-left truncate md:overflow-visible md:whitespace-normal">
-                    Viral captions for TikTok.
+                    TikTok viral captions with psychological triggers that demand engagement.
                   </CardDescription>
                   <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground mt-2">
                     <div className="flex items-center gap-1.5">
