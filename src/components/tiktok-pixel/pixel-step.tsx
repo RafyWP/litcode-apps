@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -8,6 +9,7 @@ import { createPixel, getAdvertisers } from "@/app/actions";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -34,8 +36,8 @@ import { useToast } from "@/hooks/use-toast";
 import {
   WandSparkles,
   Loader2,
-  CheckCircle2,
   Copy,
+  CheckCircle2,
 } from "lucide-react";
 
 type Advertiser = {
@@ -50,17 +52,22 @@ const formSchema = z.object({
 
 type PixelStepProps = {
   accessToken: string;
-  onPixelCreated: () => void;
+  onPixelCreated: (pixelId: string, advertiserId: string) => void;
   onReset: () => void;
   addDebugLog: (title: string, data: any) => void;
 };
 
-export function PixelStep({ accessToken, onPixelCreated, onReset, addDebugLog }: PixelStepProps) {
+export function PixelStep({
+  accessToken,
+  onPixelCreated,
+  onReset,
+  addDebugLog,
+}: PixelStepProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isFetchingAdvertisers, setIsFetchingAdvertisers] = useState(true);
-  const [pixelId, setPixelId] = useState<string | null>(null);
   const [advertisers, setAdvertisers] = useState<Advertiser[]>([]);
+  const [createdPixelId, setCreatedPixelId] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -73,18 +80,21 @@ export function PixelStep({ accessToken, onPixelCreated, onReset, addDebugLog }:
   useEffect(() => {
     async function fetchAdvertisers() {
       if (!accessToken) return;
-      addDebugLog("Fetching Advertisers...", { tokenUsed: `${accessToken.substring(0,10)}...`});
+      addDebugLog("Fetching Advertisers...", {
+        tokenUsed: `${accessToken.substring(0, 10)}...`,
+      });
       setIsFetchingAdvertisers(true);
       const result = await getAdvertisers({ accessToken });
       if (result.success) {
         addDebugLog("Fetch Advertisers Success", result);
         setAdvertisers(result.data || []);
         if (!result.data || result.data.length === 0) {
-           toast({
-             title: "No Advertiser Accounts Found",
-             description: "We couldn't find any advertiser accounts linked to your TikTok profile.",
-             variant: "destructive",
-           });
+          toast({
+            title: "No Advertiser Accounts Found",
+            description:
+              "We couldn't find any advertiser accounts linked to your TikTok profile.",
+            variant: "destructive",
+          });
         }
       } else {
         addDebugLog("Fetch Advertisers Error", result);
@@ -113,7 +123,8 @@ export function PixelStep({ accessToken, onPixelCreated, onReset, addDebugLog }:
 
     if (result.success && result.data.pixel_id) {
       addDebugLog("Create Pixel Success", result);
-      setPixelId(result.data.pixel_id);
+      setCreatedPixelId(result.data.pixel_id);
+      onPixelCreated(result.data.pixel_id, values.advertiserId);
     } else {
       addDebugLog("Create Pixel Error", result);
       toast({
@@ -125,42 +136,48 @@ export function PixelStep({ accessToken, onPixelCreated, onReset, addDebugLog }:
   }
 
   const copyToClipboard = () => {
-    if (pixelId) {
-      navigator.clipboard.writeText(pixelId);
+    if (createdPixelId) {
+      navigator.clipboard.writeText(createdPixelId);
       toast({
-        title: "Copied!",
-        description: "Pixel ID copied to clipboard.",
-        className: "bg-green-600 text-white"
+        title: "Copiado!",
+        description: "ID do Pixel copiado para a área de transferência.",
+        className: "bg-green-600 text-white",
       });
-      addDebugLog("Copied to Clipboard", { pixelId });
+      addDebugLog("Copied to Clipboard", { pixelId: createdPixelId });
     }
   };
 
-  if (pixelId) {
+  if (createdPixelId) {
     return (
       <Card className="bg-card border-t-4 border-primary shadow-lg shadow-primary/20">
         <CardHeader>
           <CardTitle className="font-headline flex items-center gap-2 text-card-foreground">
             <CheckCircle2 className="h-6 w-6 text-green-500" />
-            Pixel Created Successfully!
+            Pixel Criado com Sucesso!
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground mb-4">Your new Pixel is ready. Copy the ID below.</p>
+          <p className="text-muted-foreground mb-4">
+            Seu novo Pixel ID está pronto. Você pode copiá-lo abaixo.
+          </p>
           <div className="flex items-center gap-2 p-3 rounded-md bg-secondary">
-            <span className="font-mono text-sm text-card-foreground truncate">{pixelId}</span>
-            <Button variant="ghost" size="icon" onClick={copyToClipboard} className="ml-auto flex-shrink-0">
+            <span className="font-mono text-sm text-card-foreground truncate">
+              {createdPixelId}
+            </span>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={copyToClipboard}
+              className="ml-auto flex-shrink-0"
+            >
               <Copy className="h-4 w-4" />
             </Button>
           </div>
         </CardContent>
-        <CardFooter className="flex-col sm:flex-row gap-2">
-            <Button onClick={onPixelCreated} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
-                Done
-            </Button>
-             <Button onClick={onReset} variant="outline" className="w-full">
-                Create Another
-            </Button>
+        <CardFooter>
+          <p className="text-xs text-muted-foreground">
+            Avançando para o envio de evento de teste...
+          </p>
         </CardFooter>
       </Card>
     );
@@ -170,8 +187,11 @@ export function PixelStep({ accessToken, onPixelCreated, onReset, addDebugLog }:
     <Card className="bg-card border-t-4 border-accent shadow-lg shadow-accent/20">
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2 text-card-foreground">
-          Step 2: Create Your Pixel
+          Step 2: Crie Seu Pixel
         </CardTitle>
+        <CardDescription>
+          Selecione uma conta de anunciante e dê um nome ao seu novo pixel.
+        </CardDescription>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -182,30 +202,42 @@ export function PixelStep({ accessToken, onPixelCreated, onReset, addDebugLog }:
                 name="advertiserId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Advertiser Account</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormLabel>Conta de Anunciante</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger disabled={isFetchingAdvertisers}>
                           {isFetchingAdvertisers ? (
                             <span className="flex items-center text-muted-foreground">
                               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                              Loading Accounts...
+                              Carregando Contas...
                             </span>
                           ) : (
-                            <SelectValue placeholder="Select an advertiser account" />
+                            <SelectValue placeholder="Selecione uma conta de anunciante" />
                           )}
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {advertisers.length > 0 ? advertisers.map((ad) => (
-                          <SelectItem key={ad.advertiser_id} value={ad.advertiser_id}>
-                            {ad.advertiser_name} ({ad.advertiser_id})
+                        {advertisers.length > 0 ? (
+                          advertisers.map((ad) => (
+                            <SelectItem
+                              key={ad.advertiser_id}
+                              value={ad.advertiser_id}
+                            >
+                              {ad.advertiser_name} ({ad.advertiser_id})
+                            </SelectItem>
+                          ))
+                        ) : (
+                          <SelectItem value="none" disabled>
+                            Nenhuma conta encontrada.
                           </SelectItem>
-                        )) : <SelectItem value="none" disabled>No accounts found.</SelectItem>}
+                        )}
                       </SelectContent>
                     </Select>
                     <FormDescription>
-                      Choose the TikTok Ads account for this pixel.
+                      Escolha a conta do TikTok Ads para este pixel.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -216,12 +248,15 @@ export function PixelStep({ accessToken, onPixelCreated, onReset, addDebugLog }:
                 name="pixelName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Pixel Name</FormLabel>
+                    <FormLabel>Nome do Pixel</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., My Awesome Pixel" {...field} />
+                      <Input
+                        placeholder="Ex: Meu Pixel Incrível"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
-                      A name to help you identify this pixel later.
+                      Um nome para te ajudar a identificar este pixel depois.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -229,10 +264,16 @@ export function PixelStep({ accessToken, onPixelCreated, onReset, addDebugLog }:
               />
             </CardContent>
             <CardFooter>
-              <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-bold" disabled={isLoading || isFetchingAdvertisers}>
-                {(isLoading || isFetchingAdvertisers) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              <Button
+                type="submit"
+                className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-bold"
+                disabled={isLoading || isFetchingAdvertisers}
+              >
+                {(isLoading || isFetchingAdvertisers) && (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                )}
                 <WandSparkles className="mr-2" />
-                Generate Pixel
+                Gerar Pixel
               </Button>
             </CardFooter>
           </fieldset>
@@ -241,3 +282,4 @@ export function PixelStep({ accessToken, onPixelCreated, onReset, addDebugLog }:
     </Card>
   );
 }
+

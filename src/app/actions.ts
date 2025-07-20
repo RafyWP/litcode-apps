@@ -1,3 +1,4 @@
+
 "use server";
 
 import { z } from "zod";
@@ -13,24 +14,31 @@ export async function getAccessToken(
     const validatedParams = getAccessTokenSchema.parse(params);
     const { authCode } = validatedParams;
 
-    const appId = process.env.TIKTOK_APP_ID;
+    const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
     const secret = process.env.TIKTOK_SECRET;
 
     if (!appId || !secret) {
-        return { success: false, error: "App ID or Secret is not configured in server environment variables." };
+      return {
+        success: false,
+        error:
+          "App ID or Secret is not configured in server environment variables.",
+      };
     }
 
-    const response = await fetch("https://business-api.tiktok.com/open_api/v1.3/oauth2/access_token/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        app_id: appId,
-        secret: secret,
-        auth_code: authCode,
-      }),
-    });
+    const response = await fetch(
+      "https://business-api.tiktok.com/open_api/v1.3/oauth2/access_token/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          app_id: appId,
+          secret: secret,
+          auth_code: authCode,
+        }),
+      }
+    );
 
     const data = await response.json();
 
@@ -63,16 +71,20 @@ export async function getAdvertisers(
   try {
     const validatedParams = getAdvertisersSchema.parse(params);
     const { accessToken } = validatedParams;
-    const appId = process.env.TIKTOK_APP_ID;
+    const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
     const secret = process.env.TIKTOK_SECRET;
 
     if (!appId || !secret) {
-      return { success: false, error: "App ID or Secret is not configured in server environment variables." };
+      return {
+        success: false,
+        error:
+          "App ID or Secret is not configured in server environment variables.",
+      };
     }
 
     const urlParams = new URLSearchParams({
-        app_id: appId,
-        secret: secret,
+      app_id: appId,
+      secret: secret,
     });
 
     const response = await fetch(
@@ -138,7 +150,10 @@ export async function createPixel(params: z.infer<typeof createPixelSchema>) {
     const data = await response.json();
 
     if (data.code !== 0) {
-      return { success: false, error: data.message || "Failed to create pixel." };
+      return {
+        success: false,
+        error: data.message || "Failed to create pixel.",
+      };
     }
 
     return { success: true, data: data.data };
@@ -151,4 +166,96 @@ export async function createPixel(params: z.infer<typeof createPixelSchema>) {
     }
     return { success: false, error: "An unexpected error occurred." };
   }
+}
+
+const trackEventSchema = z.object({
+  accessToken: z.string(),
+  pixelId: z.string(),
+  event: z.string(),
+  value: z.number(),
+  currency: z.string(),
+  contentId: z.string(),
+  contentName: z.string(),
+});
+
+export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
+    try {
+        const validatedParams = trackEventSchema.parse(params);
+        const {
+            accessToken,
+            pixelId,
+            event,
+            value,
+            currency,
+            contentId,
+            contentName
+        } = validatedParams;
+
+        // Using a timestamp in seconds
+        const eventTime = Math.floor(new Date().getTime() / 1000);
+
+        const response = await fetch("https://business-api.tiktok.com/open_api/v1.3/event/track/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Token": accessToken,
+            },
+            body: JSON.stringify({
+                "event_source": "web",
+                "event_source_id": pixelId,
+                "data": [{
+                    "event": event,
+                    "event_time": eventTime,
+                    "event_id": `${event.toLowerCase()}_${eventTime}_${Math.random().toString(36).substring(2, 9)}`,
+                    "user": {
+                        "external_id": "c4ca4238a0b923820dcc509a6f75849b", // SHA256 of "1"
+                        "phone": "257b4f2b18a595c52402ba69130545931de61346f041e1713532a24534f31835", // SHA256 of "1112223333"
+                        "email": "123456405862e402eb76a70f8a26fc732d07c32931e9fae9ab1582911d2e8a3b", // SHA256 of test@example.com
+                        "ip": "127.0.0.1",
+                        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+                        "locale": "en_US"
+                    },
+                    "properties": {
+                        "currency": currency,
+                        "value": value,
+                        "content_type": "product",
+                        "contents": [{
+                            "price": value,
+                            "quantity": 1,
+                            "content_id": contentId,
+                            "content_name": contentName
+                        }]
+                    }
+                }]
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.code !== 0) {
+            return {
+                success: false,
+                error: data.message || "Failed to track event.",
+                details: data
+            };
+        }
+
+        return {
+            success: true,
+            data: data.data
+        };
+
+    } catch (error) {
+        if (error instanceof z.ZodError) {
+            return {
+                success: false,
+                error: error.errors.map((e) => e.message).join(" "),
+            };
+        }
+        console.error(error);
+        return {
+            success: false,
+            error: "An unexpected error occurred while tracking the event."
+        };
+    }
 }
