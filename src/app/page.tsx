@@ -106,73 +106,8 @@ export default function HomePage() {
         <h2 className="text-3xl font-bold text-center mb-6 font-headline">Our Applications</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* TikTok Video Anchor Card */}
-          <Card className="hover:border-primary/80 transition-colors aspect-square flex flex-col p-4 relative overflow-hidden">
-            <div className="absolute inset-0 z-0 opacity-[0.05]">
-              <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <style>
-                    {`
-                      @keyframes click-animation {
-                        0%, 25% {
-                          transform: translate(25px, 90px);
-                          opacity: 1;
-                        }
-                        35% {
-                          transform: translate(90px, 35px);
-                          opacity: 1;
-                        }
-                        40% {
-                          transform: translate(90px, 35px);
-                          opacity: 1;
-                        }
-                        45% {
-                          transform: translate(90px, 35px);
-                          opacity: 1;
-                        }
-                        50%, 100% {
-                          transform: translate(90px, 35px);
-                          opacity: 1;
-                        }
-                      }
-                      @keyframes click-effect {
-                        0%, 40% {
-                          opacity: 0;
-                          transform: scale(0.5);
-                        }
-                        45% {
-                          opacity: 1;
-                          transform: scale(1);
-                        }
-                        50%, 100% {
-                          opacity: 0;
-                          transform: scale(1.2);
-                        }
-                      }
-                      .cursor {
-                        animation: click-animation 5s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
-                        fill: currentColor;
-                      }
-                      .click-circle {
-                        animation: click-effect 5s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
-                        fill: currentColor;
-                        transform-origin: center;
-                      }
-                      .link-icon {
-                        stroke: currentColor;
-                      }
-                    `}
-                  </style>
-                </defs>
-                <g className="text-foreground">
-                  <path className="link-icon" d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" transform="translate(80, 25) scale(1.2)"/>
-                  <path className="link-icon" d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" transform="translate(80, 25) scale(1.2)"/>
-                  <circle className="click-circle" cx="98" cy="33" r="10" />
-                  <path className="cursor" d="M15.33 16.25l-4.1-1.32.79-3.44 3.31 4.76z" />
-                  <path className="cursor" d="M11.23 14.93l-3.23-3.23 4.54-1.2 2.15 4.59-3.46-.16z"/>
-                </g>
-              </svg>
-            </div>
-            <div className="relative z-10 flex flex-col h-full">
+          <Card className="hover:border-primary/80 transition-colors aspect-square flex flex-col p-4">
+            <div className="flex flex-col h-full">
               <div className="flex items-start gap-4">
                 <div className="bg-primary/10 p-2 rounded-lg border shrink-0">
                   <Anchor className="h-6 w-6 md:h-8 md:w-8 text-primary" />
@@ -208,18 +143,8 @@ export default function HomePage() {
           </Card>
           
           {/* CopyTok Card */}
-          <Card className="hover:border-accent/80 transition-colors aspect-square flex flex-col p-4 relative overflow-hidden">
-             <div className="absolute inset-0 z-0 opacity-[0.05]">
-              <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-                <g transform="translate(100 100)" className="text-foreground">
-                  <path d="M 40 -40 C 60 -40 60 -20 60 0 C 60 20 60 40 40 40 L -40 40 C -60 40 -60 20 -60 0 C -60 -20 -60 -40 -40 -40 Z" fill="none" stroke="currentColor" strokeWidth="3"></path>
-                  <text textAnchor="middle" dy="0.35em" fill="currentColor" className="font-sans text-4xl font-bold">
-                    <tspan>#</tspan>
-                  </text>
-                </g>
-              </svg>
-            </div>
-            <div className="relative z-10 flex flex-col h-full">
+          <Card className="hover:border-accent/80 transition-colors aspect-square flex flex-col p-4">
+            <div className="flex flex-col h-full">
               <div className="flex items-start gap-4">
                 <div className="bg-accent/10 p-2 rounded-lg border shrink-0">
                   <Quote className="h-6 w-6 md:h-8 md:w-8 text-accent" />
