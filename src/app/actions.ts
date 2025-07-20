@@ -204,11 +204,6 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
       .toString(36)
       .substring(2, 9)}`;
 
-    const userPayload: { [key: string]: string } = {};
-    if (externalId) userPayload.external_id = externalId;
-    if (email) userPayload.email = email;
-    if (phone) userPayload.phone = phone;
-
     const response = await fetch(
       "https://business-api.tiktok.com/open_api/v1.3/event/track/",
       {
@@ -226,7 +221,9 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
               event_time: eventTime,
               event_id: eventId,
               user: {
-                ...userPayload,
+                external_id: externalId || null,
+                email: email || null,
+                phone: phone || null,
                 user_agent: userAgent,
               },
               properties: {
