@@ -148,7 +148,7 @@ export default function HomePage() {
               Welcome to LitCode Store
             </p>
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-              Unlock Your TikTok Potential
+              Learn How to Sell on TikTok
             </h1>
             <p className="max-w-prose text-lg text-muted-foreground">
               Our suite of tools is designed to help you maximize your reach,
