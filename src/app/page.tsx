@@ -101,7 +101,7 @@ export default function HomePage() {
     return (
       <div className="w-full max-w-lg">
         <h2 className="text-3xl font-bold text-center mb-6 font-headline">Our Applications</h2>
-        <Card className="hover:border-primary/80 transition-colors aspect-[9/16] flex flex-col p-4 md:p-6 relative overflow-hidden">
+        <Card className="hover:border-primary/80 transition-colors aspect-square flex flex-col p-4 md:p-6 relative overflow-hidden">
           <div className="absolute inset-0 z-0 opacity-[0.05]">
             <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
               <defs>
@@ -220,7 +220,7 @@ export default function HomePage() {
               <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
                 How to Sell on TikTok
               </h1>
-              <p className="max-w-prose text-base text-muted-foreground md:text-lg">
+              <p className="max-w-prose text-sm text-muted-foreground md:text-lg">
                 Our suite of tools is designed to help you maximize your reach,
                 engagement, and conversions on TikTok, effortlessly. Start using our applications for free!
               </p>
