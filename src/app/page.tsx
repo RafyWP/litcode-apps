@@ -83,6 +83,7 @@ export default function Home() {
               onEventSent={() => setEventSent(true)}
               eventSent={eventSent}
             />
+
           )}
 
           {eventSent && (
