@@ -63,7 +63,7 @@ export function EventStep({
           <CheckCircle2 className="h-8 w-8 text-green-500" />
           <div>
             <CardTitle className="font-headline text-card-foreground">
-              Step 3: Test Event Sent
+              Step 2: Test Event Sent
             </CardTitle>
             <CardDescription>
               The test event was successfully sent to your pixel.
@@ -75,10 +75,10 @@ export function EventStep({
   }
 
   return (
-    <Card className="bg-card border-t-4 border-green-500 shadow-lg shadow-green-500/20">
+    <Card className="bg-card border-t-4 border-primary shadow-lg shadow-primary/20">
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2 text-card-foreground">
-          Step 3: Send Test Event
+          Step 2: Send Test Event
         </CardTitle>
         <CardDescription>
           Click the button below to send a test 'Purchase' event to
@@ -94,7 +94,7 @@ export function EventStep({
       <CardFooter>
         <Button
           onClick={handleSendEvent}
-          className="w-full bg-green-600 hover:bg-green-600/90 text-white font-bold"
+          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold"
           disabled={isLoading}
         >
           {isLoading ? (

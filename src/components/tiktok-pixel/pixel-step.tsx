@@ -142,12 +142,12 @@ export function PixelStep({
 
   if (pixelId && pixelCode) {
     return (
-      <Card className="bg-card border-t-4 border-primary shadow-lg shadow-primary/20">
+      <Card className="bg-card border-t-4 border-green-500 shadow-lg shadow-green-500/20">
         <CardHeader className="flex-row items-center gap-4 space-y-0">
           <CheckCircle2 className="h-8 w-8 text-green-500" />
           <div>
             <CardTitle className="font-headline flex items-center gap-2 text-card-foreground">
-              Step 2: Pixel Created Successfully!
+              Step 1: Pixel Created Successfully!
             </CardTitle>
             <CardDescription>
               Your new Pixel is ready. Copy the ID and Code below.
@@ -193,10 +193,10 @@ export function PixelStep({
   }
 
   return (
-    <Card className="bg-card border-t-4 border-accent shadow-lg shadow-accent/20">
+    <Card className="bg-card border-t-4 border-primary shadow-lg shadow-primary/20">
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2 text-card-foreground">
-          Step 2: Create Your Pixel
+          Step 1: Create Your Pixel
         </CardTitle>
         <CardDescription>
           Select an advertiser account and give your new pixel a name.
@@ -275,7 +275,7 @@ export function PixelStep({
             <CardFooter>
               <Button
                 type="submit"
-                className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-bold"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold"
                 disabled={isLoading || isFetchingAdvertisers}
               >
                 {(isLoading || isFetchingAdvertisers) && (

@@ -52,7 +52,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (e) {
       // Could be SSR or disabled localStorage
-      console.error("Failed to read from localStorage", e);
     } finally {
       setIsLoading(false);
     }
