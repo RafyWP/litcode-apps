@@ -177,78 +177,90 @@ const trackEventSchema = z.object({
   currency: z.string(),
   contentId: z.string(),
   contentName: z.string(),
+  userAgent: z.string(),
 });
 
 export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
-    try {
-        const validatedParams = trackEventSchema.parse(params);
-        const {
-            accessToken,
-            pixelId,
-            advertiserId,
-            event,
-            value,
-            currency,
-            contentId,
-            contentName
-        } = validatedParams;
+  try {
+    const validatedParams = trackEventSchema.parse(params);
+    const {
+      accessToken,
+      pixelId,
+      advertiserId,
+      event,
+      value,
+      currency,
+      contentId,
+      contentName,
+      userAgent,
+    } = validatedParams;
 
-        // Using a timestamp in seconds
-        const eventTime = Math.floor(new Date().getTime() / 1000);
+    // Using a timestamp in seconds
+    const eventTime = Math.floor(new Date().getTime() / 1000);
+    const eventId = `${event.toLowerCase()}_${eventTime}_${Math.random()
+      .toString(36)
+      .substring(2, 9)}`;
 
-        const response = await fetch("https://business-api.tiktok.com/open_api/v1.3/pixel/track/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Token": accessToken,
+    const response = await fetch(
+      "https://business-api.tiktok.com/open_api/v1.3/pixel/track/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Token": accessToken,
+        },
+        body: JSON.stringify({
+          pixel_code: pixelId,
+          event: event,
+          event_id: eventId,
+          timestamp: new Date().toISOString(),
+          context: {
+            ad: { callback: advertiserId },
+            user: {
+              user_agent: userAgent,
             },
-            body: JSON.stringify({
-                "pixel_code": pixelId,
-                "event": event,
-                "event_id": `${event.toLowerCase()}_${eventTime}_${Math.random().toString(36).substring(2, 9)}`,
-                "timestamp": new Date().toISOString(),
-                "context": {
-                    "ad": { "callback": advertiserId },
-                    "properties": {
-                        "currency": currency,
-                        "value": value,
-                        "contents": [{
-                            "price": value,
-                            "quantity": 1,
-                            "content_id": contentId,
-                            "content_name": contentName
-                        }]
-                    }
-                }
-            })
-        });
+            properties: {
+              currency: currency,
+              value: value,
+              contents: [
+                {
+                  price: value,
+                  quantity: 1,
+                  content_id: contentId,
+                  content_name: contentName,
+                },
+              ],
+            },
+          },
+        }),
+      }
+    );
 
-        const data = await response.json();
+    const data = await response.json();
 
-        if (data.code !== 0) {
-            return {
-                success: false,
-                error: data.message || "Failed to track event.",
-                details: data
-            };
-        }
-
-        return {
-            success: true,
-            data: data.data
-        };
-
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            return {
-                success: false,
-                error: error.errors.map((e) => e.message).join(" "),
-            };
-        }
-        console.error(error);
-        return {
-            success: false,
-            error: "An unexpected error occurred while tracking the event."
-        };
+    if (data.code !== 0) {
+      return {
+        success: false,
+        error: data.message || "Failed to track event.",
+        details: data,
+      };
     }
+
+    return {
+      success: true,
+      data: data.data,
+    };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return {
+        success: false,
+        error: error.errors.map((e) => e.message).join(" "),
+      };
+    }
+    console.error(error);
+    return {
+      success: false,
+      error: "An unexpected error occurred while tracking the event.",
+    };
+  }
 }

@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -53,6 +53,14 @@ export function EventStep({
 }: EventStepProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [userAgent, setUserAgent] = useState("");
+
+  useEffect(() => {
+    // This code runs only on the client, so `navigator` is available.
+    if (typeof window !== "undefined") {
+      setUserAgent(navigator.userAgent);
+    }
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,14 +75,16 @@ export function EventStep({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    addDebugLog("Tracking Event...", { pixelId, advertiserId, values });
-
-    const result = await trackEvent({
+    const payload = {
       accessToken: accessToken,
       pixelId: pixelId,
       advertiserId: advertiserId,
+      userAgent: userAgent,
       ...values,
-    });
+    };
+    addDebugLog("Tracking Event...", payload);
+
+    const result = await trackEvent(payload);
     
     setIsLoading(false);
 
@@ -182,7 +192,7 @@ export function EventStep({
                 />
             </CardContent>
             <CardFooter>
-              <Button type="submit" className="w-full bg-green-600 hover:bg-green-600/90 text-white font-bold" disabled={isLoading}>
+              <Button type="submit" className="w-full bg-green-600 hover:bg-green-600/90 text-white font-bold" disabled={isLoading || !userAgent}>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 <Send className="mr-2" />
                 Enviar Evento de Teste
