@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -145,7 +146,7 @@ export default function HomePage() {
           <div className="container mx-auto px-4 text-center md:px-6">
             <div className="flex flex-col items-center space-y-4">
               <p className="text-sm font-semibold tracking-wider uppercase text-primary">
-                Learn once and for all
+                Stop struggling and master it now
               </p>
               <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
                 How to Sell on TikTok
