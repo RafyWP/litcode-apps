@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import { LogIn, LogOut } from "lucide-react";
+import { Button } from "../ui/button";
 
 export default function Header() {
   const { accessToken, logout } = useAuth();
@@ -64,15 +65,7 @@ export default function Header() {
               <LogOut className="h-4 w-4" />
               Logout
             </button>
-          ) : (
-            <a
-              href={authUrl}
-              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:text-foreground/70"
-            >
-              <LogIn className="h-4 w-4" />
-              Login
-            </a>
-          )}
+          ) : null}
         </div>
       </div>
     </header>

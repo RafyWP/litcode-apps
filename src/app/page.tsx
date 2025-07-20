@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,31 @@ import { useToast } from "@/hooks/use-toast";
 export default function HomePage() {
   const { toast } = useToast();
   const { accessToken, isLoading, login } = useAuth();
+  const [authUrl, setAuthUrl] = useState("");
+
+  useEffect(() => {
+    const generateAuthUrl = () => {
+      const baseUrl = "https://business-api.tiktok.com/portal/auth";
+      const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
+      const redirectUri = process.env.NEXT_PUBLIC_TIKTOK_REDIRECT_URI;
+      const state = crypto.randomUUID();
+
+      if (!appId || !redirectUri) {
+        console.error("Client-side TikTok credentials are not configured.");
+        return;
+      }
+
+      const params = new URLSearchParams({
+        app_id: appId,
+        state: state,
+        redirect_uri: redirectUri,
+        scope: "bc.read,cm.manage",
+      });
+      setAuthUrl(`${baseUrl}?${params.toString()}`);
+    };
+
+    generateAuthUrl();
+  }, []);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -100,12 +125,11 @@ export default function HomePage() {
             </div>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">
-              You must be logged in to your TikTok Business account to use this application.
-            </p>
-            <Button className="w-full" disabled>
-              <LogIn className="mr-2" />
-              Please login via the header to continue
+            <Button className="w-full" asChild>
+              <a href={authUrl}>
+                <LogIn className="mr-2" />
+                Authorize with TikTok
+              </a>
             </Button>
           </CardContent>
         </Card>
