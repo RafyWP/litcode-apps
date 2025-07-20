@@ -171,65 +171,27 @@ export async function createPixel(params: z.infer<typeof createPixelSchema>) {
 const trackEventSchema = z.object({
   accessToken: z.string(),
   pixelId: z.string(),
-  event: z.string(),
-  value: z.number(),
-  currency: z.string(),
-  contentId: z.string(),
-  contentName: z.string(),
-  userAgent: z.string(),
-  externalId: z.string().optional(),
-  email: z.string().optional(),
-  phone: z.string().optional(),
 });
 
 export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
   try {
     const validatedParams = trackEventSchema.parse(params);
-    const {
-      accessToken,
-      pixelId,
-      event,
-      value,
-      currency,
-      contentId,
-      contentName,
-      userAgent,
-      externalId,
-      email,
-      phone,
-    } = validatedParams;
+    const { accessToken, pixelId } = validatedParams;
 
+    const eventName = "Purchase";
     const eventTime = Math.floor(new Date().getTime() / 1000);
-    const eventId = `${event.toLowerCase()}_${eventTime}_${Math.random()
+    const eventId = `${eventName.toLowerCase()}_${eventTime}_${Math.random()
       .toString(36)
       .substring(2, 9)}`;
-      
+
     const requestBody = {
       event_source: "web",
       event_source_id: pixelId,
       data: [
         {
-          event: event,
+          event: eventName,
           event_time: eventTime,
           event_id: eventId,
-          user: {
-            external_id: externalId || null,
-            email: email || null,
-            phone: phone || null,
-            user_agent: userAgent,
-          },
-          properties: {
-            currency: currency,
-            value: value,
-            contents: [
-              {
-                price: value,
-                quantity: 1,
-                content_id: contentId,
-                content_name: contentName,
-              },
-            ],
-          },
         },
       ],
     };
