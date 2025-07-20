@@ -1,12 +1,11 @@
 
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { TokenStep } from "@/components/tiktok-pixel/token-step";
 import { PixelStep } from "@/components/tiktok-pixel/pixel-step";
 import { EventStep } from "@/components/tiktok-pixel/event-step";
 import { BotMessageSquare, CheckCircle } from "lucide-react";
-import { DebugInfo, type DebugLog } from "@/components/tiktok-pixel/debug-info";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
@@ -15,14 +14,6 @@ export default function Home() {
   const [pixelCode, setPixelCode] = useState<string | null>(null);
   const [advertiserId, setAdvertiserId] = useState<string | null>(null);
   const [eventSent, setEventSent] = useState(false);
-  const [debugLogs, setDebugLogs] = useState<DebugLog[]>([]);
-
-  const addDebugLog = useCallback((title: string, data: any) => {
-    setDebugLogs((prev) => [
-      ...prev,
-      { title, data: JSON.stringify(data, null, 2), timestamp: new Date() },
-    ]);
-  }, []);
 
   const handleReset = () => {
     localStorage.removeItem("tiktok_access_token");
@@ -31,9 +22,7 @@ export default function Home() {
     setPixelCode(null);
     setAdvertiserId(null);
     setEventSent(false);
-    setDebugLogs([]);
     window.history.replaceState(null, "", window.location.pathname);
-    addDebugLog("System Reset", "Application state and local storage cleared.");
   };
 
   useEffect(() => {
@@ -43,26 +32,14 @@ export default function Home() {
         const { token, expiresAt } = JSON.parse(storedToken);
         if (new Date().getTime() < expiresAt) {
           setAccessToken(token);
-          addDebugLog("Token Loaded from localStorage", {
-            token: `${token.substring(0, 10)}...`,
-            expiresAt: new Date(expiresAt).toLocaleString(),
-          });
         } else {
           localStorage.removeItem("tiktok_access_token");
-          addDebugLog(
-            "Expired Token Removed",
-            "Token found in localStorage has expired and was removed."
-          );
         }
       } catch (e) {
         localStorage.removeItem("tiktok_access_token");
-        addDebugLog(
-          "Invalid Token Format",
-          "Could not parse token from localStorage, it was removed."
-        );
       }
     }
-  }, [addDebugLog]);
+  }, []);
 
   const renderStep = () => {
     if (eventSent) {
@@ -91,7 +68,6 @@ export default function Home() {
           accessToken={accessToken}
           pixelCode={pixelCode}
           onEventSent={() => setEventSent(true)}
-          addDebugLog={addDebugLog}
         />
       );
     }
@@ -102,7 +78,6 @@ export default function Home() {
           <TokenStep
             onTokenReceived={setAccessToken}
             accessToken={accessToken}
-            addDebugLog={addDebugLog}
           />
           <PixelStep
             accessToken={accessToken}
@@ -112,7 +87,6 @@ export default function Home() {
               setPixelCode(newPixelCode);
             }}
             onReset={handleReset}
-            addDebugLog={addDebugLog}
           />
         </>
       );
@@ -122,7 +96,6 @@ export default function Home() {
       <TokenStep
         onTokenReceived={setAccessToken}
         accessToken={accessToken}
-        addDebugLog={addDebugLog}
       />
     );
   };
@@ -144,9 +117,7 @@ export default function Home() {
 
         <main className="space-y-6">{renderStep()}</main>
       </div>
-      <div className="w-full max-w-lg mx-auto mt-8">
-        <DebugInfo logs={debugLogs} />
-      </div>
+      
       <footer className="w-full text-center p-4 mt-auto space-y-2 shrink-0">
         <p className="text-xs text-muted-foreground">
           © {new Date().getFullYear()}{" "}

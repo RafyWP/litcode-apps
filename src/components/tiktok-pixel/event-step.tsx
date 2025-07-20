@@ -19,14 +19,12 @@ type EventStepProps = {
   accessToken: string;
   pixelCode: string;
   onEventSent: () => void;
-  addDebugLog: (title: string, data: any) => void;
 };
 
 export function EventStep({
   accessToken,
   pixelCode,
   onEventSent,
-  addDebugLog,
 }: EventStepProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -37,20 +35,12 @@ export function EventStep({
       accessToken,
       pixelCode,
     };
-    addDebugLog("Calling trackEvent with params:", payload);
 
     const result = await trackEvent(payload);
-    
-    // @ts-ignore
-    if(result.requestPayload) {
-        // @ts-ignore
-        addDebugLog("Sent Payload to TikTok API:", result.requestPayload);
-    }
 
     setIsLoading(false);
 
     if (result.success) {
-      addDebugLog("Track Event Success", result);
       toast({
         title: "Evento de Teste Enviado!",
         description:
@@ -59,7 +49,6 @@ export function EventStep({
       });
       onEventSent();
     } else {
-      addDebugLog("Track Event Error", result);
       toast({
         title: "Erro ao Enviar Evento",
         description: result.error || "Ocorreu um erro desconhecido.",

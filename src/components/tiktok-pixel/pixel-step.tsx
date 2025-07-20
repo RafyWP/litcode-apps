@@ -39,6 +39,7 @@ import {
   Copy,
   CheckCircle2,
 } from "lucide-react";
+import { Label } from "../ui/label";
 
 type Advertiser = {
   advertiser_id: string;
@@ -54,14 +55,12 @@ type PixelStepProps = {
   accessToken: string;
   onPixelCreated: (pixelId: string, advertiserId: string, pixelCode: string) => void;
   onReset: () => void;
-  addDebugLog: (title: string, data: any) => void;
 };
 
 export function PixelStep({
   accessToken,
   onPixelCreated,
   onReset,
-  addDebugLog,
 }: PixelStepProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -82,13 +81,9 @@ export function PixelStep({
   useEffect(() => {
     async function fetchAdvertisers() {
       if (!accessToken) return;
-      addDebugLog("Fetching Advertisers...", {
-        tokenUsed: `${accessToken.substring(0, 10)}...`,
-      });
       setIsFetchingAdvertisers(true);
       const result = await getAdvertisers({ accessToken });
       if (result.success) {
-        addDebugLog("Fetch Advertisers Success", result);
         setAdvertisers(result.data || []);
         if (!result.data || result.data.length === 0) {
           toast({
@@ -99,7 +94,6 @@ export function PixelStep({
           });
         }
       } else {
-        addDebugLog("Fetch Advertisers Error", result);
         toast({
           title: "Error fetching advertisers",
           description: result.error,
@@ -109,11 +103,10 @@ export function PixelStep({
       setIsFetchingAdvertisers(false);
     }
     fetchAdvertisers();
-  }, [accessToken, toast, addDebugLog]);
+  }, [accessToken, toast]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    addDebugLog("Creating Pixel...", { values });
 
     const result = await createPixel({
       accessToken: accessToken,
@@ -124,12 +117,10 @@ export function PixelStep({
     setIsLoading(false);
 
     if (result.success && result.data.pixel_id && result.data.pixel_code) {
-      addDebugLog("Create Pixel Success", result);
       setCreatedPixelId(result.data.pixel_id);
       setCreatedPixelCode(result.data.pixel_code);
       onPixelCreated(result.data.pixel_id, values.advertiserId, result.data.pixel_code);
     } else {
-      addDebugLog("Create Pixel Error", result);
       toast({
         title: "Error Creating Pixel",
         description: result.error || "An unknown error occurred.",
@@ -146,7 +137,6 @@ export function PixelStep({
         description: "Informação copiada para a área de transferência.",
         className: "bg-green-600 text-white",
       });
-      addDebugLog("Copied to Clipboard", { copiedText: textToCopy });
     }
   };
 

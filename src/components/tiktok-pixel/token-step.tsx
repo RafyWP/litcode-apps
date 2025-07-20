@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -16,10 +17,9 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../ui
 type TokenStepProps = {
   onTokenReceived: (token: string) => void;
   accessToken: string | null;
-  addDebugLog: (title: string, data: any) => void;
 };
 
-export function TokenStep({ onTokenReceived, accessToken, addDebugLog }: TokenStepProps) {
+export function TokenStep({ onTokenReceived, accessToken }: TokenStepProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,20 +29,17 @@ export function TokenStep({ onTokenReceived, accessToken, addDebugLog }: TokenSt
     async (authCode: string) => {
       setIsLoading(true);
       setError(null);
-      addDebugLog("Requesting Access Token...", { authCode });
       const result = await getAccessToken({ authCode });
       setIsLoading(false);
 
       if (result.success && result.data.access_token) {
-        addDebugLog("Access Token Success", result.data);
         const { access_token, expires_in } = result.data;
         const expiresAt = new Date().getTime() + expires_in * 1000;
         
         try {
             localStorage.setItem("tiktok_access_token", JSON.stringify({ token: access_token, expiresAt }));
-            addDebugLog("Token Saved to localStorage", { expiresAt: new Date(expiresAt).toLocaleString() });
         } catch (e) {
-            addDebugLog("localStorage Error", "Failed to save token to localStorage.");
+            console.error("Failed to save token to localStorage.");
         }
 
         onTokenReceived(access_token);
@@ -53,7 +50,6 @@ export function TokenStep({ onTokenReceived, accessToken, addDebugLog }: TokenSt
         });
         window.history.replaceState(null, "", window.location.pathname);
       } else {
-        addDebugLog("Access Token Error", result);
         setError(result.error || "Failed to get access token.");
         toast({
           title: "Authorization Error",
@@ -62,7 +58,7 @@ export function TokenStep({ onTokenReceived, accessToken, addDebugLog }: TokenSt
         });
       }
     },
-    [onTokenReceived, toast, addDebugLog]
+    [onTokenReceived, toast]
   );
 
   useEffect(() => {
@@ -76,7 +72,6 @@ export function TokenStep({ onTokenReceived, accessToken, addDebugLog }: TokenSt
         const errorMsg = "Client-side TikTok credentials are not configured (NEXT_PUBLIC_TIKTOK_APP_ID or NEXT_PUBLIC_TIKTOK_REDIRECT_URI).";
         console.error(errorMsg);
         setError(errorMsg);
-        addDebugLog("Configuration Error", { error: errorMsg, env: { NEXT_PUBLIC_TIKTOK_APP_ID: !!appId, NEXT_PUBLIC_TIKTOK_REDIRECT_URI: !!redirectUri } });
         return;
       }
 
@@ -99,15 +94,13 @@ export function TokenStep({ onTokenReceived, accessToken, addDebugLog }: TokenSt
     } else if (urlParams.get("error")) {
         const authError = "Authorization was cancelled or failed.";
         setError(authError);
-        addDebugLog("Authorization Error from URL", { error: urlParams.get("error"), error_description: urlParams.get("error_description") });
     }
 
-  }, [handleGetAccessToken, accessToken, addDebugLog]);
+  }, [handleGetAccessToken, accessToken]);
   
   const handleTryAgain = () => {
     setError(null);
     if (authUrl) {
-      addDebugLog("Retrying Authorization...", { authUrl });
       window.location.href = authUrl;
     }
   };
@@ -188,7 +181,7 @@ export function TokenStep({ onTokenReceived, accessToken, addDebugLog }: TokenSt
           disabled={!authUrl}
           className="w-full font-bold text-lg shadow-lg shadow-primary/30 bg-primary hover:bg-primary/90 text-primary-foreground"
         >
-          <a href={authUrl} rel="noopener noreferrer" onClick={() => addDebugLog("Redirecting to TikTok for Auth...", { authUrl })}>
+          <a href={authUrl} rel="noopener noreferrer">
             <ExternalLink className="mr-2" />
             Authorize with TikTok
           </a>
