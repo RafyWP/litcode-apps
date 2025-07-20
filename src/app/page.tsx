@@ -87,6 +87,7 @@ export default function Home() {
         <EventStep
           accessToken={accessToken}
           pixelId={pixelId}
+          advertiserId={advertiserId}
           onEventSent={() => setEventSent(true)}
           addDebugLog={addDebugLog}
         />

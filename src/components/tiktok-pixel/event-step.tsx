@@ -25,13 +25,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Send } from "lucide-react";
 
@@ -46,6 +39,7 @@ const formSchema = z.object({
 type EventStepProps = {
   accessToken: string;
   pixelId: string;
+  advertiserId: string;
   onEventSent: () => void;
   addDebugLog: (title: string, data: any) => void;
 };
@@ -53,6 +47,7 @@ type EventStepProps = {
 export function EventStep({
   accessToken,
   pixelId,
+  advertiserId,
   onEventSent,
   addDebugLog,
 }: EventStepProps) {
@@ -72,11 +67,12 @@ export function EventStep({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    addDebugLog("Tracking Event...", { pixelId, values });
+    addDebugLog("Tracking Event...", { pixelId, advertiserId, values });
 
     const result = await trackEvent({
       accessToken: accessToken,
       pixelId: pixelId,
+      advertiserId: advertiserId,
       ...values,
     });
     

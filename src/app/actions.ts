@@ -171,6 +171,7 @@ export async function createPixel(params: z.infer<typeof createPixelSchema>) {
 const trackEventSchema = z.object({
   accessToken: z.string(),
   pixelId: z.string(),
+  advertiserId: z.string(),
   event: z.string(),
   value: z.number(),
   currency: z.string(),
@@ -184,6 +185,7 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
         const {
             accessToken,
             pixelId,
+            advertiserId,
             event,
             value,
             currency,
@@ -194,19 +196,19 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
         // Using a timestamp in seconds
         const eventTime = Math.floor(new Date().getTime() / 1000);
 
-        const response = await fetch("https://business-api.tiktok.com/open_api/v1.3/event/track/", {
+        const response = await fetch("https://business-api.tiktok.com/open_api/v1.3/pixel/track/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Access-Token": accessToken,
             },
             body: JSON.stringify({
-                "event_source": "web",
-                "event_source_id": pixelId,
-                "data": [{
-                    "event": event,
-                    "event_time": eventTime,
-                    "event_id": `${event.toLowerCase()}_${eventTime}_${Math.random().toString(36).substring(2, 9)}`,
+                "pixel_code": pixelId,
+                "event": event,
+                "event_id": `${event.toLowerCase()}_${eventTime}_${Math.random().toString(36).substring(2, 9)}`,
+                "timestamp": new Date().toISOString(),
+                "context": {
+                    "ad": { "callback": advertiserId },
                     "user": {
                         "external_id": "c4ca4238a0b923820dcc509a6f75849b", // SHA256 of "1"
                         "phone": "257b4f2b18a595c52402ba69130545931de61346f041e1713532a24534f31835", // SHA256 of "1112223333"
@@ -218,7 +220,6 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
                     "properties": {
                         "currency": currency,
                         "value": value,
-                        "content_type": "product",
                         "contents": [{
                             "price": value,
                             "quantity": 1,
@@ -226,7 +227,7 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
                             "content_name": contentName
                         }]
                     }
-                }]
+                }
             })
         });
 
