@@ -23,6 +23,7 @@ import {
   CreditCard,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import Image from "next/image";
 
 export default function HomePage() {
   const { toast } = useToast();
@@ -151,17 +152,20 @@ export default function HomePage() {
             </h1>
             <p className="max-w-prose text-lg text-muted-foreground">
               Our suite of tools is designed to help you maximize your reach,
-              engagement, and conversions on TikTok, effortlessly.
+              engagement, and conversions on TikTok, effortlessly. Get Started Now!
             </p>
-            <div className="flex flex-col items-center pt-4 space-y-3">
-              <Button size="lg">
-                Get Started Now
-                <ArrowRight className="ml-2" />
-              </Button>
-              <p className="flex items-center gap-2 text-xs text-muted-foreground">
-                <CreditCard className="h-3.5 w-3.5" />
-                No credit card required to start.
-              </p>
+            <div className="flex items-center justify-center pt-4 -space-x-4">
+              {Array.from({ length: 12 }).map((_, index) => (
+                <Image
+                  key={index}
+                  src={`https://placehold.co/48x48.png`}
+                  data-ai-hint="avatar"
+                  alt={`User ${index + 1}`}
+                  width={48}
+                  height={48}
+                  className="h-12 w-12 rounded-full border-2 border-background"
+                />
+              ))}
             </div>
           </div>
         </div>
