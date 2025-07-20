@@ -21,8 +21,11 @@ import {
   Leaf,
   Link as LinkIcon,
   Gift,
+  PlayCircle,
+  ShieldCheck,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import Image from "next/image";
 
 export default function HomePage() {
   const { toast } = useToast();
@@ -73,75 +76,88 @@ export default function HomePage() {
     }
   }, [login, toast]);
 
-  const renderContent = () => {
-    if (isLoading) {
-      return (
-        <div className="flex items-center justify-center gap-3 text-center">
-          <Loader2 className="h-6 w-6 animate-spin text-primary" />
-          <p className="font-bold font-headline text-card-foreground">
-            Checking authorization...
-          </p>
-        </div>
-      );
-    }
-
-    if (accessToken) {
-      return (
-        <Button asChild size="lg" className="w-full max-w-sm">
-          <Link href="/tiktok-video-anchor">
-            Go to TikTok Video Anchor
-            <ArrowRight className="ml-2" />
-          </Link>
-        </Button>
-      );
-    }
-
+  if (isLoading) {
     return (
-      <div className="w-full max-w-lg">
-        <h2 className="text-3xl font-bold text-center mb-6 font-headline">Our Applications</h2>
-        <Card className="hover:border-primary/80 transition-colors">
-          <CardHeader className="flex flex-row items-start gap-4">
-            <div className="bg-primary/10 p-4 rounded-lg border">
-              <Anchor className="h-10 w-10 text-primary" />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-headline text-xl font-bold mb-2 tracking-tight">TikTok Video Anchor</h3>
-              <CardDescription>
-                Anchor every item in your videos with clickable links that convert views into sales.
-              </CardDescription>
-              <div className="mt-4 flex space-x-6 text-xs text-muted-foreground">
-                <div className="flex items-center gap-1.5">
-                  <Briefcase className="h-3.5 w-3.5" />
-                  <span>TikTok Business</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Leaf className="h-3.5 w-3.5" />
-                  <span>Organic Growth</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <LinkIcon className="h-3.5 w-3.5" />
-                  <span>1,200+ Links Gen.</span>
-                </div>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <Button className="w-full" asChild>
-              <a href={authUrl}>
-                <LogIn className="mr-2" />
-                Login with TikTok Business
-              </a>
-            </Button>
-          </CardContent>
+      <div className="flex min-h-screen flex-col items-center justify-center -mt-16">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+        <p className="mt-4 font-bold font-headline text-card-foreground">
+          Checking authorization...
+        </p>
+      </div>
+    );
+  }
+
+  if (accessToken) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center p-4 -mt-16">
+        <Card className="w-full max-w-md text-center">
+            <CardHeader>
+                <CardTitle>Welcome Back!</CardTitle>
+                <CardDescription>You are already logged in.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Button asChild size="lg" className="w-full">
+                    <Link href="/tiktok-video-anchor">
+                        Go to TikTok Video Anchor
+                        <ArrowRight className="ml-2" />
+                    </Link>
+                </Button>
+            </CardContent>
         </Card>
       </div>
     );
-  };
+  }
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4 -mt-16">
-      <main className="w-full max-w-lg flex items-center justify-center">
-        {renderContent()}
+    <div className="min-h-screen bg-background text-foreground flex flex-col justify-center -mt-16">
+      <main className="container mx-auto px-4 py-16 sm:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          
+          <div className="text-center lg:text-left">
+            <p className="text-base font-semibold uppercase tracking-wider text-primary">
+              Unlock Your Video's Potential
+            </p>
+            <h1 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-card-foreground">
+              Turn TikTok Views into Sales Instantly
+            </h1>
+            <p className="mt-6 text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0">
+              Anchor every item in your videos with clickable links that convert. No complex setups, just direct results.
+            </p>
+            
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              <Button size="lg" className="w-full sm:w-auto" asChild>
+                <a href={authUrl}>
+                  <LogIn className="mr-2" />
+                  Login with TikTok Business
+                </a>
+              </Button>
+            </div>
+            
+            <p className="mt-4 text-sm text-muted-foreground">
+              No credit card required.
+            </p>
+
+            <div className="mt-6 flex items-center justify-center lg:justify-start gap-2 text-sm text-muted-foreground">
+              <ShieldCheck className="h-5 w-5 text-green-500" />
+              <span>Satisfaction guaranteed</span>
+            </div>
+          </div>
+
+          <div className="relative group flex items-center justify-center">
+            <Image
+              src="https://placehold.co/600x400.png"
+              alt="Video Placeholder"
+              width={600}
+              height={400}
+              className="rounded-xl shadow-2xl w-full"
+              data-ai-hint="video marketing"
+            />
+            <div className="absolute inset-0 bg-black/30 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <PlayCircle className="h-20 w-20 text-white/80" />
+            </div>
+          </div>
+
+        </div>
       </main>
     </div>
   );
