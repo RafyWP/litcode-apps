@@ -23,7 +23,7 @@ export default function Header() {
             href="/"
             className="mr-6 flex items-center space-x-3 pt-[3px]"
           >
-            <Sparkles className="h-5 w-5 text-yellow-500" />
+            <Sparkles className="h-5 w-5 text-yellow-500 mt-[-2px]" />
             <span className="font-bold sm:inline-block leading-none">
               LitCode Store
             </span>
