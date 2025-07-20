@@ -42,15 +42,15 @@ export function EventStep({
 
     if (result.success) {
       toast({
-        title: "Evento de Teste Enviado!",
-        description: "O evento 'Purchase' foi enviado com sucesso.",
+        title: "Test Event Sent!",
+        description: "The 'Purchase' event was sent successfully.",
         className: "bg-green-600 text-white",
       });
       onEventSent();
     } else {
       toast({
-        title: "Erro ao Enviar Evento",
-        description: result.error || "Ocorreu um erro desconhecido.",
+        title: "Error Sending Event",
+        description: result.error || "An unknown error occurred.",
         variant: "destructive",
       });
     }
@@ -63,10 +63,10 @@ export function EventStep({
           <CheckCircle2 className="h-8 w-8 text-green-500" />
           <div>
             <CardTitle className="font-headline text-card-foreground">
-              Step 3: Evento de Teste Enviado
+              Step 3: Test Event Sent
             </CardTitle>
             <CardDescription>
-              O evento de teste foi enviado com sucesso para o seu pixel.
+              The test event was successfully sent to your pixel.
             </CardDescription>
           </div>
         </CardHeader>
@@ -78,17 +78,17 @@ export function EventStep({
     <Card className="bg-card border-t-4 border-green-500 shadow-lg shadow-green-500/20">
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2 text-card-foreground">
-          Step 3: Enviar Evento de Teste
+          Step 3: Send Test Event
         </CardTitle>
         <CardDescription>
-          Clique no botão abaixo para enviar um evento de teste 'Purchase' e
-          verificar se o seu pixel está recebendo dados corretamente.
+          Click the button below to send a test 'Purchase' event to
+          verify that your pixel is receiving data correctly.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground p-4 bg-secondary/50 rounded-md text-center">
-          Esta ação enviará um evento com os dados mínimos necessários para
-          validação.
+          This action will send an event with the minimum required data for
+          validation.
         </p>
       </CardContent>
       <CardFooter>
@@ -99,7 +99,7 @@ export function EventStep({
         >
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           <Send className="mr-2" />
-          Enviar Evento de Teste
+          Send Test Event
         </Button>
       </CardFooter>
     </Card>

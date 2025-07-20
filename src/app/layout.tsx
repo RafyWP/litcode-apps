@@ -1,3 +1,4 @@
+
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
@@ -11,7 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'New TikTok Pixel',
+  title: 'TikTok Pixel Generator',
   description: 'Create your TikTok pixel for GTM, no e-commerce required.',
 };
 

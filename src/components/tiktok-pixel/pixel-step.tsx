@@ -133,8 +133,8 @@ export function PixelStep({
     if (textToCopy) {
       navigator.clipboard.writeText(textToCopy);
       toast({
-        title: "Copiado!",
-        description: "Informação copiada para a área de transferência.",
+        title: "Copied!",
+        description: "Copied to clipboard.",
         className: "bg-green-600 text-white",
       });
     }
@@ -147,10 +147,10 @@ export function PixelStep({
           <CheckCircle2 className="h-8 w-8 text-green-500" />
           <div>
             <CardTitle className="font-headline flex items-center gap-2 text-card-foreground">
-              Step 2: Pixel Criado com Sucesso!
+              Step 2: Pixel Created Successfully!
             </CardTitle>
             <CardDescription>
-              Seu novo Pixel está pronto. Copie o ID e o Código abaixo.
+              Your new Pixel is ready. Copy the ID and Code below.
             </CardDescription>
           </div>
         </CardHeader>
@@ -196,10 +196,10 @@ export function PixelStep({
     <Card className="bg-card border-t-4 border-accent shadow-lg shadow-accent/20">
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2 text-card-foreground">
-          Step 2: Crie Seu Pixel
+          Step 2: Create Your Pixel
         </CardTitle>
         <CardDescription>
-          Selecione uma conta de anunciante e dê um nome ao seu novo pixel.
+          Select an advertiser account and give your new pixel a name.
         </CardDescription>
       </CardHeader>
       <Form {...form}>
@@ -211,7 +211,7 @@ export function PixelStep({
                 name="advertiserId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Conta de Anunciante</FormLabel>
+                    <FormLabel>Advertiser Account</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -221,10 +221,10 @@ export function PixelStep({
                           {isFetchingAdvertisers ? (
                             <span className="flex items-center text-muted-foreground">
                               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                              Carregando Contas...
+                              Loading Accounts...
                             </span>
                           ) : (
-                            <SelectValue placeholder="Selecione uma conta de anunciante" />
+                            <SelectValue placeholder="Select an advertiser account" />
                           )}
                         </SelectTrigger>
                       </FormControl>
@@ -240,13 +240,13 @@ export function PixelStep({
                           ))
                         ) : (
                           <SelectItem value="none" disabled>
-                            Nenhuma conta encontrada.
+                            No accounts found.
                           </SelectItem>
                         )}
                       </SelectContent>
                     </Select>
                     <FormDescription>
-                      Escolha a conta do TikTok Ads para este pixel.
+                      Choose the TikTok Ads account for this pixel.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -257,15 +257,15 @@ export function PixelStep({
                 name="pixelName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nome do Pixel</FormLabel>
+                    <FormLabel>Pixel Name</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Ex: Meu Pixel Incrível"
+                        placeholder="e.g., My Awesome Pixel"
                         {...field}
                       />
                     </FormControl>
                     <FormDescription>
-                      Um nome para te ajudar a identificar este pixel depois.
+                      A name to help you identify this pixel later.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -282,7 +282,7 @@ export function PixelStep({
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 )}
                 <WandSparkles className="mr-2" />
-                Gerar Pixel
+                Generate Pixel
               </Button>
             </CardFooter>
           </fieldset>
