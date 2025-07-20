@@ -33,7 +33,7 @@ export default function Header() {
           {accessToken ? (
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
+              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:text-foreground/70"
             >
               <LogOut className="h-4 w-4" />
               Logout
@@ -41,7 +41,7 @@ export default function Header() {
           ) : (
             <Link
               href="/"
-              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
+              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:text-foreground/70"
             >
               <LogIn className="h-4 w-4" />
               Login
