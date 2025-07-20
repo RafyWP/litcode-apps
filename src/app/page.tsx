@@ -20,11 +20,9 @@ import {
   Briefcase,
   Leaf,
   Link as LinkIcon,
-  PlayCircle,
   CreditCard,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import Image from "next/image";
 
 export default function HomePage() {
   const { toast } = useToast();
@@ -144,43 +142,26 @@ export default function HomePage() {
     <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center -mt-16">
       <section className="w-full py-12 md:py-24 lg:py-32">
         <div className="container px-4 md:px-6">
-          <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 xl:gap-16">
-            <div className="flex flex-col justify-center space-y-4">
-              <p className="text-sm font-semibold tracking-wider uppercase text-primary">
-                Welcome to LitCode Store
+          <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <p className="text-sm font-semibold tracking-wider uppercase text-primary">
+              Welcome to LitCode Store
+            </p>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
+              Unlock Your TikTok Potential
+            </h1>
+            <p className="max-w-prose text-lg text-muted-foreground">
+              Our suite of tools is designed to help you maximize your reach,
+              engagement, and conversions on TikTok, effortlessly.
+            </p>
+            <div className="flex flex-col items-center space-y-3 pt-4">
+              <Button size="lg">
+                Get Started Now
+                <ArrowRight className="ml-2" />
+              </Button>
+              <p className="flex items-center gap-2 text-xs text-muted-foreground">
+                <CreditCard className="h-3.5 w-3.5" />
+                No credit card required to start.
               </p>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight">
-                Unlock Your TikTok Potential
-              </h1>
-              <p className="max-w-prose text-lg text-muted-foreground">
-                Our suite of tools is designed to help you maximize your reach,
-                engagement, and conversions on TikTok, effortlessly.
-              </p>
-              <div className="flex flex-col items-start space-y-3">
-                <Button size="lg">
-                  Get Started Now
-                  <ArrowRight className="ml-2" />
-                </Button>
-                <p className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <CreditCard className="h-3.5 w-3.5" />
-                  No credit card required to start.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center justify-center">
-              <div className="relative w-full max-w-xl mx-auto overflow-hidden rounded-2xl shadow-2xl">
-                <Image
-                  src="https://placehold.co/1280x720.png"
-                  alt="Video Placeholder"
-                  width={1280}
-                  height={720}
-                  className="aspect-video w-full object-cover"
-                  data-ai-hint="social media video"
-                />
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                  <PlayCircle className="h-20 w-20 text-white/80" />
-                </div>
-              </div>
             </div>
           </div>
         </div>
