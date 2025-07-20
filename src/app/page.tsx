@@ -17,7 +17,7 @@ import {
   ArrowRight,
   Anchor,
   LogIn,
-  Gift,
+  Briefcase,
   Leaf,
   Link as LinkIcon,
 } from "lucide-react";
@@ -110,8 +110,8 @@ export default function HomePage() {
               </CardDescription>
               <div className="mt-4 flex space-x-6 text-xs text-muted-foreground">
                 <div className="flex items-center gap-1.5">
-                  <Gift className="h-3.5 w-3.5" />
-                  <span>Free App</span>
+                  <Briefcase className="h-3.5 w-3.5" />
+                  <span>TikTok Business</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Leaf className="h-3.5 w-3.5" />
