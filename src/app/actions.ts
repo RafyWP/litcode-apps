@@ -14,7 +14,7 @@ export async function getAccessToken(
     const validatedParams = getAccessTokenSchema.parse(params);
     const { authCode } = validatedParams;
 
-    const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
+    const appId = process.env.TIKTOK_APP_ID;
     const secret = process.env.TIKTOK_SECRET;
 
     if (!appId || !secret) {
@@ -71,7 +71,7 @@ export async function getAdvertisers(
   try {
     const validatedParams = getAdvertisersSchema.parse(params);
     const { accessToken } = validatedParams;
-    const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
+    const appId = process.env.TIKTOK_APP_ID;
     const secret = process.env.TIKTOK_SECRET;
 
     if (!appId || !secret) {
@@ -209,14 +209,6 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
                 "timestamp": new Date().toISOString(),
                 "context": {
                     "ad": { "callback": advertiserId },
-                    "user": {
-                        "external_id": "c4ca4238a0b923820dcc509a6f75849b",
-                        "phone": "257b4f2b18a595c52402ba69130545931de61346f041e1713532a24534f31835",
-                        "email": "123456405862e402eb76a70f8a26fc732d07c32931e9fae9ab1582911d2e8a3b",
-                        "ip": "127.0.0.1",
-                        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-                        "locale": "en_US"
-                    },
                     "properties": {
                         "currency": currency,
                         "value": value,
@@ -260,5 +252,3 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
         };
     }
 }
-
-    
