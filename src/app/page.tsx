@@ -128,7 +128,7 @@ export default function HomePage() {
             <Button className="w-full" asChild>
               <a href={authUrl}>
                 <LogIn className="mr-2" />
-                Authorize with TikTok
+                Login with TikTok Business
               </a>
             </Button>
           </CardContent>
