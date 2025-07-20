@@ -7,10 +7,9 @@ import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 import {
   Loader2,
-  CheckCircle2,
-  ExternalLink,
-  AlertTriangle,
   ArrowRight,
+  AlertTriangle,
+  ExternalLink,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -43,7 +42,7 @@ export default function HomePage() {
     };
 
     generateAuthUrl();
-    
+
     const urlParams = new URLSearchParams(window.location.search);
     const urlAuthCode = urlParams.get("auth_code");
 
@@ -62,7 +61,7 @@ export default function HomePage() {
       url.searchParams.delete("error");
       window.history.replaceState(null, "", url.toString());
     } else {
-       if (urlParams.get("error")) {
+      if (urlParams.get("error")) {
         const authError = "Authorization was cancelled or failed.";
         setError(authError);
       }
@@ -119,24 +118,22 @@ export default function HomePage() {
     }
 
     return (
-       <a href={authUrl} rel="noopener noreferrer" className="text-lg text-primary hover:underline font-semibold flex items-center gap-2">
-          <ExternalLink />
-          Login with TikTok
-       </a>
+      <a
+        href={authUrl}
+        rel="noopener noreferrer"
+        className="text-lg text-primary hover:underline font-semibold flex items-center gap-2"
+      >
+        <ExternalLink />
+        Login with TikTok
+      </a>
     );
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4">
-      <header className="text-center mb-10">
-        <h1 className="font-headline text-6xl font-bold text-card-foreground mb-4">
-          LitCode Store
-        </h1>
-        <p className="text-muted-foreground text-xl mb-8">
-          Your one-stop shop for powerful application tools.
-        </p>
-      </header>
-      <main className="w-full max-w-lg flex items-center justify-center">{renderContent()}</main>
+    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4 -mt-16">
+      <main className="w-full max-w-lg flex items-center justify-center">
+        {renderContent()}
+      </main>
     </div>
   );
 }
