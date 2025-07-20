@@ -75,11 +75,11 @@ export default function HomePage() {
         <h2 className="text-2xl font-bold text-center mb-6 font-headline">Our Applications</h2>
         <Card className="hover:border-primary/80 transition-colors">
           <CardHeader className="flex flex-row items-start gap-4">
-            <div className="bg-primary/10 p-3 rounded-lg border">
-              <Anchor className="h-8 w-8 text-primary" />
+            <div className="bg-primary/10 p-4 rounded-lg border">
+              <Anchor className="h-10 w-10 text-primary" />
             </div>
             <div className="flex-1">
-              <CardTitle className="font-headline mb-1">TikTok Video Anchor</CardTitle>
+              <CardTitle className="font-headline mb-2">TikTok Video Anchor</CardTitle>
               <CardDescription>
                 Anchor every item in your videos with clickable links that convert views into sales.
               </CardDescription>
