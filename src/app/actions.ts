@@ -171,7 +171,6 @@ export async function createPixel(params: z.infer<typeof createPixelSchema>) {
 const trackEventSchema = z.object({
   accessToken: z.string(),
   pixelId: z.string(),
-  advertiserId: z.string(),
   event: z.string(),
   value: z.number(),
   currency: z.string(),
@@ -189,7 +188,6 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
     const {
       accessToken,
       pixelId,
-      advertiserId,
       event,
       value,
       currency,
@@ -201,7 +199,6 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
       phone,
     } = validatedParams;
 
-    // Using a timestamp in seconds
     const eventTime = Math.floor(new Date().getTime() / 1000);
     const eventId = `${event.toLowerCase()}_${eventTime}_${Math.random()
       .toString(36)
@@ -213,7 +210,7 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
     if (phone) userPayload.phone = phone;
 
     const response = await fetch(
-      "https://business-api.tiktok.com/open_api/v1.3/pixel/track/",
+      "https://business-api.tiktok.com/open_api/v1.3/event/track/",
       {
         method: "POST",
         headers: {
@@ -221,29 +218,31 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
           "Access-Token": accessToken,
         },
         body: JSON.stringify({
-          pixel_code: pixelId,
-          event: event,
-          event_id: eventId,
-          timestamp: new Date().toISOString(),
-          context: {
-            ad: { callback: advertiserId },
-            user: {
-              ...userPayload,
-              user_agent: userAgent,
+          event_source: "web",
+          event_source_id: pixelId,
+          data: [
+            {
+              event: event,
+              event_time: eventTime,
+              event_id: eventId,
+              user: {
+                ...userPayload,
+                user_agent: userAgent,
+              },
+              properties: {
+                currency: currency,
+                value: value,
+                contents: [
+                  {
+                    price: value,
+                    quantity: 1,
+                    content_id: contentId,
+                    content_name: contentName,
+                  },
+                ],
+              },
             },
-            properties: {
-              currency: currency,
-              value: value,
-              contents: [
-                {
-                  price: value,
-                  quantity: 1,
-                  content_id: contentId,
-                  content_name: contentName,
-                },
-              ],
-            },
-          },
+          ],
         }),
       }
     );
@@ -260,7 +259,7 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
 
     return {
       success: true,
-      data: data.data,
+      data: data,
     };
   } catch (error) {
     if (error instanceof z.ZodError) {
