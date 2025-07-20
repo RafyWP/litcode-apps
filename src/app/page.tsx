@@ -1,11 +1,10 @@
 
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { getAccessToken } from "@/app/actions";
+import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
 import {
   Loader2,
   CheckCircle2,
@@ -22,78 +21,15 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 
 export default function HomePage() {
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(true); // Start as true to check for token
+  const { accessToken, isLoading, login } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [authUrl, setAuthUrl] = useState("");
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-
-  const handleGetAccessToken = useCallback(
-    async (authCode: string) => {
-      setIsLoading(true);
-      setError(null);
-      const result = await getAccessToken({ authCode });
-
-      if (result.success && result.data.access_token) {
-        const { access_token, expires_in } = result.data;
-        const expiresInSeconds = expires_in || 86400;
-        const expiresInMs = expiresInSeconds * 1000;
-        const expiresAt = new Date().getTime() + expiresInMs;
-
-        try {
-          localStorage.setItem(
-            "tiktok_access_token",
-            JSON.stringify({ token: access_token, expiresAt })
-          );
-        } catch (e) {
-          // LocalStorage might be disabled.
-        }
-
-        setAccessToken(access_token);
-        toast({
-          title: "Authorization Successful!",
-          description: "You can now proceed to the tool.",
-          className: "bg-green-600 text-white",
-        });
-
-        const url = new URL(window.location.href);
-        url.searchParams.delete("auth_code");
-        url.searchParams.delete("error");
-        window.history.replaceState(null, "", url.toString());
-      } else {
-        setError(result.error || "Failed to get access token.");
-        toast({
-          title: "Authorization Error",
-          description: result.error || "Could not retrieve access token.",
-          variant: "destructive",
-        });
-      }
-      setIsLoading(false);
-    },
-    [toast]
-  );
 
   useEffect(() => {
-    // Check for stored token first
-    const storedToken = localStorage.getItem("tiktok_access_token");
-    if (storedToken) {
-      try {
-        const { token, expiresAt } = JSON.parse(storedToken);
-        if (new Date().getTime() < expiresAt) {
-          setAccessToken(token);
-          setIsLoading(false);
-          return;
-        } else {
-          localStorage.removeItem("tiktok_access_token");
-        }
-      } catch (e) {
-        localStorage.removeItem("tiktok_access_token");
-      }
-    }
-
-    // If no valid stored token, proceed with auth flow
     const generateAuthUrl = () => {
       const baseUrl = "https://business-api.tiktok.com/portal/auth";
       const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
@@ -103,7 +39,6 @@ export default function HomePage() {
       if (!appId || !redirectUri) {
         const errorMsg = "Client-side TikTok credentials are not configured.";
         setError(errorMsg);
-        setIsLoading(false);
         return;
       }
 
@@ -117,19 +52,31 @@ export default function HomePage() {
     };
 
     generateAuthUrl();
+    
     const urlParams = new URLSearchParams(window.location.search);
     const urlAuthCode = urlParams.get("auth_code");
 
     if (urlAuthCode) {
-      handleGetAccessToken(urlAuthCode);
+      login(urlAuthCode).catch((err: Error) => {
+        setError(err.message || "Failed to get access token.");
+        toast({
+          title: "Authorization Error",
+          description: err.message || "Could not retrieve access token.",
+          variant: "destructive",
+        });
+      });
+      // Clean the URL
+      const url = new URL(window.location.href);
+      url.searchParams.delete("auth_code");
+      url.searchParams.delete("error");
+      window.history.replaceState(null, "", url.toString());
     } else {
-      setIsLoading(false); // No token and no auth code, stop loading.
-      if (urlParams.get("error")) {
+       if (urlParams.get("error")) {
         const authError = "Authorization was cancelled or failed.";
         setError(authError);
       }
     }
-  }, [handleGetAccessToken]);
+  }, [login, toast]);
 
   const handleTryAgain = () => {
     setError(null);

@@ -1,60 +1,35 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { PixelStep } from "@/components/tiktok-pixel/pixel-step";
 import { EventStep } from "@/components/tiktok-pixel/event-step";
 import { BotMessageSquare, CheckCircle, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAuth } from "@/contexts/auth-context";
 
 export default function TikTokVideoAnchorPage() {
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [pixelId, setPixelId] = useState<string | null>(null);
-  const [pixelCode, setPixelCode] = useState<string | null>(null);
-  const [advertiserId, setAdvertiserId] = useState<string | null>(null);
-  const [eventSent, setEventSent] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const { accessToken, isLoading, logout, pixelId, setPixelId, advertiserId, setAdvertiserId, pixelCode, setPixelCode, eventSent, setEventSent } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("tiktok_access_token");
-    if (storedToken) {
-      try {
-        const { token, expiresAt } = JSON.parse(storedToken);
-        if (new Date().getTime() < expiresAt) {
-          setAccessToken(token);
-        } else {
-          localStorage.removeItem("tiktok_access_token");
-          router.replace("/");
-        }
-      } catch (e) {
-        localStorage.removeItem("tiktok_access_token");
-        router.replace("/");
-      }
-    } else {
+    if (!isLoading && !accessToken) {
       router.replace("/");
     }
-    setIsLoading(false);
-  }, [router]);
+  }, [isLoading, accessToken, router]);
 
   const handleReset = () => {
-    localStorage.removeItem("tiktok_access_token");
-    setAccessToken(null);
-    setPixelId(null);
-    setPixelCode(null);
-    setAdvertiserId(null);
-    setEventSent(false);
+    logout();
     router.push("/");
   };
 
-  if (isLoading) {
+  if (isLoading || !accessToken) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="w-full max-w-lg space-y-4">
           <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-40 w-full" />
           <Skeleton className="h-40 w-full" />
         </div>
       </div>
@@ -78,19 +53,18 @@ export default function TikTokVideoAnchorPage() {
         </header>
 
         <main className="space-y-6">
-          {accessToken && (
-            <PixelStep
-              accessToken={accessToken}
-              onPixelCreated={(newPixelId, newAdvertiserId, newPixelCode) => {
-                setPixelId(newPixelId);
-                setAdvertiserId(newAdvertiserId);
-                setPixelCode(newPixelCode);
-              }}
-              pixelId={pixelId}
-              pixelCode={pixelCode}
-            />
-          )}
-          {accessToken && pixelId && advertiserId && pixelCode && (
+          <PixelStep
+            accessToken={accessToken}
+            onPixelCreated={(newPixelId, newAdvertiserId, newPixelCode) => {
+              setPixelId(newPixelId);
+              setAdvertiserId(newAdvertiserId);
+              setPixelCode(newPixelCode);
+            }}
+            pixelId={pixelId}
+            pixelCode={pixelCode}
+          />
+          
+          {pixelId && advertiserId && pixelCode && (
             <EventStep
               accessToken={accessToken}
               pixelCode={pixelCode}
