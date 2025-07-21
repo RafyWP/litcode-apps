@@ -37,6 +37,18 @@ export default function HomePage() {
   const [authUrl, setAuthUrl] = useState("");
   const [avatarImages, setAvatarImages] = useState<string[]>([]);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [rotatingWordIndex, setRotatingWordIndex] = useState(0);
+  const rotatingWords = ["Shop", "Video", "Lives"];
+
+  useEffect(() => {
+    const wordInterval = setInterval(() => {
+      setRotatingWordIndex((prevIndex) => (prevIndex + 1) % rotatingWords.length);
+    }, 2000); // Change word every 2 seconds
+
+    return () => {
+      clearInterval(wordInterval);
+    };
+  }, []);
 
   useEffect(() => {
     // This logic runs only on the client side.
@@ -156,6 +168,8 @@ export default function HomePage() {
     );
   }
 
+  const currentWord = rotatingWords[rotatingWordIndex];
+
   return (
     <>
       <VideoPopup open={isVideoOpen} onOpenChange={setIsVideoOpen} />
@@ -167,7 +181,15 @@ export default function HomePage() {
                 Stop struggling and master it now
               </p>
               <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
-                How to Sell on TikTok
+                How to Sell on TikTok{" "}
+                <span className="inline-block text-accent relative w-[1.75ch] sm:w-[2ch] lg:w-[2.25ch]">
+                  <span
+                    key={currentWord}
+                    className="typing-effect absolute left-0"
+                  >
+                    {currentWord}
+                  </span>
+                </span>
               </h1>
               <p className="max-w-prose text-sm text-muted-foreground md:text-lg">
                 Our suite of tools is designed to help you maximize your reach,
