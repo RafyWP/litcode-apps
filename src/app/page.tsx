@@ -28,13 +28,58 @@ import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { VideoPopup } from "@/components/video-popup";
 
-const avatarImages = Array.from({ length: 9 }, (_, i) => `https://i.pravatar.cc/48?img=${i + 1}`);
+const AVATAR_CACHE_KEY = "avatarCache";
+const CACHE_DURATION_MS = 60 * 60 * 1000; // 1 hour
 
 export default function HomePage() {
   const { toast } = useToast();
   const { accessToken, isLoading, login, logout } = useAuth();
   const [authUrl, setAuthUrl] = useState("");
+  const [avatarImages, setAvatarImages] = useState<string[]>([]);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+
+  useEffect(() => {
+    // This logic runs only on the client side.
+    const getAvatarNumbers = () => {
+      try {
+        const cachedData = localStorage.getItem(AVATAR_CACHE_KEY);
+        if (cachedData) {
+          const { numbers, expires } = JSON.parse(cachedData);
+          if (new Date().getTime() < expires) {
+            return numbers; // Return cached numbers if not expired
+          }
+        }
+      } catch (error) {
+        console.error("Failed to read from localStorage", error);
+      }
+
+      // Generate a new sequence if cache is invalid or expired
+      const uniqueNumbers = new Set<number>();
+      while (uniqueNumbers.size < 9) {
+        // Pravatar has around 70 images
+        uniqueNumbers.add(Math.floor(Math.random() * 70) + 1);
+      }
+      const newNumbers = Array.from(uniqueNumbers);
+      
+      const newCacheData = {
+        numbers: newNumbers,
+        expires: new Date().getTime() + CACHE_DURATION_MS,
+      };
+
+      try {
+        localStorage.setItem(AVATAR_CACHE_KEY, JSON.stringify(newCacheData));
+      } catch (error) {
+        console.error("Failed to write to localStorage", error);
+      }
+
+      return newNumbers;
+    };
+
+    const numbers = getAvatarNumbers();
+    const urls = numbers.map(num => `https://i.pravatar.cc/48?img=${num}`);
+    setAvatarImages(urls);
+
+  }, []);
 
   useEffect(() => {
     const generateAuthUrl = () => {
@@ -131,7 +176,7 @@ export default function HomePage() {
               <div className="flex items-center justify-center pt-4 -space-x-4">
                 {avatarImages.map((src, index) => (
                   <Image
-                    key={index}
+                    key={src} // Using src as key since it's unique
                     src={src}
                     alt={`User ${index + 1}`}
                     width={48}
