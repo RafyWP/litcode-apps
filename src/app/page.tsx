@@ -76,7 +76,7 @@ export default function HomePage() {
     };
 
     const numbers = getAvatarNumbers();
-    const urls = numbers.map(num => `https://i.pravatar.cc/48?img=${num}`);
+    const urls = numbers.map((num: number) => `https://i.pravatar.cc/48?img=${num}`);
     setAvatarImages(urls);
 
   }, []);
