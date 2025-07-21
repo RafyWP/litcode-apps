@@ -130,8 +130,7 @@ export default function HomePage() {
                 {Array.from({ length: 9 }).map((_, index) => (
                   <Image
                     key={index}
-                    src={`https://placehold.co/48x48.png`}
-                    data-ai-hint="avatar"
+                    src="/images/favicon.png"
                     alt={`User ${index + 1}`}
                     width={48}
                     height={48}
