@@ -28,6 +28,18 @@ import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { VideoPopup } from "@/components/video-popup";
 
+const avatarImages = [
+  '/images/avatars/avatar-1.png',
+  '/images/avatars/avatar-2.png',
+  '/images/avatars/avatar-3.png',
+  '/images/avatars/avatar-4.png',
+  '/images/avatars/avatar-5.png',
+  '/images/avatars/avatar-6.png',
+  '/images/avatars/avatar-7.png',
+  '/images/avatars/avatar-8.png',
+  '/images/avatars/avatar-9.png',
+];
+
 export default function HomePage() {
   const { toast } = useToast();
   const { accessToken, isLoading, login, logout } = useAuth();
@@ -127,10 +139,10 @@ export default function HomePage() {
                 engagement, and conversions on TikTok, effortlessly. Start using our applications for free!
               </p>
               <div className="flex items-center justify-center pt-4 -space-x-4">
-                {Array.from({ length: 9 }).map((_, index) => (
+                {avatarImages.map((src, index) => (
                   <Image
                     key={index}
-                    src="/images/favicon.png"
+                    src={src}
                     alt={`User ${index + 1}`}
                     width={48}
                     height={48}
@@ -260,7 +272,7 @@ export default function HomePage() {
                         </CardDescription>
                         <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground mt-2">
                           <div className="flex items-center gap-1.5">
-                            <TrendingUp className="h-3.5 w-3.5" />
+                            <TrendingUp className="h-3.5 w-3.s5" />
                             <span>Organic Growth</span>
                           </div>
                           <div className="flex items-center gap-1.5">
