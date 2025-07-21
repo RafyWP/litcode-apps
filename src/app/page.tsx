@@ -182,13 +182,11 @@ export default function HomePage() {
               </p>
               <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
                 How to Sell on TikTok{" "}
-                <span className="inline-block text-accent relative w-[1.75ch] sm:w-[2ch] lg:w-[2.25ch]">
-                  <span
-                    key={currentWord}
-                    className="typing-effect absolute left-0"
-                  >
-                    {currentWord}
-                  </span>
+                <span
+                  key={currentWord}
+                  className="inline-block text-accent typing-effect"
+                >
+                  {currentWord}
                 </span>
               </h1>
               <p className="max-w-prose text-sm text-muted-foreground md:text-lg">
