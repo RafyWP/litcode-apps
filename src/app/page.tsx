@@ -28,17 +28,7 @@ import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { VideoPopup } from "@/components/video-popup";
 
-const avatarImages = [
-  '/images/avatars/testimonial-avatar-01.jpg',
-  '/images/avatars/testimonial-avatar-02.jpg',
-  '/images/avatars/testimonial-avatar-03.jpg',
-  '/images/avatars/testimonial-avatar-04.jpg',
-  '/images/avatars/testimonial-avatar-05.jpg',
-  '/images/avatars/testimonial-avatar-06.jpg',
-  '/images/avatars/testimonial-avatar-07.jpg',
-  '/images/avatars/testimonial-avatar-08.jpg',
-  '/images/avatars/testimonial-avatar-09.jpg',
-];
+const avatarImages = Array.from({ length: 9 }, (_, i) => `https://i.pravatar.cc/48?img=${i + 1}`);
 
 export default function HomePage() {
   const { toast } = useToast();
