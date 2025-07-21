@@ -37,18 +37,6 @@ export default function HomePage() {
   const [authUrl, setAuthUrl] = useState("");
   const [avatarImages, setAvatarImages] = useState<string[]>([]);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
-  const [rotatingWordIndex, setRotatingWordIndex] = useState(0);
-  const rotatingWords = ["Shop", "Video", "Lives"];
-
-  useEffect(() => {
-    const wordInterval = setInterval(() => {
-      setRotatingWordIndex((prevIndex) => (prevIndex + 1) % rotatingWords.length);
-    }, 2000); // Change word every 2 seconds
-
-    return () => {
-      clearInterval(wordInterval);
-    };
-  }, []);
 
   useEffect(() => {
     // This logic runs only on the client side.
@@ -168,8 +156,6 @@ export default function HomePage() {
     );
   }
 
-  const currentWord = rotatingWords[rotatingWordIndex];
-
   return (
     <>
       <VideoPopup open={isVideoOpen} onOpenChange={setIsVideoOpen} />
@@ -182,11 +168,8 @@ export default function HomePage() {
               </p>
               <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
                 How to Sell on TikTok{" "}
-                <span
-                  key={currentWord}
-                  className="inline-block text-accent typing-effect"
-                >
-                  {currentWord}
+                <span className="inline-block text-accent">
+                  Shop
                 </span>
               </h1>
               <p className="max-w-prose text-sm text-muted-foreground md:text-lg">
