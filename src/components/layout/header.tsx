@@ -16,27 +16,27 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center justify-between px-4 md:px-8">
+    <header className="w-full border-b border-border bg-background">
+      <div className="container flex h-14 items-center justify-center px-4 md:px-8 sm:justify-between">
         <div className="flex items-center">
           <Link
             href="/"
-            className="mr-6 flex items-center space-x-3 pt-[3px]"
+            className="flex items-center space-x-3 pt-[3px] sm:mr-6"
           >
             <Sparkles className="h-5 w-5 text-yellow-500 mt-[-3px]" />
-            <span className="font-bold sm:inline-block leading-none">
+            <span className="font-bold leading-none">
               LitCode Store
             </span>
             <span
-              className="h-4 w-px self-center bg-border"
+              className="h-4 w-px self-center bg-border hidden sm:inline-block"
               aria-hidden="true"
             />
-            <span className="font-semibold text-muted-foreground sm:inline-block leading-none">
+            <span className="font-semibold text-muted-foreground hidden sm:inline-block leading-none">
               TikTok-integrated Web App Store
             </span>
           </Link>
         </div>
-        <div className="flex items-center justify-end">
+        <div className="hidden sm:flex items-center justify-end">
           {accessToken ? (
             <button
               onClick={handleLogout}

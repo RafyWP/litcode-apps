@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Sofia_Sans } from 'next/font/google';
 import { AuthProvider } from '@/contexts/auth-context';
 import Header from '@/components/layout/header';
+import Footer from '@/components/layout/footer';
 
 const sofiaSans = Sofia_Sans({
   subsets: ['latin'],
@@ -26,10 +27,13 @@ export default function RootLayout({
     <html lang="en" className={`${sofiaSans.variable} dark`} suppressHydrationWarning>
       <head>
       </head>
-      <body className="font-body antialiased">
+      <body className="font-body antialiased flex flex-col min-h-screen">
         <AuthProvider>
           <Header />
-          {children}
+          <div className="flex-grow">
+            {children}
+          </div>
+          <Footer />
         </AuthProvider>
         <Toaster />
       </body>
