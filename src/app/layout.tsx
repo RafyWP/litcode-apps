@@ -14,8 +14,8 @@ const sofiaSans = Sofia_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'TikTok Video Anchor',
-  description: 'Create your TikTok pixel for GTM, no e-commerce required.',
+  title: 'How to Sell on TikTok, LitCode Store',
+  description: 'Our suite of tools is designed to help you maximize your reach, engagement, and conversions on TikTok, effortlessly.',
 };
 
 export default function RootLayout({
