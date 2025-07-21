@@ -29,15 +29,15 @@ import Image from "next/image";
 import { VideoPopup } from "@/components/video-popup";
 
 const avatarImages = [
-  '/images/avatars/avatar-1.png',
-  '/images/avatars/avatar-2.png',
-  '/images/avatars/avatar-3.png',
-  '/images/avatars/avatar-4.png',
-  '/images/avatars/avatar-5.png',
-  '/images/avatars/avatar-6.png',
-  '/images/avatars/avatar-7.png',
-  '/images/avatars/avatar-8.png',
-  '/images/avatars/avatar-9.png',
+  '/images/avatars/testimonial-avatar-01.png',
+  '/images/avatars/testimonial-avatar-02.png',
+  '/images/avatars/testimonial-avatar-03.png',
+  '/images/avatars/testimonial-avatar-04.png',
+  '/images/avatars/testimonial-avatar-05.png',
+  '/images/avatars/testimonial-avatar-06.png',
+  '/images/avatars/testimonial-avatar-07.png',
+  '/images/avatars/testimonial-avatar-08.png',
+  '/images/avatars/testimonial-avatar-09.png',
 ];
 
 export default function HomePage() {
