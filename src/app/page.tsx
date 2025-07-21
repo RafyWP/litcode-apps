@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -29,7 +30,7 @@ import { VideoPopup } from "@/components/video-popup";
 
 export default function HomePage() {
   const { toast } = useToast();
-  const { accessToken, isLoading, login } = useAuth();
+  const { accessToken, isLoading, login, logout } = useAuth();
   const [authUrl, setAuthUrl] = useState("");
   const [isVideoOpen, setIsVideoOpen] = useState(false);
 
@@ -61,7 +62,7 @@ export default function HomePage() {
     const urlParams = new URLSearchParams(window.location.search);
     const urlAuthCode = urlParams.get("auth_code");
 
-    if (urlAuthCode) {
+    if (urlAuthCode && !accessToken) {
       login(urlAuthCode).catch((err: Error) => {
         toast({
           title: "Authorization Error",
@@ -75,85 +76,34 @@ export default function HomePage() {
       url.searchParams.delete("error");
       window.history.replaceState(null, "", url.toString());
     }
-  }, [login, toast]);
+  }, [login, toast, accessToken]);
 
   if (isLoading) {
     return (
-      <div className="w-full max-w-4xl">
-        <h2 className="text-3xl font-bold text-center mb-6 font-headline">Our Applications</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* TikTok Video Anchor Card */}
-          <Card className="hover:border-primary/80 transition-colors aspect-square flex flex-col p-4">
-            <div className="flex flex-col h-full">
-              <div className="flex items-start gap-4">
-                <div className="bg-primary/10 p-2 rounded-lg border shrink-0">
-                  <Anchor className="h-6 w-6 md:h-8 md:w-8 text-primary" />
-                </div>
-                <div className="flex flex-col overflow-hidden">
-                  <CardTitle className="font-headline text-base md:text-xl font-bold tracking-tight text-left">
-                    TikTok Video Anchor
-                  </CardTitle>
-                  <CardDescription className="md:mt-1 text-left truncate md:overflow-visible md:whitespace-normal">
-                    Anchor every item in your videos with clickable links that convert views into sales.
-                  </CardDescription>
-                  <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground mt-2">
-                    <div className="flex items-center gap-1.5">
-                      <BellRing className="h-3.5 w-3.5" />
-                      <span>Conversion</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <LinkIcon className="h-3.5 w-3.5" />
-                      <span>1,200+ Links Gen.</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <CardFooter className="mt-auto p-0 pt-4">
-                <Button className="w-full" asChild>
-                  <a href={authUrl}>
-                    <LogIn className="mr-2" />
-                    Login with TikTok Business
-                  </a>
-                </Button>
-              </CardFooter>
-            </div>
-          </Card>
-          
-          {/* CopyTok Card */}
-          <Card className="hover:border-accent/80 transition-colors aspect-square flex flex-col p-4">
-            <div className="flex flex-col h-full">
-              <div className="flex items-start gap-4">
-                <div className="bg-accent/10 p-2 rounded-lg border shrink-0">
-                  <Bot className="h-6 w-6 md:h-8 md:w-8 text-accent" />
-                </div>
-                <div className="flex flex-col overflow-hidden">
-                  <CardTitle className="font-headline text-base md:text-xl font-bold tracking-tight text-left">
-                    CopyTok
-                  </CardTitle>
-                  <CardDescription className="md:mt-1 text-left truncate md:overflow-visible md:whitespace-normal">
-                    TikTok viral captions with psychological triggers that demand engagement.
-                  </CardDescription>
-                  <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground mt-2">
-                    <div className="flex items-center gap-1.5">
-                      <TrendingUp className="h-3.5 w-3.5" />
-                      <span>Organic Growth</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <Users className="h-3.5 w-3.5" />
-                      <span>15k+ Captions Gen.</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <CardFooter className="mt-auto p-0 pt-4">
-                <Button variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground" asChild>
-                  <a href="https://copytok.b2bear.com" target="_blank" rel="noopener noreferrer">
-                    Generate TikTok Captions
-                  </a>
-                </Button>
-              </CardFooter>
-            </div>
-          </Card>
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  // Redirect to the tool page if logged in
+  if (accessToken) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
+        <h1 className="text-3xl font-bold mb-4">You are logged in!</h1>
+        <p className="text-muted-foreground mb-6">
+          You can now proceed to the video anchor tool.
+        </p>
+        <div className="flex gap-4">
+          <Button asChild>
+            <Link href="/tiktok-video-anchor">
+              Go to TikTok Video Anchor <ArrowRight className="ml-2" />
+            </Link>
+          </Button>
+          <Button variant="outline" onClick={logout}>
+            <LogIn className="mr-2" />
+            Logout
+          </Button>
         </div>
       </div>
     );
@@ -162,7 +112,7 @@ export default function HomePage() {
   return (
     <>
       <VideoPopup open={isVideoOpen} onOpenChange={setIsVideoOpen} />
-      <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground -mt-16">
+      <div className="flex flex-col items-center justify-center bg-background text-foreground">
         <section className="w-full py-16 md:py-24">
           <div className="container mx-auto px-4 text-center md:px-6">
             <div className="flex flex-col items-center space-y-4">
@@ -255,7 +205,83 @@ export default function HomePage() {
         </section>
 
         <main className="flex items-center justify-center w-full pb-24 px-4">
-          {renderContent()}
+            <div className="w-full max-w-4xl">
+              <h2 className="text-3xl font-bold text-center mb-6 font-headline">Our Applications</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* TikTok Video Anchor Card */}
+                <Card className="hover:border-primary/80 transition-colors aspect-square flex flex-col p-4">
+                  <div className="flex flex-col h-full">
+                    <div className="flex items-start gap-4">
+                      <div className="bg-primary/10 p-2 rounded-lg border shrink-0">
+                        <Anchor className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+                      </div>
+                      <div className="flex flex-col overflow-hidden">
+                        <CardTitle className="font-headline text-base md:text-xl font-bold tracking-tight text-left">
+                          TikTok Video Anchor
+                        </CardTitle>
+                        <CardDescription className="md:mt-1 text-left truncate md:overflow-visible md:whitespace-normal">
+                          Anchor every item in your videos with clickable links that convert views into sales.
+                        </CardDescription>
+                        <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground mt-2">
+                          <div className="flex items-center gap-1.5">
+                            <BellRing className="h-3.5 w-3.5" />
+                            <span>Conversion</span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <LinkIcon className="h-3.5 w-3.5" />
+                            <span>1,200+ Links Gen.</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <CardFooter className="mt-auto p-0 pt-4">
+                      <Button className="w-full" asChild>
+                        <a href={authUrl}>
+                          <LogIn className="mr-2" />
+                          Login with TikTok Business
+                        </a>
+                      </Button>
+                    </CardFooter>
+                  </div>
+                </Card>
+                
+                {/* CopyTok Card */}
+                <Card className="hover:border-accent/80 transition-colors aspect-square flex flex-col p-4">
+                  <div className="flex flex-col h-full">
+                    <div className="flex items-start gap-4">
+                      <div className="bg-accent/10 p-2 rounded-lg border shrink-0">
+                        <Bot className="h-6 w-6 md:h-8 md:w-8 text-accent" />
+                      </div>
+                      <div className="flex flex-col overflow-hidden">
+                        <CardTitle className="font-headline text-base md:text-xl font-bold tracking-tight text-left">
+                          CopyTok
+                        </CardTitle>
+                        <CardDescription className="md:mt-1 text-left truncate md:overflow-visible md:whitespace-normal">
+                          TikTok viral captions with psychological triggers that demand engagement.
+                        </CardDescription>
+                        <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground mt-2">
+                          <div className="flex items-center gap-1.5">
+                            <TrendingUp className="h-3.5 w-3.5" />
+                            <span>Organic Growth</span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <Users className="h-3.5 w-3.5" />
+                            <span>15k+ Captions Gen.</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <CardFooter className="mt-auto p-0 pt-4">
+                      <Button variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground" asChild>
+                        <a href="https://copytok.b2bear.com" target="_blank" rel="noopener noreferrer">
+                          Generate TikTok Captions
+                        </a>
+                      </Button>
+                    </CardFooter>
+                  </div>
+                </Card>
+              </div>
+            </div>
         </main>
       </div>
     </>
