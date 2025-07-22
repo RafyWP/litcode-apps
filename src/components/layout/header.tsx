@@ -12,10 +12,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
+import React from "react";
 
 export default function Header() {
   const { accessToken, logout } = useAuth();
   const router = useRouter();
+  const [isAppsMenuOpen, setIsAppsMenuOpen] = React.useState(false);
 
   const handleLogout = () => {
     logout();
@@ -51,29 +53,34 @@ export default function Header() {
         </div>
         <div className="hidden sm:flex items-center justify-end space-x-4">
           <nav className="flex items-center space-x-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="text-sm font-medium text-foreground hover:text-foreground/70"
-                >
-                  Apps <ChevronDown className="relative top-[1px] ml-1 h-3 w-3" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem asChild>
-                   <Link href="/tiktok-video-anchor">
-                    <Anchor className="mr-2 h-4 w-4" />
-                    <span>TikTok Video Anchor</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <a href="https://apps.litcode.store/copytok">
-                    <Bot className="mr-2 h-4 w-4" />
-                    <span>CopyTok</span>
-                  </a>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
+            <DropdownMenu open={isAppsMenuOpen} onOpenChange={setIsAppsMenuOpen}>
+                <div onMouseEnter={() => setIsAppsMenuOpen(true)} onMouseLeave={() => setIsAppsMenuOpen(false)} className="py-2">
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                        variant="ghost"
+                        className="text-sm font-medium text-foreground hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                        asChild
+                        >
+                        <Link href="/apps">
+                            Apps <ChevronDown className="relative top-[1px] ml-1 h-3 w-3 transition-transform duration-200" style={{ transform: isAppsMenuOpen ? 'rotate(180deg)' : 'rotate(0)' }} />
+                        </Link>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" onMouseEnter={() => setIsAppsMenuOpen(true)} onMouseLeave={() => setIsAppsMenuOpen(false)}>
+                        <DropdownMenuItem asChild>
+                        <Link href="/tiktok-video-anchor">
+                            <Anchor className="mr-2 h-4 w-4" />
+                            <span>TikTok Video Anchor</span>
+                        </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                        <a href="https://apps.litcode.store/copytok">
+                            <Bot className="mr-2 h-4 w-4" />
+                            <span>CopyTok</span>
+                        </a>
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </div>
             </DropdownMenu>
 
             {navLinks.map((link) => (
