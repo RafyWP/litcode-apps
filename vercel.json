@@ -1,9 +1,0 @@
-
-{
-  "build": {
-    "env": {
-      "TIKTOK_APP_ID": "@tiktok_app_id",
-      "TIKTOK_SECRET": "@tiktok_secret"
-    }
-  }
-}
