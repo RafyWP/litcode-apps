@@ -8,6 +8,7 @@ import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { get } from '@vercel/edge-config';
+import React from 'react';
 
 const sofiaSans = Sofia_Sans({
   subsets: ['latin'],
@@ -25,13 +26,21 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Fetch the YouTube video URL from Edge Config on the server.
-  // Use a default value if not found.
-  const youtubeVideoUrl = await get<string>('youtubeVideoUrl') || 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+  let youtubeVideoUrl: string | undefined;
+  const defaultYoutubeUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+
+  try {
+    // This will work in Vercel environment
+    youtubeVideoUrl = await get<string>('youtubeVideoUrl');
+  } catch (error) {
+    // This will catch the error in local development
+    console.log("Could not fetch from Edge Config, using default. Error: ", (error as Error).message);
+    // The default value will be used below
+  }
 
   // We need to clone the children to pass the new prop down.
   const childrenWithProps = React.cloneElement(children as React.ReactElement, {
-    youtubeVideoUrl: youtubeVideoUrl,
+    youtubeVideoUrl: youtubeVideoUrl || defaultYoutubeUrl,
   });
 
   return (
