@@ -41,15 +41,6 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
   const [authUrl, setAuthUrl] = useState("");
   const [avatarImages, setAvatarImages] = useState<string[]>([]);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
-    }, 2000); // Change word every 2 seconds
-
-    return () => clearInterval(interval); // Cleanup on component unmount
-  }, []);
 
   useEffect(() => {
     // This logic runs only on the client side.
@@ -183,15 +174,16 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
                 <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
                   How to Sell on TikTok
                 </h1>
-                <div 
-                  className="text-accent text-xl sm:text-2xl lg:text-3xl font-bold h-[2.2rem] sm:h-[2.5rem] lg:h-[2.8rem] overflow-hidden"
+                <div
+                  className="inline-block text-accent text-xl sm:text-2xl lg:text-3xl font-bold h-36 overflow-hidden"
                   style={{
                     maskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)',
                     WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)'
                   }}
                 >
-                   <div key={currentWordIndex} className="animate-teleprompter-up">
-                    {words[currentWordIndex]}
+                  <div className="animate-teleprompter-up">
+                    {words.map((word) => <div key={word} className="py-2">{word}</div>)}
+                    {words.map((word) => <div key={`${word}-clone`} className="py-2">{word}</div>)}
                   </div>
                 </div>
               </div>
@@ -381,3 +373,5 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
     </>
   );
 }
+
+    
