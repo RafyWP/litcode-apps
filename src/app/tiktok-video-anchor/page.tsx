@@ -271,7 +271,7 @@ export default function TikTokVideoAnchorPage() {
                   </div>
               </div>
               <CardFooter className="mt-6 p-0 flex flex-col gap-4">
-                {!isEmailVerified && (
+                {!isEmailVerified ? (
                   <div className="w-full space-y-2">
                       <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">Order Email</Label>
                       <div className="flex items-center gap-2">
@@ -284,7 +284,6 @@ export default function TikTokVideoAnchorPage() {
                           disabled={isCheckingEmail}
                         />
                         <Button
-                          size="icon"
                           variant="outline"
                           onClick={handleVerifyEmail}
                           disabled={isCheckingEmail}
@@ -298,8 +297,7 @@ export default function TikTokVideoAnchorPage() {
                         </Button>
                       </div>
                     </div>
-                )}
-                {isEmailVerified && (
+                ) : (
                   <Button
                     className="w-full animate-in fade-in"
                     onClick={() => {
