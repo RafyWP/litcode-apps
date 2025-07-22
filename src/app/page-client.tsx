@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,6 @@ import {
 } from "@/components/ui/card";
 import {
   Loader2,
-  ArrowRight,
   Anchor,
   LogIn,
   Link as LinkIcon,
@@ -38,10 +38,12 @@ const words2 = ["Physical", "Digital", "Services"];
 // The page now accepts youtubeVideoUrl as a prop.
 export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: string }) {
   const { toast } = useToast();
-  const { accessToken, isLoading, login, logout } = useAuth();
+  const { accessToken, isLoading, login } = useAuth();
+  const router = useRouter();
   const [authUrl, setAuthUrl] = useState("");
   const [avatarImages, setAvatarImages] = useState<string[]>([]);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     // This logic runs only on the client side.
@@ -130,33 +132,17 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
     }
   }, [login, toast, accessToken]);
 
-  if (isLoading) {
+  useEffect(() => {
+    if (accessToken) {
+      setIsRedirecting(true);
+      router.push("/tiktok-video-anchor");
+    }
+  }, [accessToken, router]);
+
+  if (isLoading || isRedirecting) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Loader2 className="h-12 w-12 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  // Redirect to the tool page if logged in
-  if (accessToken) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-        <h1 className="text-3xl font-bold mb-4">You are logged in!</h1>
-        <p className="text-muted-foreground mb-6">
-          You can now proceed to the video anchor tool.
-        </p>
-        <div className="flex gap-4">
-          <Button asChild>
-            <Link href="/tiktok-video-anchor">
-              Go to TikTok Video Anchor <ArrowRight className="ml-2" />
-            </Link>
-          </Button>
-          <Button variant="outline" onClick={logout}>
-            <LogIn className="mr-2" />
-            Logout
-          </Button>
-        </div>
       </div>
     );
   }
@@ -295,7 +281,7 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
                         <CardTitle className="font-headline text-base md:text-xl font-bold tracking-tight text-left">
                           TikTok Video Anchor
                         </CardTitle>
-                        <CardDescription className="md:mt-1 text-left truncate md:overflow-visible md:whitespace-normal">
+                        <CardDescription className="md:mt-1 text-left md:overflow-visible md:whitespace-normal">
                           Anchor every item in your videos with clickable links that convert views into sales.
                         </CardDescription>
                         <div className="flex items-start gap-4 text-xs text-muted-foreground mt-2">
@@ -332,7 +318,7 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
                         <CardTitle className="font-headline text-base md:text-xl font-bold tracking-tight text-left">
                           CopyTok
                         </CardTitle>
-                        <CardDescription className="md:mt-1 text-left truncate md:overflow-visible md:whitespace-normal">
+                        <CardDescription className="md:mt-1 text-left md:overflow-visible md:whitespace-normal">
                           TikTok viral captions with psychological triggers that demand engagement.
                         </CardDescription>
                         <div className="flex items-start gap-4 text-xs text-muted-foreground mt-2">
