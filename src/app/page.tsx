@@ -337,7 +337,7 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
 
         <section className="w-full border-t border-border bg-card">
           <div className="container mx-auto px-4 py-16 text-center md:px-6 md:py-24">
-            <div className="mx-auto max-w-2xl">
+            <div className="mx-auto max-w-prose">
               <h2 className="text-3xl font-bold tracking-tight text-card-foreground sm:text-4xl">
                 Join the Movement.
               </h2>
