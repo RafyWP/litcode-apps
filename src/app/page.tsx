@@ -168,14 +168,16 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
               <p className="text-xs sm:text-sm font-semibold tracking-wider uppercase text-primary">
                 Stop struggling and master it now
               </p>
-              <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
-                How to Sell on TikTok{" "}
-                <div className="inline-block text-accent">
+              <div className="flex items-center justify-center gap-4">
+                <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
+                  How to Sell on TikTok
+                </h1>
+                <div className="text-accent text-xl sm:text-2xl lg:text-3xl font-bold flex flex-col items-start leading-tight">
                   <span>Shop</span>
-                  <span>Video</span>
+                  <span>Videos</span>
                   <span>LIVEs</span>
                 </div>
-              </h1>
+              </div>
               <p className="max-w-prose text-sm text-muted-foreground md:text-lg">
                 Our suite of tools is designed to help you maximize your reach,
                 engagement, and conversions on TikTok, effortlessly. Start using our applications for free!
