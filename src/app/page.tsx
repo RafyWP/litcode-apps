@@ -367,8 +367,8 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
         <section className="w-full border-t border-border bg-card">
           <div className="container mx-auto px-4 md:px-6 py-16 md:py-24 text-center">
             <div className="mx-auto max-w-prose">
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-card-foreground">
-                Join the Movement.
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-card-foreground transform-gpu hover:animate-shake">
+                Join the Movement
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground md:text-lg md:leading-8">
                 <span>Get full access to our powerful tools and join a thriving community</span>
