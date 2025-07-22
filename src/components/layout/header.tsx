@@ -66,7 +66,7 @@ export default function Header() {
                         </Link>
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" onMouseEnter={() => setIsAppsMenuOpen(true)} onMouseLeave={() => setIsAppsMenuOpen(false)}>
+                    <DropdownMenuContent align="end">
                         <DropdownMenuItem asChild>
                         <Link href="/tiktok-video-anchor">
                             <Anchor className="mr-2 h-4 w-4" />
