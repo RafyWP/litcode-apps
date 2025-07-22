@@ -68,7 +68,7 @@ export default function Header() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <a href="https://apps.litcode.store/copytok" target="_blank" rel="noopener noreferrer">
+                  <a href="https://apps.litcode.store/copytok">
                     <Bot className="mr-2 h-4 w-4" />
                     <span>CopyTok</span>
                   </a>
