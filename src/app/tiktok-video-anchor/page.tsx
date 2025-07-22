@@ -27,12 +27,13 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { createPixel, getAdvertisers, trackEvent } from "@/app/actions";
+import { createPixel, getAdvertisers, trackEvent, verifyEmail } from "@/app/actions";
 import {
   Anchor,
   CheckCircle,
   Copy,
   Loader2,
+  LockKeyhole,
   LogIn,
   Send,
   WandSparkles,
@@ -62,6 +63,11 @@ export default function TikTokVideoAnchorPage() {
 
   const [isFetchingAdvertisers, setIsFetchingAdvertisers] = useState(true);
   const [advertisers, setAdvertisers] = useState<Advertiser[]>([]);
+
+  // State for email verification
+  const [email, setEmail] = useState("");
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [isCheckingEmail, setIsCheckingEmail] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -144,6 +150,35 @@ export default function TikTokVideoAnchorPage() {
       fetchAdvertisers();
     }
   }, [accessToken, toast]);
+
+  const handleVerifyEmail = async () => {
+    if (!email) {
+      toast({
+        title: "Email Required",
+        description: "Please enter your order email.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setIsCheckingEmail(true);
+    const result = await verifyEmail({ email });
+    setIsCheckingEmail(false);
+
+    if (result.success) {
+      setIsEmailVerified(true);
+      toast({
+        title: "Email Verified!",
+        description: "You can now log in with TikTok.",
+        className: "bg-green-600 text-white",
+      });
+    } else {
+      toast({
+        title: "Verification Failed",
+        description: result.error,
+        variant: "destructive",
+      });
+    }
+  };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!accessToken) return;
@@ -231,12 +266,40 @@ export default function TikTokVideoAnchorPage() {
                           TikTok Video Anchor
                       </CardTitle>
                       <CardDescription className="mt-1">
-                          Please log in with your TikTok Business account to generate a pixel.
+                          Verify your email to unlock the tool and generate a pixel.
                       </CardDescription>
                   </div>
               </div>
-              <CardFooter className="mt-6 p-0">
-                  <Button className="w-full" asChild disabled={!authUrl}>
+              <CardFooter className="mt-6 p-0 flex flex-col gap-4">
+                 <div className="w-full space-y-2">
+                    <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">Order Email</Label>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        id="email-verify"
+                        type="email"
+                        placeholder="Enter your email to unlock"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        disabled={isEmailVerified || isCheckingEmail}
+                      />
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        onClick={handleVerifyEmail}
+                        disabled={isEmailVerified || isCheckingEmail}
+                        aria-label="Verify Email"
+                      >
+                        {isCheckingEmail ? (
+                          <Loader2 className="animate-spin" />
+                        ) : isEmailVerified ? (
+                          <CheckCircle className="text-green-500" />
+                        ) : (
+                          <LockKeyhole />
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                  <Button className="w-full" asChild disabled={!isEmailVerified || !authUrl}>
                       <a href={authUrl}>
                           <LogIn className="mr-2" />
                           Login with TikTok Business

@@ -23,15 +23,11 @@ import {
   Users,
   BellRing,
   Sparkles,
-  LockKeyhole,
-  CheckCircle,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { VideoPopup } from "@/components/video-popup";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { verifyEmail } from "./actions";
+import Link from "next/link";
 
 const AVATAR_CACHE_KEY = "avatarCache";
 const CACHE_DURATION_MS = 60 * 60 * 1000; // 1 hour
@@ -44,15 +40,9 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
   const { toast } = useToast();
   const { accessToken, isLoading, login } = useAuth();
   const router = useRouter();
-  const [authUrl, setAuthUrl] = useState("");
   const [avatarImages, setAvatarImages] = useState<string[]>([]);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
-
-  // State for email verification
-  const [email, setEmail] = useState("");
-  const [isEmailVerified, setIsEmailVerified] = useState(false);
-  const [isCheckingEmail, setIsCheckingEmail] = useState(false);
 
   useEffect(() => {
     // This logic runs only on the client side.
@@ -98,30 +88,6 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
   }, []);
 
   useEffect(() => {
-    const generateAuthUrl = () => {
-      const baseUrl = "https://business-api.tiktok.com/portal/auth";
-      const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
-      const redirectUri = process.env.NEXT_PUBLIC_TIKTOK_REDIRECT_URI;
-      const state = crypto.randomUUID();
-
-      if (!appId || !redirectUri) {
-        console.error("Client-side TikTok credentials are not configured.");
-        return;
-      }
-
-      const params = new URLSearchParams({
-        app_id: appId,
-        state: state,
-        redirect_uri: redirectUri,
-        scope: "bc.read,cm.manage",
-      });
-      setAuthUrl(`${baseUrl}?${params.toString()}`);
-    };
-
-    generateAuthUrl();
-  }, []);
-
-  useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const urlAuthCode = urlParams.get("auth_code");
 
@@ -148,34 +114,6 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
     }
   }, [accessToken, router]);
 
-  const handleVerifyEmail = async () => {
-    if (!email) {
-      toast({
-        title: "Email Required",
-        description: "Please enter your order email.",
-        variant: "destructive",
-      });
-      return;
-    }
-    setIsCheckingEmail(true);
-    const result = await verifyEmail({ email });
-    setIsCheckingEmail(false);
-
-    if (result.success) {
-      setIsEmailVerified(true);
-      toast({
-        title: "Email Verified!",
-        description: "You can now log in with TikTok.",
-        className: "bg-green-600 text-white",
-      });
-    } else {
-      toast({
-        title: "Verification Failed",
-        description: result.error,
-        variant: "destructive",
-      });
-    }
-  };
 
   if (isLoading || isRedirecting) {
     return (
@@ -334,40 +272,12 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
                         </div>
                       </div>
                     </div>
-                    <CardFooter className="mt-auto p-0 pt-4 flex flex-col gap-4">
-                      <div className="w-full space-y-2">
-                        <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">Order Email</Label>
-                        <div className="flex items-center gap-2">
-                          <Input
-                            id="email-verify"
-                            type="email"
-                            placeholder="Enter your email to unlock"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            disabled={isEmailVerified || isCheckingEmail}
-                          />
-                          <Button
-                            size="icon"
-                            variant="outline"
-                            onClick={handleVerifyEmail}
-                            disabled={isEmailVerified || isCheckingEmail}
-                            aria-label="Verify Email"
-                          >
-                            {isCheckingEmail ? (
-                              <Loader2 className="animate-spin" />
-                            ) : isEmailVerified ? (
-                              <CheckCircle className="text-green-500" />
-                            ) : (
-                              <LockKeyhole />
-                            )}
-                          </Button>
-                        </div>
-                      </div>
-                      <Button className="w-full" asChild disabled={!isEmailVerified}>
-                        <a href={authUrl}>
+                    <CardFooter className="mt-auto p-0 pt-4">
+                      <Button className="w-full" asChild>
+                        <Link href="/tiktok-video-anchor">
                           <LogIn className="mr-2" />
-                          Login with TikTok Business
-                        </a>
+                          Login to Use
+                        </Link>
                       </Button>
                     </CardFooter>
                   </div>
