@@ -170,9 +170,11 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
               </p>
               <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
                 How to Sell on TikTok{" "}
-                <span className="inline-block text-accent">
-                  Shop
-                </span>
+                <div className="inline-block text-accent">
+                  <span>Shop</span>
+                  <span>Video</span>
+                  <span>LIVEs</span>
+                </div>
               </h1>
               <p className="max-w-prose text-sm text-muted-foreground md:text-lg">
                 Our suite of tools is designed to help you maximize your reach,
@@ -360,5 +362,7 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
     </>
   );
 }
+
+    
 
     
