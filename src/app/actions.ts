@@ -1,6 +1,7 @@
 
 "use server";
 
+import { get } from "@vercel/edge-config";
 import { z } from "zod";
 
 const getAccessTokenSchema = z.object({
@@ -236,6 +237,46 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
     return {
       success: false,
       error: "An unexpected error occurred while tracking the event.",
+    };
+  }
+}
+
+const verifyEmailSchema = z.object({
+  email: z.string().email("Please enter a valid email address."),
+});
+
+export async function verifyEmail(params: z.infer<typeof verifyEmailSchema>) {
+  try {
+    const validatedParams = verifyEmailSchema.parse(params);
+    const { email } = validatedParams;
+
+    const allowedEmailsStr = await get<string>('allowedEmails');
+
+    if (!allowedEmailsStr) {
+      return {
+        success: false,
+        error: "Email list is not configured. Please contact support.",
+      };
+    }
+
+    const allowedEmails = allowedEmailsStr.split(',').map(e => e.trim().toLowerCase());
+
+    if (allowedEmails.includes(email.toLowerCase())) {
+      return { success: true };
+    } else {
+      return { success: false, error: "This email is not authorized." };
+    }
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return {
+        success: false,
+        error: error.errors.map((e) => e.message).join(" "),
+      };
+    }
+     console.error("Edge Config error:", (error as Error).message);
+    return {
+      success: false,
+      error: "Could not verify email. The allowed list might not be set up in Vercel Edge Config.",
     };
   }
 }

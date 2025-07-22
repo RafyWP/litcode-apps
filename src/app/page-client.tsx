@@ -3,7 +3,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,10 +23,15 @@ import {
   Users,
   BellRing,
   Sparkles,
+  LockKeyhole,
+  CheckCircle,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import { VideoPopup } from "@/components/video-popup";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { verifyEmail } from "./actions";
 
 const AVATAR_CACHE_KEY = "avatarCache";
 const CACHE_DURATION_MS = 60 * 60 * 1000; // 1 hour
@@ -44,6 +48,11 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
   const [avatarImages, setAvatarImages] = useState<string[]>([]);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
+
+  // State for email verification
+  const [email, setEmail] = useState("");
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [isCheckingEmail, setIsCheckingEmail] = useState(false);
 
   useEffect(() => {
     // This logic runs only on the client side.
@@ -139,6 +148,35 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
     }
   }, [accessToken, router]);
 
+  const handleVerifyEmail = async () => {
+    if (!email) {
+      toast({
+        title: "Email Required",
+        description: "Please enter your order email.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setIsCheckingEmail(true);
+    const result = await verifyEmail({ email });
+    setIsCheckingEmail(false);
+
+    if (result.success) {
+      setIsEmailVerified(true);
+      toast({
+        title: "Email Verified!",
+        description: "You can now log in with TikTok.",
+        className: "bg-green-600 text-white",
+      });
+    } else {
+      toast({
+        title: "Verification Failed",
+        description: result.error,
+        variant: "destructive",
+      });
+    }
+  };
+
   if (isLoading || isRedirecting) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -158,7 +196,7 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
                 Stop struggling and master it now
               </p>
               <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl flex flex-wrap justify-center items-center gap-4">
-                <span className="whitespace-nowrap">How to Sell</span>
+                How to Sell
                 <div
                   className="hidden lg:inline-block text-accent text-lg sm:text-xl lg:text-2xl font-bold h-20 overflow-hidden text-left"
                   style={{
@@ -171,7 +209,7 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
                     {words2.map((word) => <div key={`${word}-clone`}>{word}</div>)}
                   </div>
                 </div>
-                <span>on TikTok</span>
+                on TikTok
                 <div
                   className="hidden lg:inline-block text-accent text-lg sm:text-xl lg:text-2xl font-bold h-20 overflow-hidden text-left"
                   style={{
@@ -296,8 +334,36 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
                         </div>
                       </div>
                     </div>
-                    <CardFooter className="mt-auto p-0 pt-4">
-                      <Button className="w-full" asChild>
+                    <CardFooter className="mt-auto p-0 pt-4 flex flex-col gap-4">
+                      <div className="w-full space-y-2">
+                        <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">Order Email</Label>
+                        <div className="flex items-center gap-2">
+                          <Input
+                            id="email-verify"
+                            type="email"
+                            placeholder="Enter your email to unlock"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            disabled={isEmailVerified || isCheckingEmail}
+                          />
+                          <Button
+                            size="icon"
+                            variant="outline"
+                            onClick={handleVerifyEmail}
+                            disabled={isEmailVerified || isCheckingEmail}
+                            aria-label="Verify Email"
+                          >
+                            {isCheckingEmail ? (
+                              <Loader2 className="animate-spin" />
+                            ) : isEmailVerified ? (
+                              <CheckCircle className="text-green-500" />
+                            ) : (
+                              <LockKeyhole />
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+                      <Button className="w-full" asChild disabled={!isEmailVerified}>
                         <a href={authUrl}>
                           <LogIn className="mr-2" />
                           Login with TikTok Business
