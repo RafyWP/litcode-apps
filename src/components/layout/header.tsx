@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import { LogOut, Sparkles, ChevronDown, Anchor, Bot } from "lucide-react";
+import { LogOut, Sparkles, ChevronDown, Anchor, BotMessageSquare } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -74,10 +74,10 @@ export default function Header() {
                         </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                        <a href="https://apps.litcode.store/copytok">
-                            <Bot className="mr-2 h-4 w-4" />
+                        <Link href="/copytok">
+                            <BotMessageSquare className="mr-2 h-4 w-4" />
                             <span>CopyTok</span>
-                        </a>
+                        </Link>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </div>

@@ -18,7 +18,7 @@ import {
   Link as LinkIcon,
   ShieldCheck,
   PlayCircle,
-  Bot,
+  BotMessageSquare,
   TrendingUp,
   Users,
   BellRing,
@@ -288,7 +288,7 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
                   <div className="flex flex-col h-full">
                     <div className="flex items-start gap-4">
                       <div className="bg-accent/10 p-2 rounded-lg border shrink-0">
-                        <Bot className="h-6 w-6 md:h-8 md:w-8 text-accent" />
+                        <BotMessageSquare className="h-6 w-6 md:h-8 md:w-8 text-accent" />
                       </div>
                       <div className="flex flex-col overflow-hidden">
                         <CardTitle className="font-headline text-base md:text-xl font-bold tracking-tight text-left">
@@ -311,9 +311,9 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
                     </div>
                     <CardFooter className="mt-auto p-0 pt-4">
                       <Button variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground" asChild>
-                        <a href="https://apps.litcode.store/copytok" target="_blank" rel="noopener noreferrer">
+                        <Link href="/copytok">
                           Generate TikTok Captions
-                        </a>
+                        </Link>
                       </Button>
                     </CardFooter>
                   </div>

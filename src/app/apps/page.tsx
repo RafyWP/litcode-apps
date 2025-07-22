@@ -1,6 +1,6 @@
 import { Card, CardDescription, CardFooter, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Anchor, Bot, Link as LinkIcon, BellRing, TrendingUp, Users, LogIn } from "lucide-react";
+import { Anchor, BotMessageSquare, Link as LinkIcon, BellRing, TrendingUp, Users, LogIn } from "lucide-react";
 import Link from "next/link";
 
 export default function AppsPage() {
@@ -59,7 +59,7 @@ export default function AppsPage() {
                   <div className="flex flex-col h-full">
                     <div className="flex items-start gap-4">
                       <div className="bg-accent/10 p-2 rounded-lg border shrink-0">
-                        <Bot className="h-6 w-6 md:h-8 md:w-8 text-accent" />
+                        <BotMessageSquare className="h-6 w-6 md:h-8 md:w-8 text-accent" />
                       </div>
                       <div className="flex flex-col overflow-hidden">
                         <CardTitle className="font-headline text-base md:text-xl font-bold tracking-tight text-left">
@@ -82,9 +82,9 @@ export default function AppsPage() {
                     </div>
                     <CardFooter className="mt-auto p-0 pt-4">
                       <Button variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground" asChild>
-                        <a href="https://apps.litcode.store/copytok">
+                        <Link href="/copytok">
                           Generate TikTok Captions
-                        </a>
+                        </Link>
                       </Button>
                     </CardFooter>
                   </div>
