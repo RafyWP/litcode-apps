@@ -298,12 +298,12 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
                         <CardDescription className="md:mt-1 text-left truncate md:overflow-visible md:whitespace-normal">
                           Anchor every item in your videos with clickable links that convert views into sales.
                         </CardDescription>
-                        <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground mt-2">
+                        <div className="flex items-start gap-4 text-xs text-muted-foreground mt-2">
                           <div className="flex items-center gap-1.5">
                             <BellRing className="h-3.5 w-3.5" />
                             <span>Conversion</span>
                           </div>
-                          <div className="flex items-center gap-1.5">
+                          <div className="flex items-center gap-1.5 whitespace-nowrap">
                             <LinkIcon className="h-3.5 w-3.5" />
                             <span>1,200+ Links Gen.</span>
                           </div>
@@ -335,12 +335,12 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
                         <CardDescription className="md:mt-1 text-left truncate md:overflow-visible md:whitespace-normal">
                           TikTok viral captions with psychological triggers that demand engagement.
                         </CardDescription>
-                        <div className="hidden md:flex items-start gap-4 text-xs text-muted-foreground mt-2">
+                        <div className="flex items-start gap-4 text-xs text-muted-foreground mt-2">
                           <div className="flex items-center gap-1.5">
                             <TrendingUp className="h-3.5 w-3.s5" />
                             <span>Organic Growth</span>
                           </div>
-                          <div className="flex items-center gap-1.5">
+                          <div className="flex items-center gap-1.5 whitespace-nowrap">
                             <Users className="h-3.5 w-3.5" />
                             <span>15k+ Captions Gen.</span>
                           </div>
@@ -378,7 +378,7 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
                 <br className="hidden md:block" />
                 <span>of creators and entrepreneurs building real results.</span>
               </p>
-              <Button size="lg" className="mt-8 font-bold group shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105" asChild>
+              <Button size="lg" className="mt-8 font-bold group shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 px-6 sm:px-8" asChild>
                 <a href="https://www.litcode.store/litcode-community" className="flex items-center">
                   <Sparkles className="mr-2 group-hover:animate-sparkle-spin" />
                   Become a Member
