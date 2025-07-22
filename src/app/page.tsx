@@ -339,7 +339,7 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
           <div className="container mx-auto px-4 py-16 text-center md:px-6 md:py-24">
             <div className="mx-auto max-w-2xl">
               <h2 className="text-3xl font-bold tracking-tight text-card-foreground sm:text-4xl">
-                Choose Your Plan. Join the Movement.
+                Join the Movement.
               </h2>
               <p className="mt-4 text-lg leading-8 text-muted-foreground">
                 Get full access to our powerful tools and join a thriving community of creators and entrepreneurs building real results.
