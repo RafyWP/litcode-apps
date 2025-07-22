@@ -364,7 +364,14 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
             </div>
         </main>
 
-        <section className="w-full border-t border-border bg-card">
+        <section
+          className="w-full border-t border-border bg-card"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, hsl(var(--border) / 0.5) 1px, transparent 0)",
+            backgroundSize: "1rem 1rem",
+          }}
+        >
           <div className="container mx-auto px-4 md:px-6 py-16 md:py-24 text-center">
             <div className="mx-auto max-w-prose">
               <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-card-foreground transform-gpu hover:animate-shake">
