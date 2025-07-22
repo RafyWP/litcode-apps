@@ -174,7 +174,7 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
               <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl flex flex-wrap justify-center items-center gap-4">
                 <span className="whitespace-nowrap">How to Sell</span>
                 <div
-                  className="hidden md:inline-block text-accent text-lg sm:text-xl lg:text-2xl font-bold h-20 overflow-hidden text-left"
+                  className="hidden lg:inline-block text-accent text-lg sm:text-xl lg:text-2xl font-bold h-20 overflow-hidden text-left"
                   style={{
                     maskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)',
                     WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)'
@@ -187,7 +187,7 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
                 </div>
                 <span>on TikTok</span>
                 <div
-                  className="hidden md:inline-block text-accent text-lg sm:text-xl lg:text-2xl font-bold h-20 overflow-hidden text-left"
+                  className="hidden lg:inline-block text-accent text-lg sm:text-xl lg:text-2xl font-bold h-20 overflow-hidden text-left"
                   style={{
                     maskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)',
                     WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)'
