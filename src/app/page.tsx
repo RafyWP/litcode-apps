@@ -31,7 +31,8 @@ import { VideoPopup } from "@/components/video-popup";
 const AVATAR_CACHE_KEY = "avatarCache";
 const CACHE_DURATION_MS = 60 * 60 * 1000; // 1 hour
 
-export default function HomePage() {
+// The page now accepts youtubeVideoUrl as a prop from the layout.
+export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string }) {
   const { toast } = useToast();
   const { accessToken, isLoading, login, logout } = useAuth();
   const [authUrl, setAuthUrl] = useState("");
@@ -158,7 +159,7 @@ export default function HomePage() {
 
   return (
     <>
-      <VideoPopup open={isVideoOpen} onOpenChange={setIsVideoOpen} />
+      <VideoPopup open={isVideoOpen} onOpenChange={setIsVideoOpen} youtubeVideoUrl={youtubeVideoUrl} />
       <div className="flex flex-col items-center justify-center bg-background text-foreground">
         <section className="w-full py-16 md:py-24">
           <div className="container mx-auto px-4 text-center md:px-6">
@@ -336,4 +337,3 @@ export default function HomePage() {
     </>
   );
 }
-
