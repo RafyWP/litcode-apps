@@ -375,9 +375,9 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
                 <br className="hidden md:block" />
                 <span>of creators and entrepreneurs building real results.</span>
               </p>
-              <Button size="lg" className="mt-8 font-bold" asChild>
+              <Button size="lg" className="mt-8 font-bold group shadow-md hover:shadow-lg hover:shadow-primary/40 transition-all duration-300 hover:scale-105" asChild>
                 <a href="https://www.litcode.store/litcode-community" className="flex items-center">
-                  <Sparkles className="mr-2" />
+                  <Sparkles className="mr-2 group-hover:animate-sparkle-spin" />
                   Become a Member
                 </a>
               </Button>

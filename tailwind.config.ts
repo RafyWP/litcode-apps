@@ -115,6 +115,10 @@ export default {
             transform: 'translate3d(4px, 0, 0)',
           },
         },
+        'sparkle-spin': {
+          'from': { transform: 'rotate(0deg)' },
+          'to': { transform: 'rotate(180deg)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -122,6 +126,7 @@ export default {
         'pulse-icon': 'pulse-icon 2s ease-in-out infinite',
         'teleprompter-up': 'teleprompter-up 5s linear infinite',
         'shake': 'shake 0.82s cubic-bezier(.36,.07,.19,.97) both',
+        'sparkle-spin': 'sparkle-spin 0.5s ease-out',
       },
     },
   },
