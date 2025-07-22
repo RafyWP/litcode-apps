@@ -271,46 +271,47 @@ export default function TikTokVideoAnchorPage() {
                   </div>
               </div>
               <CardFooter className="mt-6 p-0 flex flex-col gap-4">
-                 <div className="w-full space-y-2">
-                    <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">Order Email</Label>
-                    <div className="flex items-center gap-2">
-                      <Input
-                        id="email-verify"
-                        type="email"
-                        placeholder="Enter your email to unlock"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        disabled={isEmailVerified || isCheckingEmail}
-                      />
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        onClick={handleVerifyEmail}
-                        disabled={isEmailVerified || isCheckingEmail}
-                        aria-label="Verify Email"
-                      >
-                        {isCheckingEmail ? (
-                          <Loader2 className="animate-spin" />
-                        ) : isEmailVerified ? (
-                          <CheckCircle className="text-green-500" />
-                        ) : (
-                          <LockKeyhole />
-                        )}
-                      </Button>
+                {!isEmailVerified && (
+                  <div className="w-full space-y-2">
+                      <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">Order Email</Label>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          id="email-verify"
+                          type="email"
+                          placeholder="Enter your email to unlock"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          disabled={isCheckingEmail}
+                        />
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          onClick={handleVerifyEmail}
+                          disabled={isCheckingEmail}
+                          aria-label="Verify Email"
+                        >
+                          {isCheckingEmail ? (
+                            <Loader2 className="animate-spin" />
+                          ) : (
+                            <LockKeyhole />
+                          )}
+                        </Button>
+                      </div>
                     </div>
-                  </div>
+                )}
+                {isEmailVerified && (
                   <Button
-                    className="w-full"
+                    className="w-full animate-in fade-in"
                     onClick={() => {
-                      if (isEmailVerified && authUrl) {
+                      if (authUrl) {
                         window.location.href = authUrl;
                       }
                     }}
-                    disabled={!isEmailVerified || !authUrl}
                   >
                     <LogIn className="mr-2" />
                     Login with TikTok Business
                   </Button>
+                )}
               </CardFooter>
           </Card>
       </div>
