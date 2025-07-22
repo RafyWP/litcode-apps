@@ -31,6 +31,8 @@ import { VideoPopup } from "@/components/video-popup";
 
 const AVATAR_CACHE_KEY = "avatarCache";
 const CACHE_DURATION_MS = 60 * 60 * 1000; // 1 hour
+const words = ["Shop", "Videos", "LIVEs"];
+
 
 // The page now accepts youtubeVideoUrl as a prop from the layout.
 export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string }) {
@@ -39,6 +41,15 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
   const [authUrl, setAuthUrl] = useState("");
   const [avatarImages, setAvatarImages] = useState<string[]>([]);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length);
+    }, 2000); // Change word every 2 seconds
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, []);
 
   useEffect(() => {
     // This logic runs only on the client side.
@@ -172,10 +183,10 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
                 <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
                   How to Sell on TikTok
                 </h1>
-                <div className="text-accent text-xl sm:text-2xl lg:text-3xl font-bold flex flex-col items-start leading-tight">
-                  <span>Shop</span>
-                  <span>Videos</span>
-                  <span>LIVEs</span>
+                <div className="text-accent text-xl sm:text-2xl lg:text-3xl font-bold flex flex-col items-start leading-tight h-10">
+                   <div key={currentWordIndex} className="animate-fade-in-out">
+                    {words[currentWordIndex]}
+                  </div>
                 </div>
               </div>
               <p className="max-w-prose text-sm text-muted-foreground md:text-lg">
@@ -364,7 +375,3 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
     </>
   );
 }
-
-    
-
-    

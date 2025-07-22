@@ -96,11 +96,16 @@ export default {
             transform: 'scale(1.05)',
           },
         },
+        'fade-in-out': {
+          '0%, 100%': { opacity: '0' },
+          '50%': { opacity: '1' },
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'pulse-icon': 'pulse-icon 2s ease-in-out infinite',
+        'fade-in-out': 'fade-in-out 2s ease-in-out infinite',
       },
     },
   },
