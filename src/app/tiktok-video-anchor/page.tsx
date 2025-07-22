@@ -266,7 +266,7 @@ export default function TikTokVideoAnchorPage() {
                           TikTok Video Anchor
                       </CardTitle>
                       <CardDescription className="mt-1">
-                          Verify your email to unlock the tool and generate a pixel.
+                          Use the same email address you used to order on Podia to log in.
                       </CardDescription>
                   </div>
               </div>
