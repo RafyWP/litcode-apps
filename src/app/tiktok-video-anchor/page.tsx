@@ -244,7 +244,7 @@ export default function TikTokVideoAnchorPage() {
 
   if (isAuthLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="flex-grow bg-background flex items-center justify-center">
         <div className="w-full max-w-lg space-y-4 p-4">
           <Skeleton className="h-12 w-full" />
           <Skeleton className="h-40 w-full" />
@@ -255,7 +255,7 @@ export default function TikTokVideoAnchorPage() {
 
   if (!accessToken) {
     return (
-      <div className="min-h-full bg-background text-foreground flex flex-col items-center justify-center p-4">
+      <div className="flex-grow bg-background text-foreground flex flex-col items-center justify-center p-4">
           <Card className="w-full max-w-md p-4 sm:p-6">
               <div className="flex items-start gap-4">
                   <div className="bg-primary/10 p-3 rounded-lg border shrink-0">
@@ -317,7 +317,7 @@ export default function TikTokVideoAnchorPage() {
   }
 
   return (
-    <div className="min-h-full bg-background text-foreground flex flex-col items-center justify-center p-4 font-body">
+    <div className="flex-grow bg-background text-foreground flex flex-col items-center justify-center p-4 font-body">
       <div className="w-full max-w-lg mx-auto">
         <header className="text-center mb-10">
           <div className="inline-flex items-center justify-center bg-primary text-primary-foreground p-3 rounded-full mb-4 shadow-lg shadow-primary/30">

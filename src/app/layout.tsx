@@ -32,7 +32,7 @@ export default function RootLayout({
       <body className="font-body antialiased flex flex-col min-h-screen">
         <AuthProvider>
           <Header />
-          <div className="flex-grow">
+          <div className="flex-grow flex flex-col">
             {children}
           </div>
           <Footer />
