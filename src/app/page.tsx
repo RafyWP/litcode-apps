@@ -183,8 +183,14 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
                 <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
                   How to Sell on TikTok
                 </h1>
-                <div className="text-accent text-xl sm:text-2xl lg:text-3xl font-bold flex flex-col items-start leading-tight h-10">
-                   <div key={currentWordIndex} className="animate-fade-in-out">
+                <div 
+                  className="text-accent text-xl sm:text-2xl lg:text-3xl font-bold h-[2.2rem] sm:h-[2.5rem] lg:h-[2.8rem] overflow-hidden"
+                  style={{
+                    maskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)',
+                    WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)'
+                  }}
+                >
+                   <div key={currentWordIndex} className="animate-teleprompter-up">
                     {words[currentWordIndex]}
                   </div>
                 </div>
