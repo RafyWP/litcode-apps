@@ -171,10 +171,8 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
               <p className="text-xs sm:text-sm font-semibold tracking-wider uppercase text-primary">
                 Stop struggling and master it now
               </p>
-              <div className="flex justify-center items-center gap-4">
-                <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl whitespace-nowrap">
-                  How to Sell
-                </h1>
+              <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl flex flex-wrap justify-center items-center gap-4">
+                <span className="whitespace-nowrap">How to Sell</span>
                 <div
                   className="hidden md:inline-block text-accent text-lg sm:text-xl lg:text-2xl font-bold h-20 overflow-hidden text-left"
                   style={{
@@ -187,9 +185,7 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
                     {words2.map((word) => <div key={`${word}-clone`}>{word}</div>)}
                   </div>
                 </div>
-                <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
-                  on TikTok
-                </h1>
+                <span>on TikTok</span>
                 <div
                   className="hidden md:inline-block text-accent text-lg sm:text-xl lg:text-2xl font-bold h-20 overflow-hidden text-left"
                   style={{
@@ -202,7 +198,7 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
                     {words.map((word) => <div key={`${word}-clone`}>{word}</div>)}
                   </div>
                 </div>
-              </div>
+              </h1>
               <p className="max-w-prose text-sm text-muted-foreground md:text-lg">
                 Our suite of tools is designed to help you maximize your reach,
                 engagement, and conversions on TikTok, effortlessly. Start using our applications for free!
