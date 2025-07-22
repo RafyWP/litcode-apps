@@ -32,6 +32,7 @@ import { VideoPopup } from "@/components/video-popup";
 const AVATAR_CACHE_KEY = "avatarCache";
 const CACHE_DURATION_MS = 60 * 60 * 1000; // 1 hour
 const words = ["Shop", "Videos", "LIVEs"];
+const words2 = ["Physical", "Digital", "Services"];
 
 
 // The page now accepts youtubeVideoUrl as a prop from the layout.
@@ -170,9 +171,24 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
               <p className="text-xs sm:text-sm font-semibold tracking-wider uppercase text-primary">
                 Stop struggling and master it now
               </p>
-              <div className="flex justify-center gap-4">
+              <div className="flex justify-center items-center gap-4">
+                <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl whitespace-nowrap">
+                  How to Sell
+                </h1>
+                <div
+                  className="hidden md:inline-block text-accent text-lg sm:text-xl lg:text-2xl font-bold h-20 overflow-hidden text-left"
+                  style={{
+                    maskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)',
+                    WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)'
+                  }}
+                >
+                  <div className="animate-teleprompter-up">
+                    {words2.map((word) => <div key={word}>{word}</div>)}
+                    {words2.map((word) => <div key={`${word}-clone`}>{word}</div>)}
+                  </div>
+                </div>
                 <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
-                  How to Sell on TikTok
+                  on TikTok
                 </h1>
                 <div
                   className="hidden md:inline-block text-accent text-lg sm:text-xl lg:text-2xl font-bold h-20 overflow-hidden text-left"
@@ -373,8 +389,3 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
     </>
   );
 }
-
-    
-
-    
-
