@@ -23,6 +23,7 @@ import {
   TrendingUp,
   Users,
   BellRing,
+  Sparkles,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
@@ -333,6 +334,26 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
               </div>
             </div>
         </main>
+
+        <section className="w-full border-t border-border bg-card">
+          <div className="container mx-auto px-4 py-16 text-center md:px-6 md:py-24">
+            <div className="mx-auto max-w-2xl">
+              <h2 className="text-3xl font-bold tracking-tight text-card-foreground sm:text-4xl">
+                Choose Your Plan. Join the Movement.
+              </h2>
+              <p className="mt-4 text-lg leading-8 text-muted-foreground">
+                Unlock full access to our suite of powerful tools and join a thriving community of creators and entrepreneurs.
+              </p>
+              <Button size="lg" className="mt-8 font-bold" asChild>
+                <a href="https://www.litcode.store/litcode-community">
+                  <Sparkles className="mr-2" />
+                  Become a Member
+                </a>
+              </Button>
+            </div>
+          </div>
+        </section>
+
       </div>
     </>
   );
