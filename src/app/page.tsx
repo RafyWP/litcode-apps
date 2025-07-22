@@ -341,7 +341,7 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
               <h2 className="text-3xl font-bold tracking-tight text-card-foreground sm:text-4xl">
                 Join the Movement.
               </h2>
-              <p className="mt-4 text-lg leading-8 text-muted-foreground">
+              <p className="mt-4 text-base leading-7 text-muted-foreground md:text-lg md:leading-8">
                 <span>Get full access to our powerful tools and join a thriving community</span>
                 <br className="hidden md:block" />
                 <span>of creators and entrepreneurs building real results.</span>
