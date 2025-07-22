@@ -2,7 +2,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,9 +33,11 @@ import {
   CheckCircle,
   Copy,
   Loader2,
+  LogIn,
   Send,
   WandSparkles,
 } from "lucide-react";
+import { Card, CardDescription, CardFooter, CardTitle } from "@/components/ui/card";
 
 type Advertiser = {
   advertiser_id: string;
@@ -49,8 +50,7 @@ const formSchema = z.object({
 });
 
 export default function TikTokVideoAnchorPage() {
-  const { accessToken, isLoading: isAuthLoading } = useAuth();
-  const router = useRouter();
+  const { accessToken, isLoading: isAuthLoading, login } = useAuth();
   const { toast } = useToast();
 
   const [pixelId, setPixelId] = useState<string | null>(null);
@@ -58,6 +58,7 @@ export default function TikTokVideoAnchorPage() {
   const [eventSent, setEventSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSendingEvent, setIsSendingEvent] = useState(false);
+  const [authUrl, setAuthUrl] = useState("");
 
   const [isFetchingAdvertisers, setIsFetchingAdvertisers] = useState(true);
   const [advertisers, setAdvertisers] = useState<Advertiser[]>([]);
@@ -71,10 +72,49 @@ export default function TikTokVideoAnchorPage() {
   });
 
   useEffect(() => {
-    if (!isAuthLoading && !accessToken) {
-      router.replace("/");
+    // Generate auth URL on client side
+    const generateAuthUrl = () => {
+      const baseUrl = "https://business-api.tiktok.com/portal/auth";
+      const appId = process.env.NEXT_PUBLIC_TIKTOK_APP_ID;
+      const redirectUri = process.env.NEXT_PUBLIC_TIKTOK_REDIRECT_URI;
+      const state = crypto.randomUUID();
+
+      if (!appId || !redirectUri) {
+        console.error("Client-side TikTok credentials are not configured.");
+        return;
+      }
+
+      const params = new URLSearchParams({
+        app_id: appId,
+        state: state,
+        redirect_uri: redirectUri,
+        scope: "bc.read,cm.manage",
+      });
+      setAuthUrl(`${baseUrl}?${params.toString()}`);
+    };
+
+    generateAuthUrl();
+    
+    // Handle auth callback
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlAuthCode = urlParams.get("auth_code");
+
+    if (urlAuthCode && !accessToken) {
+      login(urlAuthCode).catch((err: Error) => {
+        toast({
+          title: "Authorization Error",
+          description: err.message || "Could not retrieve access token.",
+          variant: "destructive",
+        });
+      });
+      // Clean the URL
+      const url = new URL(window.location.href);
+      url.searchParams.delete("auth_code");
+      url.searchParams.delete("error");
+      window.history.replaceState(null, "", url.toString());
     }
-  }, [isAuthLoading, accessToken, router]);
+  }, [login, toast, accessToken]);
+
 
   useEffect(() => {
     async function fetchAdvertisers() {
@@ -167,15 +207,45 @@ export default function TikTokVideoAnchorPage() {
     }
   }
 
-  if (isAuthLoading || !accessToken) {
+  if (isAuthLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="w-full max-w-lg space-y-4">
+        <div className="w-full max-w-lg space-y-4 p-4">
           <Skeleton className="h-12 w-full" />
           <Skeleton className="h-40 w-full" />
         </div>
       </div>
     );
+  }
+
+  if (!accessToken) {
+    return (
+      <div className="min-h-full bg-background text-foreground flex flex-col items-center justify-center p-4">
+          <Card className="w-full max-w-md p-4 sm:p-6">
+              <div className="flex items-start gap-4">
+                  <div className="bg-primary/10 p-3 rounded-lg border shrink-0">
+                      <Anchor className="h-8 w-8 text-primary" />
+                  </div>
+                  <div className="flex flex-col">
+                      <CardTitle className="font-headline text-xl font-bold tracking-tight">
+                          TikTok Video Anchor
+                      </CardTitle>
+                      <CardDescription className="mt-1">
+                          Please log in with your TikTok Business account to generate a pixel.
+                      </CardDescription>
+                  </div>
+              </div>
+              <CardFooter className="mt-6 p-0">
+                  <Button className="w-full" asChild disabled={!authUrl}>
+                      <a href={authUrl}>
+                          <LogIn className="mr-2" />
+                          Login with TikTok Business
+                      </a>
+                  </Button>
+              </CardFooter>
+          </Card>
+      </div>
+    )
   }
 
   return (
