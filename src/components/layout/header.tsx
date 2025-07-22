@@ -23,7 +23,7 @@ export default function Header() {
 
   return (
     <header className="w-full border-b border-border bg-background">
-      <div className="container flex h-14 items-center justify-center px-4 md:px-8 sm:justify-between">
+      <div className="flex h-14 items-center justify-center px-4 sm:justify-between md:px-8">
         <div className="flex items-center">
           <Link
             href="/"
