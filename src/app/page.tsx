@@ -175,7 +175,7 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
                   How to Sell on TikTok
                 </h1>
                 <div
-                  className="inline-block text-accent text-xl sm:text-2xl lg:text-3xl font-bold h-20 overflow-hidden text-left"
+                  className="inline-block text-accent text-lg sm:text-xl lg:text-2xl font-bold h-20 overflow-hidden text-left"
                   style={{
                     maskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)',
                     WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)'
