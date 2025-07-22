@@ -182,8 +182,8 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
                   }}
                 >
                   <div className="animate-teleprompter-up">
-                    {words.map((word) => <div key={word} className="py-2">{word}</div>)}
-                    {words.map((word) => <div key={`${word}-clone`} className="py-2">{word}</div>)}
+                    {words.map((word) => <div key={word}>{word}</div>)}
+                    {words.map((word) => <div key={`${word}-clone`}>{word}</div>)}
                   </div>
                 </div>
               </div>
@@ -349,9 +349,9 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
         </main>
 
         <section className="w-full border-t border-border bg-card">
-          <div className="container mx-auto px-4 py-16 text-center md:px-6 md:py-24">
+          <div className="container mx-auto px-4 md:px-6 py-16 md:py-24 text-center">
             <div className="mx-auto max-w-prose">
-              <h2 className="text-3xl font-bold tracking-tight text-card-foreground sm:text-4xl">
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-card-foreground">
                 Join the Movement.
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground md:text-lg md:leading-8">
@@ -373,5 +373,7 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
     </>
   );
 }
+
+    
 
     
