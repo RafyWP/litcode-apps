@@ -299,11 +299,17 @@ export default function TikTokVideoAnchorPage() {
                       </Button>
                     </div>
                   </div>
-                  <Button className="w-full" asChild disabled={!isEmailVerified || !authUrl}>
-                      <a href={authUrl}>
-                          <LogIn className="mr-2" />
-                          Login with TikTok Business
-                      </a>
+                  <Button
+                    className="w-full"
+                    onClick={() => {
+                      if (isEmailVerified && authUrl) {
+                        window.location.href = authUrl;
+                      }
+                    }}
+                    disabled={!isEmailVerified || !authUrl}
+                  >
+                    <LogIn className="mr-2" />
+                    Login with TikTok Business
                   </Button>
               </CardFooter>
           </Card>
