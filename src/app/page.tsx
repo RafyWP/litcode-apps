@@ -345,7 +345,7 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
                 Unlock full access to our suite of powerful tools and join a thriving community of creators and entrepreneurs.
               </p>
               <Button size="lg" className="mt-8 font-bold" asChild>
-                <a href="https://www.litcode.store/litcode-community">
+                <a href="https://www.litcode.store/litcode-community" className="flex items-center">
                   <Sparkles className="mr-2" />
                   Become a Member
                 </a>
