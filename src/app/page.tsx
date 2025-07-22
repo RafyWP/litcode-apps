@@ -342,7 +342,9 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
                 Join the Movement.
               </h2>
               <p className="mt-4 text-lg leading-8 text-muted-foreground">
-                Get full access to our powerful tools and join a thriving community of creators and entrepreneurs building real results.
+                <span>Get full access to our powerful tools and join a thriving community of</span>
+                <br className="hidden md:block" />
+                <span>creators and entrepreneurs building real results.</span>
               </p>
               <Button size="lg" className="mt-8 font-bold" asChild>
                 <a href="https://www.litcode.store/litcode-community" className="flex items-center">
