@@ -6,6 +6,7 @@ import { Sofia_Sans } from 'next/font/google';
 import { AuthProvider } from '@/contexts/auth-context';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const sofiaSans = Sofia_Sans({
   subsets: ['latin'],
@@ -36,6 +37,7 @@ export default function RootLayout({
           <Footer />
         </AuthProvider>
         <Toaster />
+        <SpeedInsights />
       </body>
     </html>
   );
