@@ -337,7 +337,7 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
                         </CardDescription>
                         <div className="flex items-start gap-4 text-xs text-muted-foreground mt-2">
                           <div className="flex items-center gap-1.5">
-                            <TrendingUp className="h-3.5 w-3.s5" />
+                            <TrendingUp className="h-3.5 w-3.5" />
                             <span>Organic Growth</span>
                           </div>
                           <div className="flex items-center gap-1.5 whitespace-nowrap">
@@ -349,7 +349,7 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
                     </div>
                     <CardFooter className="mt-auto p-0 pt-4">
                       <Button variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground" asChild>
-                        <a href="https://copytok.b2bear.com" target="_blank" rel="noopener noreferrer">
+                        <a href="https://apps.litcode.store/copytok" target="_blank" rel="noopener noreferrer">
                           Generate TikTok Captions
                         </a>
                       </Button>
