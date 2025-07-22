@@ -170,12 +170,12 @@ export default function HomePage({ youtubeVideoUrl }: { youtubeVideoUrl: string 
               <p className="text-xs sm:text-sm font-semibold tracking-wider uppercase text-primary">
                 Stop struggling and master it now
               </p>
-              <div className="flex items-center justify-center gap-4">
+              <div className="flex justify-center gap-4">
                 <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight lg:text-7xl">
                   How to Sell on TikTok
                 </h1>
                 <div
-                  className="inline-block text-accent text-xl sm:text-2xl lg:text-3xl font-bold h-36 overflow-hidden"
+                  className="inline-block text-accent text-xl sm:text-2xl lg:text-3xl font-bold h-20 overflow-hidden text-left"
                   style={{
                     maskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)',
                     WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)'
