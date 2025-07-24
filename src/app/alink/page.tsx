@@ -33,7 +33,7 @@ export default function ALinkPage() {
           VENDA TUDO, EM TODO LUGAR
         </p>
         <h1 className="text-5xl sm:text-6xl font-bold mt-2">Âncora Link <span className="text-accent">PRO</span></h1>
-        <p className="text-muted-foreground mt-4 max-w-prose">
+        <p className="text-muted-foreground mt-4">
             Venda infoprodutos, mentorias e achadinhos inserindo Links Clicáveis dentro dos vídeos.
             <br />
             Transforme seu TikTok em uma Loja Completa, sem depender do TikTok Shop.
