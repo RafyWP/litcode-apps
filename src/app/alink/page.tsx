@@ -29,7 +29,7 @@ export default function ALinkPage() {
   return (
     <div className="flex-grow flex flex-col items-center justify-center p-4">
       <div className="text-center">
-        <h1 className="text-4xl font-bold">ALink</h1>
+        <h1 className="text-4xl font-bold">Âncora Link PRO</h1>
         <p className="text-muted-foreground mt-2">Página de checkout</p>
         <div className="mt-8">
             <a 
