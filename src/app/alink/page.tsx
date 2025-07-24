@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useEffect } from 'react';
+import Image from 'next/image';
 
 export default function ALinkPage() {
   useEffect(() => {
@@ -38,6 +39,18 @@ export default function ALinkPage() {
             <br />
             Transforme seu TikTok em uma Loja Completa, sem depender do TikTok Shop.
         </p>
+
+        <div className="mt-8">
+            <Image
+                src="https://placehold.co/400x500.png"
+                alt="Video placeholder"
+                width={400}
+                height={500}
+                className="rounded-lg shadow-lg mx-auto border"
+                data-ai-hint="video player"
+            />
+        </div>
+
         <div className="mt-8">
             <a 
                 href="https://pay.hotmart.com/C101007078D?checkoutMode=2" 
