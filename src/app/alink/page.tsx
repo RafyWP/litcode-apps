@@ -29,8 +29,11 @@ export default function ALinkPage() {
   return (
     <div className="flex-grow flex flex-col items-center justify-center p-4">
       <div className="text-center">
-        <h1 className="text-4xl font-bold">Âncora Link PRO</h1>
-        <p className="text-muted-foreground mt-2 max-w-prose">Transforme seu TikTok em uma Loja Completa, sem depender do TikTok Shop. Venda infoprodutos, mentorias e achadinhos inserindo Links Clicáveis dentro dos vídeos.</p>
+        <p className="text-xs sm:text-sm font-semibold tracking-wider uppercase text-primary">
+          VENDA TUDO, EM TODO LUGAR
+        </p>
+        <h1 className="text-5xl sm:text-6xl font-bold mt-2">Âncora Link PRO</h1>
+        <p className="text-muted-foreground mt-4 max-w-prose">Transforme seu TikTok em uma Loja Completa, sem depender do TikTok Shop. Venda infoprodutos, mentorias e achadinhos inserindo Links Clicáveis dentro dos vídeos.</p>
         <div className="mt-8">
             <a 
                 href="https://pay.hotmart.com/C101007078D?checkoutMode=2" 
