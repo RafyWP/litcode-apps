@@ -42,12 +42,11 @@ export default function ALinkPage() {
 
         <div className="mt-8">
             <Image
-                src="https://placehold.co/400x500"
-                alt="Video placeholder"
+                src="/images/alink/em-breve-optmz.png"
+                alt="Demonstração do Âncora Link"
                 width={400}
                 height={500}
                 className="rounded-lg shadow-lg mx-auto border"
-                data-ai-hint="video player"
             />
         </div>
 
