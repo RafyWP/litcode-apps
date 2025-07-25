@@ -42,7 +42,7 @@ export default function ALinkPage() {
 
         <div className="mt-8">
             <Image
-                src="https://placehold.co/400x500/00f2ea/242948?text=Em%20Breve"
+                src="https://placehold.co/400x500"
                 alt="Video placeholder"
                 width={400}
                 height={500}
