@@ -147,7 +147,7 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
                     {words2.map((word) => <div key={`${word}-clone`}>{word}</div>)}
                   </div>
                 </div>
-                on TikTok
+                {" on TikTok"}
                 <div
                   className="hidden lg:inline-block text-accent text-lg sm:text-xl lg:text-2xl font-bold h-20 overflow-hidden text-left"
                   style={{
