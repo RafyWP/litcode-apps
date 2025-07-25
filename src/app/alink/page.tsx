@@ -28,7 +28,7 @@ export default function ALinkPage() {
   }, []);
 
   return (
-    <div className="flex-grow flex flex-col items-center justify-center p-4">
+    <div className="flex-grow flex flex-col items-center justify-center py-8 px-4">
       <div className="text-center">
         <p className="text-xs sm:text-sm font-semibold tracking-wider uppercase text-primary">
           VENDA TUDO, EM TODO LUGAR
