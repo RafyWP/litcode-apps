@@ -28,7 +28,7 @@ export default function ALinkPage() {
   }, []);
 
   return (
-    <div className="flex-grow flex flex-col items-center justify-center py-8 px-4">
+    <div className="flex-grow flex flex-col items-center justify-center py-16 px-4">
       <div className="text-center">
         <p className="text-xs sm:text-sm font-semibold tracking-wider uppercase text-primary">
           VENDA TUDO, EM TODO LUGAR
@@ -54,7 +54,7 @@ export default function ALinkPage() {
         <div className="mt-8">
             <a 
                 href="https://pay.hotmart.com/C101007078D?checkoutMode=2" 
-                className="hotmart-fb hotmart__button-checkout"
+                className="hotmart-fb hotmart__button-checkout animate-pulse"
                 onClick={(e) => e.preventDefault()}
             >
                 Comprar Agora
