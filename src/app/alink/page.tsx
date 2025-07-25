@@ -54,7 +54,7 @@ export default function ALinkPage() {
         <div className="mt-8">
             <a 
                 href="https://pay.hotmart.com/C101007078D?checkoutMode=2" 
-                className="hotmart-fb hotmart__button-checkout animate-pulse"
+                className="hotmart-fb hotmart__button-checkout animate-pulse-icon"
                 onClick={(e) => e.preventDefault()}
             >
                 Comprar Agora
