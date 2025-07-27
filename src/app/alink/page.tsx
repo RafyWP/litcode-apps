@@ -71,7 +71,7 @@ export default function ALinkPage() {
           <div className="mt-8 w-full max-w-md mx-auto space-y-8">
             <div>
                 <p className="text-sm font-semibold tracking-wider uppercase text-muted-foreground mb-4">
-                Produtos
+                Lançamento
                 </p>
                 <div className="flex flex-col gap-4">
                 <a href={!isCountdownActive ? "https://pay.hotmart.com/C101007078D" : undefined} target="_blank" rel="noopener noreferrer" className={isCountdownActive ? "cursor-not-allowed" : ""}>
