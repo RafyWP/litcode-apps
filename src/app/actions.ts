@@ -233,7 +233,6 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
         error: error.errors.map((e) => e.message).join(" "),
       };
     }
-    console.error(error);
     return {
       success: false,
       error: "An unexpected error occurred while tracking the event.",
@@ -273,7 +272,6 @@ export async function verifyEmail(params: z.infer<typeof verifyEmailSchema>) {
         error: error.errors.map((e) => e.message).join(" "),
       };
     }
-     console.error("Edge Config error:", (error as Error).message);
     return {
       success: false,
       error: "Could not verify email. The allowed list might not be set up in Vercel Edge Config.",

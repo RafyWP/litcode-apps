@@ -86,7 +86,6 @@ export default function TikTokVideoAnchorPage() {
       const state = crypto.randomUUID();
 
       if (!appId || !redirectUri) {
-        console.error("Client-side TikTok credentials are not configured.");
         return;
       }
 

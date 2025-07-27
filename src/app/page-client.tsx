@@ -56,7 +56,7 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
           }
         }
       } catch (error) {
-        console.error("Failed to read from localStorage", error);
+        // Failed to read from localStorage
       }
 
       // Generate a new sequence if cache is invalid or expired
@@ -75,7 +75,7 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
       try {
         localStorage.setItem(AVATAR_CACHE_KEY, JSON.stringify(newCacheData));
       } catch (error) {
-        console.error("Failed to write to localStorage", error);
+        // Failed to write to localStorage
       }
 
       return newNumbers;
