@@ -18,7 +18,7 @@ export default async function ALinkPage() {
     freeLink = freeLinkResult || defaultFreeLink;
   } catch (error) {
     // Fail gracefully if Edge Config is not available (e.g., in local development)
-    console.error("Could not fetch from Edge Config, using default links:", (error as Error).message);
+    // The default links will be used.
   }
 
   return (
