@@ -2,8 +2,10 @@
 "use client";
 
 import React from 'react';
-import Image from 'next/image';
 import Script from 'next/script';
+import { Button } from '@/components/ui/button';
+import { GraduationCap, Users, Download, Rocket } from 'lucide-react';
+import Link from 'next/link';
 
 export default function ALinkPage() {
 
@@ -19,24 +21,44 @@ export default function ALinkPage() {
       {/* A tag noscript do GTM não pode ser adicionada aqui, mas o impacto é mínimo. */}
 
       <div className="flex-grow flex flex-col items-center justify-center py-16 px-4">
-        <div className="text-center">
+        <div className="text-center w-full">
           <p className="text-xs sm:text-sm font-semibold tracking-wider uppercase text-primary">
             VENDA TUDO, EM TODO LUGAR
           </p>
           <h1 className="text-5xl sm:text-6xl font-bold mt-2">Âncora Link <span className="text-accent">PRO</span></h1>
           <p className="text-muted-foreground mt-4 md:text-base">
-              Venda infoprodutos, mentorias e achadinhos inserindo Links Clicáveis dentro dos vídeos. <br className="hidden md:block" />
+              Venda infoprodutos, mentorias e achadinhos inserindo Links Clicáveis dentro dos vídeos. 
+              <span className="hidden md:block" />
               Transforme seu TikTok em uma Loja Completa, sem depender do TikTok Shop.
           </p>
 
-          <div className="mt-8">
-              <Image
-                  src="/images/alink/em-breve-optmz.png"
-                  alt="Demonstração do Âncora Link"
-                  width={400}
-                  height={500}
-                  className="rounded-lg shadow-lg mx-auto border"
-              />
+          <div className="mt-8 w-full max-w-md mx-auto">
+            <div className="flex flex-col gap-4">
+              <Button asChild size="lg" className="w-full justify-center p-6 text-base shadow-lg hover:scale-105 transition-transform">
+                <a href="https://www.litcode.store/tiktok" target="_blank" rel="noopener noreferrer">
+                  <GraduationCap className="mr-4 h-5 w-5" />
+                  <span>Conheça nosso Curso de TikTok</span>
+                </a>
+              </Button>
+              <Button asChild size="lg" variant="secondary" className="w-full justify-center p-6 text-base shadow-lg hover:scale-105 transition-transform">
+                <a href="https://www.litcode.store/litcode-community" target="_blank" rel="noopener noreferrer">
+                  <Users className="mr-4 h-5 w-5" />
+                  <span>Participe da Comunidade Exclusiva</span>
+                </a>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="w-full justify-center p-6 text-base shadow-lg hover:scale-105 transition-transform">
+                <a href="#" target="_blank" rel="noopener noreferrer">
+                  <Download className="mr-4 h-5 w-5" />
+                  <span>Baixar E-book Gratuito</span>
+                </a>
+              </Button>
+               <Button asChild size="lg" variant="ghost" className="w-full justify-center p-6 text-base text-accent hover:text-accent hover:bg-accent/10">
+                <Link href="/apps">
+                  <Rocket className="mr-4 h-5 w-5" />
+                  <span>Nossos Aplicativos</span>
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
