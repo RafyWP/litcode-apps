@@ -9,7 +9,7 @@ export default async function HomePage() {
   try {
     youtubeVideoUrl = await get<string>('youtubeVideoUrl');
   } catch (error) {
-    console.log("Could not fetch from Edge Config, using default. Error: ", (error as Error).message);
+    // Fail gracefully and use the default URL.
   }
 
   return <PageClient youtubeVideoUrl={youtubeVideoUrl || defaultYoutubeUrl} />;
