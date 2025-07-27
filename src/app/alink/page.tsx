@@ -75,7 +75,7 @@ export default function ALinkPage() {
                 </p>
                 <div className="flex flex-col gap-4">
                 <Button asChild size="lg" variant="outline" className="w-full justify-between p-6 text-base shadow-lg hover:scale-105 transition-transform">
-                    <a href="https://www.dropbox.com/scl/fi/vjxtjcgpl3u1b8k728u1s/Layout-para-V-deos-de-Vendas.png?rlkey=f76d91fqr6v7g1e2bgn1irbrl&dl=1" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.canva.com/design/DAGuV_Ke75Y/6ZJn2lzCgy4bd4wXorrY_A/view?utm_content=DAGuV_Ke75Y&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview" target="_blank" rel="noopener noreferrer">
                       <span>Conteúdo 003: Baixar o Layout em PNG</span>
                       <Download className="h-5 w-5" />
                     </a>
