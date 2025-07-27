@@ -71,20 +71,6 @@ export default function ALinkPage() {
           <div className="mt-8 w-full max-w-md mx-auto space-y-8">
             <div>
                 <p className="text-sm font-semibold tracking-wider uppercase text-muted-foreground mb-4">
-                Material Gratuito
-                </p>
-                <div className="flex flex-col gap-4">
-                <Button asChild size="lg" variant="outline" className="w-full justify-between p-6 text-base shadow-lg hover:scale-105 transition-transform">
-                    <a href="https://www.canva.com/design/DAGuV_Ke75Y/6ZJn2lzCgy4bd4wXorrY_A/view?utm_content=DAGuV_Ke75Y&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview" target="_blank" rel="noopener noreferrer">
-                      <span>Conteúdo 003: Usar o Layout no Canva</span>
-                      <LayoutTemplate className="h-5 w-5" />
-                    </a>
-                </Button>
-                </div>
-            </div>
-            
-            <div>
-                <p className="text-sm font-semibold tracking-wider uppercase text-muted-foreground mb-4">
                 Produtos
                 </p>
                 <div className="flex flex-col gap-4">
@@ -101,6 +87,20 @@ export default function ALinkPage() {
                         </span>
                     </div>
                 )}
+                </div>
+            </div>
+
+            <div>
+                <p className="text-sm font-semibold tracking-wider uppercase text-muted-foreground mb-4">
+                Material Gratuito
+                </p>
+                <div className="flex flex-col gap-4">
+                <Button asChild size="lg" variant="outline" className="w-full justify-between p-6 text-base shadow-lg hover:scale-105 transition-transform">
+                    <a href="https://www.canva.com/design/DAGuV_Ke75Y/6ZJn2lzCgy4bd4wXorrY_A/view?utm_content=DAGuV_Ke75Y&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview" target="_blank" rel="noopener noreferrer">
+                      <span>Conteúdo 003: Usar o Layout no Canva</span>
+                      <LayoutTemplate className="h-5 w-5" />
+                    </a>
+                </Button>
                 </div>
             </div>
           </div>
