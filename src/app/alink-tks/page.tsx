@@ -6,7 +6,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/ca
 export default function ALinkTksPage() {
   return (
     <div className="flex-grow flex flex-col items-center justify-center py-16 px-4">
-      <div className="text-center w-full max-w-md mx-auto">
+      <div className="text-center w-full">
         <p className="text-xs sm:text-sm font-semibold tracking-wider uppercase text-primary">
           VENDA TUDO, EM TODO LUGAR
         </p>
@@ -16,7 +16,7 @@ export default function ALinkTksPage() {
           Transforme seu TikTok em uma Loja Completa, sem depender do TikTok Shop.
         </p>
 
-        <div className="mt-12">
+        <div className="mt-12 w-full max-w-md mx-auto">
             <Card className="shadow-lg">
                 <CardHeader className="items-center text-center">
                     <div className="text-6xl animate-bounce">🎉</div>
