@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import Script from 'next/script';
 import { Button } from '@/components/ui/button';
-import { Download, Crown, Timer } from 'lucide-react';
+import { Download, Crown } from 'lucide-react';
 
 export default function ALinkPage() {
   const calculateTimeLeft = () => {
@@ -96,7 +96,6 @@ export default function ALinkPage() {
                 </a>
                 {isClient && isCountdownActive && (
                     <div className="mt-2 text-sm text-muted-foreground flex items-center justify-center gap-2 font-mono">
-                        <Timer className="h-4 w-4" />
                         <span>
                             {String(timeLeft.days).padStart(2, '0')}d : {String(timeLeft.hours).padStart(2, '0')}h : {String(timeLeft.minutes).padStart(2, '0')}m : {String(timeLeft.seconds).padStart(2, '0')}s
                         </span>
