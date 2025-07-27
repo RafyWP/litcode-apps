@@ -22,7 +22,7 @@ export default function ALinkTksPage() {
                     <div className="text-6xl animate-bounce">🎉</div>
                     <CardTitle className="text-2xl font-bold mt-4">Obrigado por assinar!</CardTitle>
                     <CardDescription>
-                        Seu acesso foi enviado para o seu e-mail.
+                        Os acessos ao Hotmart foram enviados para o e-mail que você usou na compra. Lembre-se: Você tem 7 dias para solicitar o reembolso caso não goste do nosso material.
                     </CardDescription>
                 </CardHeader>
             </Card>
