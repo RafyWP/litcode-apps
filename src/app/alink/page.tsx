@@ -38,9 +38,8 @@ export default function ALinkPage() {
                 <div className="flex flex-col gap-4">
                 <Button asChild size="lg" variant="outline" className="w-full justify-between p-6 text-base shadow-lg hover:scale-105 transition-transform">
                     <a href="https://www.dropbox.com/scl/fi/vjxtjcgpl3u1b8k728u1s/Layout-para-V-deos-de-Vendas.png?rlkey=f76d91fqr6v7g1e2bgn1irbrl&dl=1" target="_blank" rel="noopener noreferrer">
-                      <Download className="h-5 w-5" />
                       <span>Conteúdo 003: Baixar o Layout em PNG</span>
-                      <div className="w-5" />
+                      <Download className="h-5 w-5" />
                     </a>
                 </Button>
                 </div>
@@ -53,9 +52,8 @@ export default function ALinkPage() {
                 <div className="flex flex-col gap-4">
                 <Button asChild size="lg" className="w-full justify-between p-6 text-base shadow-lg hover:scale-105 transition-transform">
                     <a href="https://pay.hotmart.com/C101007078D" target="_blank" rel="noopener noreferrer">
-                      <Crown className="h-5 w-5" />
                       <span>Assinar o Âncora Link PRO</span>
-                      <div className="w-5" />
+                      <Crown className="h-5 w-5" />
                     </a>
                 </Button>
                 </div>
