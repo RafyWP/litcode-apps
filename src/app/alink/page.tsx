@@ -76,7 +76,7 @@ export default function ALinkPage() {
                 <div className="flex flex-col gap-4">
                 <Button asChild size="lg" variant="outline" className="w-full justify-between p-6 text-base shadow-lg hover:scale-105 transition-transform">
                     <a href="https://www.canva.com/design/DAGuV_Ke75Y/6ZJn2lzCgy4bd4wXorrY_A/view?utm_content=DAGuV_Ke75Y&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview" target="_blank" rel="noopener noreferrer">
-                      <span>Conteúdo 003: Baixar o Layout em PNG</span>
+                      <span>Conteúdo 003: Usar Modelo no Canvas</span>
                       <Download className="h-5 w-5" />
                     </a>
                 </Button>
