@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import Script from 'next/script';
 import { Button } from '@/components/ui/button';
-import { Download, Crown } from 'lucide-react';
+import { LayoutTemplate, Crown } from 'lucide-react';
 
 export default function ALinkPage() {
   const calculateTimeLeft = () => {
@@ -77,7 +77,7 @@ export default function ALinkPage() {
                 <Button asChild size="lg" variant="outline" className="w-full justify-between p-6 text-base shadow-lg hover:scale-105 transition-transform">
                     <a href="https://www.canva.com/design/DAGuV_Ke75Y/6ZJn2lzCgy4bd4wXorrY_A/view?utm_content=DAGuV_Ke75Y&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview" target="_blank" rel="noopener noreferrer">
                       <span>Usar o Layout no Canva</span>
-                      <Download className="h-5 w-5" />
+                      <LayoutTemplate className="h-5 w-5" />
                     </a>
                 </Button>
                 </div>
