@@ -26,11 +26,14 @@ export default function ALinkPage() {
           </p>
           <h1 className="text-5xl sm:text-6xl font-bold mt-2">Âncora Link <span className="text-accent">PRO</span></h1>
           <p className="text-muted-foreground mt-4 md:text-base">
-              Venda infoprodutos, mentorias e achadinhos inserindo Links Clicáveis dentro dos vídeos. <span className="hidden md:block" />
+              Venda infoprodutos, mentorias e achadinhos inserindo Links Clicáveis dentro dos vídeos. <span className="hidden md:inline"> </span>
               Transforme seu TikTok em uma Loja Completa, sem depender do TikTok Shop.
           </p>
 
           <div className="mt-8 w-full max-w-md mx-auto">
+            <p className="text-sm font-semibold tracking-wider uppercase text-muted-foreground mb-4">
+              Material Gratuito
+            </p>
             <div className="flex flex-col gap-4">
               <Button asChild size="lg" variant="outline" className="w-full justify-center p-6 text-base shadow-lg hover:scale-105 transition-transform">
                 <a href="#" target="_blank" rel="noopener noreferrer">
