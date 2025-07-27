@@ -1,12 +1,50 @@
 
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Script from 'next/script';
 import { Button } from '@/components/ui/button';
-import { Download, Crown } from 'lucide-react';
+import { Download, Crown, Timer } from 'lucide-react';
 
 export default function ALinkPage() {
+  const calculateTimeLeft = () => {
+    // Target date: August 1, 2025, 00:00:00 Brasília Time (GMT-3)
+    const difference = +new Date('2025-08-01T00:00:00-03:00') - +new Date();
+    let timeLeft = {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+    };
+
+    if (difference > 0) {
+      timeLeft = {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+      };
+    }
+
+    return timeLeft;
+  };
+
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    // Set initial time to avoid flash of 00:00:00:00
+    setTimeLeft(calculateTimeLeft());
+
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const isCountdownActive = timeLeft.days > 0 || timeLeft.hours > 0 || timeLeft.minutes > 0 || timeLeft.seconds > 0;
 
   return (
     <>
@@ -50,12 +88,20 @@ export default function ALinkPage() {
                 Produtos
                 </p>
                 <div className="flex flex-col gap-4">
-                <Button asChild size="lg" className="w-full justify-between p-6 text-base shadow-lg hover:scale-105 transition-transform">
+                <Button asChild size="lg" className="w-full justify-between p-6 text-base shadow-lg hover:scale-105 transition-transform" disabled={isCountdownActive}>
                     <a href="https://pay.hotmart.com/C101007078D" target="_blank" rel="noopener noreferrer">
                       <span>Assinar o Âncora Link PRO</span>
                       <Crown className="h-5 w-5" />
                     </a>
                 </Button>
+                {isClient && isCountdownActive && (
+                    <div className="mt-2 text-sm text-muted-foreground flex items-center justify-center gap-2 font-mono">
+                        <Timer className="h-4 w-4" />
+                        <span>
+                            {String(timeLeft.days).padStart(2, '0')}d : {String(timeLeft.hours).padStart(2, '0')}h : {String(timeLeft.minutes).padStart(2, '0')}m : {String(timeLeft.seconds).padStart(2, '0')}s
+                        </span>
+                    </div>
+                )}
                 </div>
             </div>
           </div>
