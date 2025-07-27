@@ -20,7 +20,7 @@ export default function ALinkTksPage() {
             <Card className="shadow-lg">
                 <CardHeader className="items-center text-center">
                     <div className="text-6xl animate-bounce">🎉</div>
-                    <CardTitle className="text-2xl font-bold mt-4">Obrigado por se inscrever!</CardTitle>
+                    <CardTitle className="text-2xl font-bold mt-4">Obrigado por assinar!</CardTitle>
                     <CardDescription>
                         Seu acesso foi enviado para o seu e-mail.
                     </CardDescription>
