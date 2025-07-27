@@ -3,8 +3,23 @@ import { get } from "@vercel/edge-config";
 import AlinkClientContent from "@/components/alink-client-content";
 
 export default async function ALinkPage() {
-  const proLink = await get<string>('ancoraLinkProUrl') || "https://pay.hotmart.com/C101007078D";
-  const freeLink = await get<string>('video003Url') || "https://www.canva.com/design/DAGuV_Ke75Y/6ZJn2lzCgy4bd4wXorrY_A/view?utm_content=DAGuV_Ke75Y&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview";
+  const defaultProLink = "https://pay.hotmart.com/C101007078D";
+  const defaultFreeLink = "https://www.canva.com/design/DAGuV_Ke75Y/6ZJn2lzCgy4bd4wXorrY_A/view?utm_content=DAGuV_Ke75Y&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview";
+
+  let proLink = defaultProLink;
+  let freeLink = defaultFreeLink;
+
+  try {
+    const [proLinkResult, freeLinkResult] = await Promise.all([
+      get<string>('ancoraLinkProUrl'),
+      get<string>('video003Url')
+    ]);
+    proLink = proLinkResult || defaultProLink;
+    freeLink = freeLinkResult || defaultFreeLink;
+  } catch (error) {
+    // Fail gracefully if Edge Config is not available (e.g., in local development)
+    console.error("Could not fetch from Edge Config, using default links:", (error as Error).message);
+  }
 
   return (
     <>
