@@ -4,8 +4,7 @@
 import React from 'react';
 import Script from 'next/script';
 import { Button } from '@/components/ui/button';
-import { GraduationCap, Users, Download, Rocket } from 'lucide-react';
-import Link from 'next/link';
+import { Download } from 'lucide-react';
 
 export default function ALinkPage() {
 
@@ -27,36 +26,17 @@ export default function ALinkPage() {
           </p>
           <h1 className="text-5xl sm:text-6xl font-bold mt-2">Âncora Link <span className="text-accent">PRO</span></h1>
           <p className="text-muted-foreground mt-4 md:text-base">
-              Venda infoprodutos, mentorias e achadinhos inserindo Links Clicáveis dentro dos vídeos. 
-              <span className="hidden md:block" />
+              Venda infoprodutos, mentorias e achadinhos inserindo Links Clicáveis dentro dos vídeos. <span className="hidden md:block" />
               Transforme seu TikTok em uma Loja Completa, sem depender do TikTok Shop.
           </p>
 
           <div className="mt-8 w-full max-w-md mx-auto">
             <div className="flex flex-col gap-4">
-              <Button asChild size="lg" className="w-full justify-center p-6 text-base shadow-lg hover:scale-105 transition-transform">
-                <a href="https://www.litcode.store/tiktok" target="_blank" rel="noopener noreferrer">
-                  <GraduationCap className="mr-4 h-5 w-5" />
-                  <span>Conheça nosso Curso de TikTok</span>
-                </a>
-              </Button>
-              <Button asChild size="lg" variant="secondary" className="w-full justify-center p-6 text-base shadow-lg hover:scale-105 transition-transform">
-                <a href="https://www.litcode.store/litcode-community" target="_blank" rel="noopener noreferrer">
-                  <Users className="mr-4 h-5 w-5" />
-                  <span>Participe da Comunidade Exclusiva</span>
-                </a>
-              </Button>
               <Button asChild size="lg" variant="outline" className="w-full justify-center p-6 text-base shadow-lg hover:scale-105 transition-transform">
                 <a href="#" target="_blank" rel="noopener noreferrer">
                   <Download className="mr-4 h-5 w-5" />
                   <span>Baixar E-book Gratuito</span>
                 </a>
-              </Button>
-               <Button asChild size="lg" variant="ghost" className="w-full justify-center p-6 text-base text-accent hover:text-accent hover:bg-accent/10">
-                <Link href="/apps">
-                  <Rocket className="mr-4 h-5 w-5" />
-                  <span>Nossos Aplicativos</span>
-                </Link>
               </Button>
             </div>
           </div>
