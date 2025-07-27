@@ -1,7 +1,7 @@
 
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 export default function ALinkTksPage() {
   return (
