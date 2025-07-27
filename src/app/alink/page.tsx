@@ -88,12 +88,12 @@ export default function ALinkPage() {
                 Produtos
                 </p>
                 <div className="flex flex-col gap-4">
-                <Button asChild size="lg" className="w-full justify-between p-6 text-base shadow-lg hover:scale-105 transition-transform" disabled={isCountdownActive}>
-                    <a href="https://pay.hotmart.com/C101007078D" target="_blank" rel="noopener noreferrer">
-                      <span>Assinar o Âncora Link PRO</span>
-                      <Crown className="h-5 w-5" />
-                    </a>
-                </Button>
+                <a href={!isCountdownActive ? "https://pay.hotmart.com/C101007078D" : undefined} target="_blank" rel="noopener noreferrer" className={isCountdownActive ? "cursor-not-allowed" : ""}>
+                    <Button size="lg" className="w-full justify-between p-6 text-base shadow-lg hover:scale-105 transition-transform" disabled={isCountdownActive}>
+                        <span>Assinar o Âncora Link PRO</span>
+                        <Crown className="h-5 w-5" />
+                    </Button>
+                </a>
                 {isClient && isCountdownActive && (
                     <div className="mt-2 text-sm text-muted-foreground flex items-center justify-center gap-2 font-mono">
                         <Timer className="h-4 w-4" />
