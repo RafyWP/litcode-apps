@@ -277,7 +277,7 @@ export default function TikTokVideoAnchorPage() {
                         <Input
                           id="email-verify"
                           type="text"
-                          placeholder="••••••••"
+                          placeholder="email..."
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           disabled={isCheckingEmail}
