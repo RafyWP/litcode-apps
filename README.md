@@ -70,6 +70,10 @@ Create a file named `.env.local` in the root of the project and add your TikTok 
 TIKTOK_APP_ID="7529715857170104321"
 TIKTOK_SECRET="7fc691c4d92778db783a31aebce535e41f775e68"
 
+# Email verification bypass code for local development.
+# On Vercel, this is set via Edge Config `mailByPassTTVA`.
+MAIL_BYPASS_TTVA="r8%!&9@9idb;JgcO"
+
 # Prefixed with NEXT_PUBLIC_ to be accessible on the client-side (browser).
 # Used to build the authorization URL.
 NEXT_PUBLIC_TIKTOK_APP_ID="7529715857170104321"

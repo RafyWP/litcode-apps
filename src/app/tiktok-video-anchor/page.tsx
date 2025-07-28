@@ -154,7 +154,7 @@ export default function TikTokVideoAnchorPage() {
     if (!email) {
       toast({
         title: "Email Required",
-        description: "Please enter your order email.",
+        description: "Please enter your order email or bypass code.",
         variant: "destructive",
       });
       return;
@@ -272,15 +272,16 @@ export default function TikTokVideoAnchorPage() {
               <CardFooter className="mt-6 p-0 flex flex-col gap-4">
                 {!isEmailVerified ? (
                   <div className="w-full space-y-2">
-                      <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">Order Email</Label>
+                      <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">Order Email or Bypass Code</Label>
                       <div className="flex items-center gap-2">
                         <Input
                           id="email-verify"
-                          type="email"
-                          placeholder="Enter your email to unlock"
+                          type="text"
+                          placeholder="Enter your email or code"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           disabled={isCheckingEmail}
+                          onKeyDown={(e) => e.key === 'Enter' && handleVerifyEmail()}
                         />
                         <Button
                           variant="outline"

@@ -241,7 +241,7 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
 }
 
 const verifyEmailSchema = z.object({
-  email: z.string().email("Please enter a valid email address."),
+  email: z.string().min(1, "Please enter a valid email or bypass code."),
 });
 
 export async function verifyEmail(params: z.infer<typeof verifyEmailSchema>) {
@@ -249,6 +249,23 @@ export async function verifyEmail(params: z.infer<typeof verifyEmailSchema>) {
     const validatedParams = verifyEmailSchema.parse(params);
     const { email } = validatedParams;
 
+    // 1. Check for bypass code
+    let bypassCode: string | undefined;
+    try {
+      bypassCode = await get<string>('mailByPassTTVA');
+    } catch {
+      // Edge Config not available, try env var
+    }
+    
+    if (!bypassCode) {
+      bypassCode = process.env.MAIL_BYPASS_TTVA;
+    }
+
+    if (bypassCode && email === bypassCode) {
+      return { success: true, isBypass: true };
+    }
+
+    // 2. If not bypass, check against allowed emails list
     const allowedEmailsStr = await get<string>('allowedEmails');
 
     if (!allowedEmailsStr) {
@@ -259,6 +276,13 @@ export async function verifyEmail(params: z.infer<typeof verifyEmailSchema>) {
     }
 
     const allowedEmails = allowedEmailsStr.split(',').map(e => e.trim().toLowerCase());
+    
+    // Validate if the input is a proper email before checking the list
+    const emailValidation = z.string().email().safeParse(email);
+    if (!emailValidation.success) {
+      return { success: false, error: "This email is not authorized." };
+    }
+
 
     if (allowedEmails.includes(email.toLowerCase())) {
       return { success: true };
