@@ -3,6 +3,7 @@
 
 import { get } from "@vercel/edge-config";
 import { z } from "zod";
+import { createHmac, createHash } from "crypto";
 
 const getAccessTokenSchema = z.object({
   authCode: z.string().min(1, "Authorization Code is required."),
@@ -173,18 +174,22 @@ export async function createPixel(params: z.infer<typeof createPixelSchema>) {
 const trackEventSchema = z.object({
   accessToken: z.string(),
   pixelCode: z.string(),
+  externalId: z.string(),
+  email: z.string().optional(),
+  phone: z.string().optional(),
 });
+
+function hashValue(value: string): string {
+  return createHash("sha256").update(value).digest("hex");
+}
 
 export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
   try {
     const validatedParams = trackEventSchema.parse(params);
-    const { accessToken, pixelCode } = validatedParams;
+    const { accessToken, pixelCode, externalId, email, phone } = validatedParams;
 
     const eventName = "Purchase";
     const eventTime = Math.floor(new Date().getTime() / 1000);
-    const eventId = `${eventName.toLowerCase()}_${eventTime}_${Math.random()
-      .toString(36)
-      .substring(2, 9)}`;
 
     const requestBody = {
       event_source: "web",
@@ -193,7 +198,30 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
         {
           event: eventName,
           event_time: eventTime,
-          event_id: eventId,
+          user: {
+            email: email ? hashValue(email) : undefined,
+            phone: phone ? hashValue(phone) : undefined,
+            external_id: externalId ? hashValue(externalId) : undefined,
+            ttclid: null,
+            ip: null,
+            user_agent: null,
+          },
+          properties: {
+            contents: [
+              {
+                content_id: "123",
+                content_name: "Test Product",
+              },
+            ],
+            currency: "USD",
+            value: 0,
+            content_type: "product",
+            description: "This record is intended to test the pixel.",
+          },
+          page: {
+            url: "https://ia.litcode.store/produto/test-product",
+            referrer: "123",
+          },
         },
       ],
     };

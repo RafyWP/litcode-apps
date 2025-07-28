@@ -37,6 +37,7 @@ import {
   LogIn,
   Send,
   WandSparkles,
+  RefreshCw,
 } from "lucide-react";
 import { Card, CardDescription, CardFooter, CardTitle } from "@/components/ui/card";
 
@@ -48,6 +49,9 @@ type Advertiser = {
 const formSchema = z.object({
   advertiserId: z.string().min(1, "Please select an Advertiser account."),
   pixelName: z.string().min(1, "Pixel Name is required"),
+  externalId: z.string().optional(),
+  email: z.string().optional(),
+  phone: z.string().optional(),
 });
 
 export default function TikTokVideoAnchorPage() {
@@ -65,7 +69,7 @@ export default function TikTokVideoAnchorPage() {
   const [advertisers, setAdvertisers] = useState<Advertiser[]>([]);
 
   // State for email verification
-  const [email, setEmail] = useState("");
+  const [emailVerify, setEmailVerify] = useState("");
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
 
@@ -73,9 +77,25 @@ export default function TikTokVideoAnchorPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       advertiserId: "",
-      pixelName: "LitCode TikTok",
+      pixelName: "My Pixel 01",
+      externalId: "",
+      email: "",
+      phone: "",
     },
   });
+
+  const generateUUID = () => {
+      return crypto.randomUUID();
+  }
+
+  const resetExternalId = () => {
+    form.setValue("externalId", generateUUID());
+  };
+
+  useEffect(() => {
+    form.setValue("externalId", generateUUID());
+  }, [form]);
+
 
   useEffect(() => {
     // Generate auth URL on client side
@@ -151,16 +171,16 @@ export default function TikTokVideoAnchorPage() {
   }, [accessToken, toast]);
 
   const handleVerifyEmail = async () => {
-    if (!email) {
+    if (!emailVerify) {
       toast({
         title: "Email Required",
-        description: "Please enter your order email or bypass code.",
+        description: "Please enter your order email.",
         variant: "destructive",
       });
       return;
     }
     setIsCheckingEmail(true);
-    const result = await verifyEmail({ email });
+    const result = await verifyEmail({ email: emailVerify });
     setIsCheckingEmail(false);
 
     if (result.success) {
@@ -218,9 +238,13 @@ export default function TikTokVideoAnchorPage() {
     if (!accessToken || !pixelCode) return;
 
     setIsSendingEvent(true);
+    const formValues = form.getValues();
     const result = await trackEvent({
       accessToken,
       pixelCode,
+      externalId: formValues.externalId || "",
+      email: formValues.email || "",
+      phone: formValues.phone || "",
     });
 
     setIsSendingEvent(false);
@@ -262,7 +286,7 @@ export default function TikTokVideoAnchorPage() {
                   </div>
                   <div className="flex flex-col">
                       <CardTitle className="font-headline text-xl font-bold tracking-tight">
-                          TikTok Video Anchor
+                          TT Anchor | Âncora Link App
                       </CardTitle>
                       <CardDescription className="mt-1">
                           Use the same email address you used to order on Podia to log in. / Use o mesmo e-mail que usou na compra via Info Achadinhos / Hotmart.
@@ -278,8 +302,8 @@ export default function TikTokVideoAnchorPage() {
                           id="email-verify"
                           type="text"
                           placeholder="email..."
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
+                          value={emailVerify}
+                          onChange={(e) => setEmailVerify(e.target.value)}
                           disabled={isCheckingEmail}
                           onKeyDown={(e) => e.key === 'Enter' && handleVerifyEmail()}
                         />
@@ -324,7 +348,7 @@ export default function TikTokVideoAnchorPage() {
             <Anchor className="h-8 w-8 sm:h-10 sm:w-10" />
           </div>
           <h1 className="font-headline text-3xl sm:text-5xl font-bold text-card-foreground">
-            TikTok Video Anchor
+            TT Anchor | Âncora Link App
           </h1>
           <p className="text-muted-foreground mt-3 text-lg max-w-sm mx-auto">
             Anchor every item in your videos with clickable links that convert views into sales.
@@ -342,7 +366,7 @@ export default function TikTokVideoAnchorPage() {
                       name="advertiserId"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Advertiser Account</FormLabel>
+                          <FormLabel>Advertiser Account | Conta do TikTok Ads</FormLabel>
                           <Select
                             onValueChange={field.onChange}
                             defaultValue={field.value}
@@ -371,19 +395,19 @@ export default function TikTokVideoAnchorPage() {
                                 ))
                               ) : (
                                 <SelectItem value="none" disabled>
-                                  No accounts found.
+                                  No accounts found | Nenhuma conta encontrada
                                 </SelectItem>
                               )}
                             </SelectContent>
                           </Select>
                           <FormDescription>
-                            Choose the TikTok Ads account for this pixel.
+                            Choose the TikTok Ads account for this pixel | Esclha sua conta do TikTok Ads para criar o pixel.
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    <FormField
+                     <FormField
                       control={form.control}
                       name="pixelName"
                       render={({ field }) => (
@@ -396,7 +420,7 @@ export default function TikTokVideoAnchorPage() {
                             />
                           </FormControl>
                           <FormDescription>
-                            A name to identify this pixel later.
+                            A name to identify this pixel later | Um nome para identificar o pixel depois.
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
@@ -423,7 +447,7 @@ export default function TikTokVideoAnchorPage() {
             <div className="space-y-4">
               <div>
                 <Label className="text-xs text-muted-foreground">
-                  Pixel ID
+                  Pixel ID | ID do Pixel
                 </Label>
                 <div className="flex items-center gap-2">
                   <Input
@@ -443,7 +467,7 @@ export default function TikTokVideoAnchorPage() {
               </div>
               <div>
                 <Label className="text-xs text-muted-foreground">
-                  Pixel Code
+                  Pixel Code | Código do Pixel
                 </Label>
                 <div className="flex items-center gap-2">
                   <Input
@@ -461,6 +485,56 @@ export default function TikTokVideoAnchorPage() {
                   </Button>
                 </div>
               </div>
+              <Form {...form}>
+                <form className="space-y-4 border-t pt-4">
+                  <FormField
+                    control={form.control}
+                    name="externalId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>ID</FormLabel>
+                        <div className="flex items-center gap-2">
+                          <FormControl>
+                            <Input {...field} disabled />
+                          </FormControl>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            type="button"
+                            onClick={resetExternalId}
+                          >
+                            <RefreshCw className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input placeholder="user@example.com" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone</FormLabel>
+                        <FormControl>
+                          <Input placeholder="+1234567890" {...field} />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </form>
+              </Form>
 
               <div className="border-t pt-4">
                 <Button
@@ -479,7 +553,7 @@ export default function TikTokVideoAnchorPage() {
                 </Button>
                 {!eventSent && (
                   <p className="text-xs text-muted-foreground text-center mt-2">
-                    Click to send a test 'Purchase' event.
+                    Click to send a test 'Purchase' event | Clique para enviar um evento de teste 'Compra'.
                   </p>
                 )}
               </div>
@@ -490,10 +564,10 @@ export default function TikTokVideoAnchorPage() {
             <div className="text-center p-4 bg-secondary rounded-lg flex flex-col items-center gap-2 text-sm">
               <CheckCircle className="h-8 w-8 text-green-500" />
               <p className="font-semibold text-card-foreground">
-                Process Complete!
+                Process Complete | Processo Completo!
               </p>
               <p className="text-muted-foreground">
-                You can now log out via the header.
+                Please wait a few minutes for the event to be recorded in your TikTok Business/Ads dashboard. | Aguarde alguns minutos até que o evento seja registrado em seu painel do TikTok Business / Ads.
               </p>
             </div>
           )}
