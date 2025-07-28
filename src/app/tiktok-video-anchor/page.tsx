@@ -265,7 +265,7 @@ export default function TikTokVideoAnchorPage() {
                           TikTok Video Anchor
                       </CardTitle>
                       <CardDescription className="mt-1">
-                          Use the same email address you used to order on Podia / Hotmart to log in.
+                          Use the same email address you used to order on Podia to log in. / Use o mesmo e-mail que usou na compra via Info Achadinhos / Hotmart.
                       </CardDescription>
                   </div>
               </div>
