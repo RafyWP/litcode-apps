@@ -272,7 +272,7 @@ export default function TikTokVideoAnchorPage() {
               <CardFooter className="mt-6 p-0 flex flex-col gap-4">
                 {!isEmailVerified ? (
                   <div className="w-full space-y-2">
-                      <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">Order Email or Bypass Code</Label>
+                      <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">Order Email / E-mail do Pedido</Label>
                       <div className="flex items-center gap-2">
                         <Input
                           id="email-verify"
