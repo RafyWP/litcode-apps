@@ -270,7 +270,6 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
 
         <div className="space-y-6">
             
-            {step >= 1 && (
               <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center justify-between">
@@ -309,9 +308,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
                     )}
                 </CardContent>
               </Card>
-            )}
 
-            {step >= 2 && (
               <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center justify-between">
@@ -376,9 +373,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
                     </Form>
                 </CardContent>
               </Card>
-            )}
 
-            {step >= 3 && (
               <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center justify-between">
@@ -394,9 +389,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
                     </Button>
                 </CardFooter>
               </Card>
-            )}
 
-            {step >= 4 && (
               <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center justify-between">
@@ -427,9 +420,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
                     </Button>
                 </CardFooter>
               </Card>
-            )}
             
-            {step >= 5 && (
               <Card className="bg-green-50 dark:bg-green-900/20 border-green-500">
                 <CardHeader className="text-center items-center">
                     <CheckCircle className="h-12 w-12 text-green-500" />
@@ -441,7 +432,6 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
                     </CardDescription>
                 </CardHeader>
               </Card>
-            )}
 
         </div>
       </div>
