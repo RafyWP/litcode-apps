@@ -23,7 +23,6 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { createPixel, getAdvertisers, trackEvent, verifyEmail } from "@/app/actions";
@@ -36,8 +35,6 @@ import {
   LogIn,
   Send,
   WandSparkles,
-  RefreshCw,
-  ArrowRight,
 } from "lucide-react";
 import { Card, CardDescription, CardHeader, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -83,7 +80,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
     resolver: zodResolver(formSchema),
     defaultValues: {
       advertiserId: "",
-      pixelName: "Meu Pixel 01",
+      pixelName: "",
       externalId: "",
       email: emailFromConfig || "",
       phone: phoneFromConfig || "",
@@ -94,9 +91,20 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
     return crypto.randomUUID();
   }
 
+  const generatePixelName = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = 'PX-';
+    for (let i = 0; i < 8; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  }
+
   useEffect(() => {
     form.setValue("externalId", generateUUID());
+    form.setValue("pixelName", generatePixelName());
   }, [form]);
+
 
   useEffect(() => {
     if (accessToken) {
@@ -171,7 +179,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
 
   const handleVerifyEmail = async () => {
     if (!emailVerify) {
-      toast({ title: "E-mail Necessário", description: "Por favor, insira o e-mail do seu pedido.", variant: "destructive" });
+      toast({ title: "E-mail Necessário", description: "Por favor, insira o e-mail do seu pedido ou código de acesso.", variant: "destructive" });
       return;
     }
     setIsCheckingEmail(true);
@@ -288,7 +296,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                 <CardContent>
                     {!isEmailVerified ? (
                     <div className="w-full space-y-2">
-                        <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">E-mail do Pedido</Label>
+                        <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">E-mail do Pedido / Código de Acesso</Label>
                         <div className="flex items-center gap-2">
                             <Input
                             id="email-verify"
@@ -323,7 +331,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                        <span>{getStepTitle(2)}</span>
                        {step > 2 && <CheckCircle className="h-6 w-6 text-green-500" />}
                     </CardTitle>
-                    <CardDescription>Selecione sua conta de anúncios e crie um novo pixel.</CardDescription>
+                    <CardDescription>Selecione sua conta de anúncios para criar um novo pixel.</CardDescription>
                 </CardHeader>
                 <CardContent>
                       <Form {...form}>
@@ -365,18 +373,8 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                                             </FormItem>
                                         )}
                                     />
-                                    <FormField
-                                        control={form.control}
-                                        name="pixelName"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Nome do Pixel</FormLabel>
-                                                <FormControl><Input placeholder="ex: Meu Pixel Incrível" {...field} /></FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                      {/* Hidden Fields */}
+                                    {/* Hidden Fields */}
+                                    <input type="hidden" {...form.register("pixelName")} />
                                     <input type="hidden" {...form.register("externalId")} />
                                     <input type="hidden" {...form.register("email")} />
                                     <input type="hidden" {...form.register("phone")} />
