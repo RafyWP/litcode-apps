@@ -263,7 +263,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
   const tiktokEventPanelUrl = `https://ads.tiktok.com/i18n/events_manager/datasource/pixel/detail/${pixelCode}?org_id=${selectedAdvertiserId}&open_from=bc_asset_pixel`;
 
   return (
-    <div className="flex-grow bg-background text-foreground flex flex-col items-center justify-center p-4 font-body">
+    <div className="flex-grow bg-background text-foreground flex flex-col items-center justify-center px-4 py-10">
       <div className="w-full max-w-lg mx-auto">
         <header className="text-center mb-10">
           <div className="inline-flex items-center justify-center bg-primary text-primary-foreground p-3 rounded-full mb-4 shadow-lg shadow-primary/30">
