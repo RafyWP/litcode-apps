@@ -209,7 +209,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
     if (result.success && result.data.pixel_id && result.data.pixel_code) {
       setPixelId(result.data.pixel_id);
       setPixelCode(result.data.pixel_code);
-      setStep(3); // Move to next step
+      setStep(3);
     } else {
       toast({
         title: "Erro ao Criar o Pixel",
@@ -255,7 +255,8 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
         case 1: return "Passo 1: Autorizar Acesso";
         case 2: return "Passo 2: Gerar Pixel";
         case 3: return "Passo 3: Enviar Evento de Teste";
-        case 4: return "Concluído";
+        case 4: return "Passo 4: Configuração Hotmart";
+        case 5: return "Concluído";
     }
   }
 
@@ -397,9 +398,26 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                         <span>{getStepTitle(3)}</span>
                         {step > 3 && <CheckCircle className="h-6 w-6 text-green-500" />}
                     </CardTitle>
-                    <CardDescription>Copie os detalhes do seu novo pixel e envie um evento de teste.</CardDescription>
+                    <CardDescription>Envie um evento de teste para validar a instalação do pixel.</CardDescription>
                 </CardHeader>
-                  <CardContent className="space-y-4">
+                <CardFooter>
+                      <Button onClick={handleSendEvent} className="w-full font-bold" disabled={isSendingEvent || eventSent}>
+                        {isSendingEvent ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2" />}
+                        Enviar Evento de Teste
+                    </Button>
+                </CardFooter>
+            </Card>
+
+            {/* Step 4: Hotmart Configuration */}
+            <Card>
+                 <CardHeader>
+                    <CardTitle className="flex items-center justify-between">
+                       <span>{getStepTitle(4)}</span>
+                       {step > 4 && <CheckCircle className="h-6 w-6 text-green-500" />}
+                    </CardTitle>
+                    <CardDescription>Copie o código do pixel para usar na integração.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
                     <input type="hidden" value={pixelId || ""} />
                     <div>
                         <Label className="text-xs text-muted-foreground">Código do Pixel</Label>
@@ -413,19 +431,13 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                         Use o Código do Pixel gerado para configurar o campo 'ID do TikTok' na integração com o Hotmart.
                       </p>
                 </CardContent>
-                <CardFooter>
-                      <Button onClick={handleSendEvent} className="w-full font-bold" disabled={isSendingEvent || eventSent}>
-                        {isSendingEvent ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2" />}
-                        Enviar Evento de Teste
-                    </Button>
-                </CardFooter>
             </Card>
             
-            {/* Step 4: Complete */}
+            {/* Step 5: Complete */}
             <Card className="bg-green-50 dark:bg-green-900/20 border-green-500">
                 <CardHeader className="text-center items-center">
                     <CheckCircle className="h-12 w-12 text-green-500" />
-                    <CardTitle>{getStepTitle(4)}</CardTitle>
+                    <CardTitle>{getStepTitle(5)}</CardTitle>
                     <CardDescription>
                         Aguarde alguns minutos para que o evento seja registrado no seu painel do TikTok Business/Ads.
                     </CardDescription>
