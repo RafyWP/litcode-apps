@@ -353,13 +353,13 @@ async function getHotmartToken() {
       'Authorization': basicToken
     },
   });
-
+  
+  const responseText = await response.text();
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(`Failed to get Hotmart token: ${errorData.error_description || response.statusText}`);
+    throw new Error(`Failed to get Hotmart token: ${responseText}`);
   }
 
-  const data = await response.json();
+  const data = JSON.parse(responseText);
   hotmartAccessToken = data.access_token;
   // expires_in is in seconds. Convert to milliseconds and leave a 60-second buffer.
   hotmartTokenExpiresAt = now + (data.expires_in - 60) * 1000;
@@ -387,12 +387,12 @@ export async function getHotmartProduct(params: z.infer<typeof getHotmartProduct
       },
     });
 
+    const responseText = await response.text();
     if (!response.ok) {
-      const errorText = await response.text();
-      return { success: false, error: `Failed to fetch product from Hotmart: ${errorText}` };
+      return { success: false, error: `Failed to fetch product from Hotmart: ${responseText}` };
     }
 
-    const data = await response.json();
+    const data = JSON.parse(responseText);
     
     if (data.items && data.items.length > 0) {
       return { success: true, data: data.items[0] };
