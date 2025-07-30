@@ -277,7 +277,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
         <div className="space-y-6">
             
             {/* Step 1: Authorization */}
-            <Card className={step < 1 ? 'opacity-50' : ''}>
+            <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                        <span>{getStepTitle(1)}</span>
@@ -285,41 +285,39 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                     </CardTitle>
                     <CardDescription>Authorize the application to access your TikTok Ads account.</CardDescription>
                 </CardHeader>
-                {step === 1 && (
-                     <CardContent>
-                        {!isEmailVerified ? (
-                        <div className="w-full space-y-2">
-                            <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">Order Email / E-mail do Pedido</Label>
-                            <div className="flex items-center gap-2">
-                                <Input
-                                id="email-verify"
-                                type="text"
-                                placeholder="email..."
-                                value={emailVerify}
-                                onChange={(e) => setEmailVerify(e.target.value)}
-                                disabled={isCheckingEmail}
-                                onKeyDown={(e) => e.key === 'Enter' && handleVerifyEmail()}
-                                />
-                                <Button variant="outline" onClick={handleVerifyEmail} disabled={isCheckingEmail} aria-label="Verify Email">
-                                {isCheckingEmail ? <Loader2 className="animate-spin" /> : <LockKeyhole />}
-                                </Button>
-                            </div>
-                            </div>
-                        ) : (
-                        <Button
-                            className="w-full animate-in fade-in"
-                            onClick={() => { if (authUrl) window.location.href = authUrl; }}
-                        >
-                            <LogIn className="mr-2" />
-                            Login with TikTok Business
-                        </Button>
-                        )}
-                    </CardContent>
-                )}
+                <CardContent>
+                    {!isEmailVerified ? (
+                    <div className="w-full space-y-2">
+                        <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">Order Email / E-mail do Pedido</Label>
+                        <div className="flex items-center gap-2">
+                            <Input
+                            id="email-verify"
+                            type="text"
+                            placeholder="email..."
+                            value={emailVerify}
+                            onChange={(e) => setEmailVerify(e.target.value)}
+                            disabled={isCheckingEmail}
+                            onKeyDown={(e) => e.key === 'Enter' && handleVerifyEmail()}
+                            />
+                            <Button variant="outline" onClick={handleVerifyEmail} disabled={isCheckingEmail} aria-label="Verify Email">
+                            {isCheckingEmail ? <Loader2 className="animate-spin" /> : <LockKeyhole />}
+                            </Button>
+                        </div>
+                        </div>
+                    ) : (
+                    <Button
+                        className="w-full animate-in fade-in"
+                        onClick={() => { if (authUrl) window.location.href = authUrl; }}
+                    >
+                        <LogIn className="mr-2" />
+                        Login with TikTok Business
+                    </Button>
+                    )}
+                </CardContent>
             </Card>
 
             {/* Step 2: Generate Pixel */}
-            <Card className={step < 2 ? 'opacity-50' : ''}>
+            <Card>
                  <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                        <span>{getStepTitle(2)}</span>
@@ -327,77 +325,75 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                     </CardTitle>
                     <CardDescription>Select your ad account and create a new pixel.</CardDescription>
                 </CardHeader>
-                {step === 2 && (
-                    <CardContent>
-                         <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                                <fieldset disabled={isLoading || isFetchingAdvertisers}>
-                                    <div className="space-y-4">
-                                        <FormField
-                                            control={form.control}
-                                            name="advertiserId"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                <FormLabel>Advertiser Account</FormLabel>
-                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                    <FormControl>
-                                                        <SelectTrigger disabled={isFetchingAdvertisers}>
-                                                            {isFetchingAdvertisers ? (
-                                                            <span className="flex items-center text-muted-foreground">
-                                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                                Loading Accounts...
-                                                            </span>
-                                                            ) : (
-                                                            <SelectValue placeholder="Select an advertiser account" />
-                                                            )}
-                                                        </SelectTrigger>
-                                                    </FormControl>
-                                                    <SelectContent>
-                                                    {advertisers.length > 0 ? (
-                                                        advertisers.map((ad) => (
-                                                        <SelectItem key={ad.advertiser_id} value={ad.advertiser_id}>
-                                                            {ad.advertiser_name} ({ad.advertiser_id})
-                                                        </SelectItem>
-                                                        ))
-                                                    ) : (
-                                                        <SelectItem value="none" disabled>No accounts found</SelectItem>
-                                                    )}
-                                                    </SelectContent>
-                                                </Select>
+                <CardContent>
+                      <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                            <fieldset disabled={isLoading || isFetchingAdvertisers}>
+                                <div className="space-y-4">
+                                    <FormField
+                                        control={form.control}
+                                        name="advertiserId"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                            <FormLabel>Advertiser Account</FormLabel>
+                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <FormControl>
+                                                    <SelectTrigger disabled={isFetchingAdvertisers}>
+                                                        {isFetchingAdvertisers ? (
+                                                        <span className="flex items-center text-muted-foreground">
+                                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                            Loading Accounts...
+                                                        </span>
+                                                        ) : (
+                                                        <SelectValue placeholder="Select an advertiser account" />
+                                                        )}
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                {advertisers.length > 0 ? (
+                                                    advertisers.map((ad) => (
+                                                    <SelectItem key={ad.advertiser_id} value={ad.advertiser_id}>
+                                                        {ad.advertiser_name} ({ad.advertiser_id})
+                                                    </SelectItem>
+                                                    ))
+                                                ) : (
+                                                    <SelectItem value="none" disabled>No accounts found</SelectItem>
+                                                )}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="pixelName"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Pixel Name</FormLabel>
+                                                <FormControl><Input placeholder="e.g., My Awesome Pixel" {...field} /></FormControl>
                                                 <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <FormField
-                                            control={form.control}
-                                            name="pixelName"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Pixel Name</FormLabel>
-                                                    <FormControl><Input placeholder="e.g., My Awesome Pixel" {...field} /></FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                         {/* Hidden Fields */}
-                                        <input type="hidden" {...form.register("externalId")} />
-                                        <input type="hidden" {...form.register("email")} />
-                                        <input type="hidden" {...form.register("phone")} />
-                                    </div>
-                                    <Button type="submit" className="w-full font-bold mt-4" disabled={isLoading || isFetchingAdvertisers}>
-                                        {(isLoading || isFetchingAdvertisers) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                        <WandSparkles className="mr-2" />
-                                        Generate Pixel
-                                    </Button>
-                                </fieldset>
-                            </form>
-                        </Form>
-                    </CardContent>
-                )}
+                                            </FormItem>
+                                        )}
+                                    />
+                                      {/* Hidden Fields */}
+                                    <input type="hidden" {...form.register("externalId")} />
+                                    <input type="hidden" {...form.register("email")} />
+                                    <input type="hidden" {...form.register("phone")} />
+                                </div>
+                                <Button type="submit" className="w-full font-bold mt-4" disabled={isLoading || isFetchingAdvertisers}>
+                                    {(isLoading || isFetchingAdvertisers) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                    <WandSparkles className="mr-2" />
+                                    Generate Pixel
+                                </Button>
+                            </fieldset>
+                        </form>
+                    </Form>
+                </CardContent>
             </Card>
 
             {/* Step 3: Send Test Event */}
-            <Card className={step < 3 ? 'opacity-50' : ''}>
+            <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                         <span>{getStepTitle(3)}</span>
@@ -405,53 +401,49 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                     </CardTitle>
                     <CardDescription>Copy your new pixel details and send a test event.</CardDescription>
                 </CardHeader>
-                {step === 3 && (
-                     <CardContent className="space-y-4">
-                        <div>
-                            <Label className="text-xs text-muted-foreground">Pixel ID</Label>
-                            <div className="flex items-center gap-2">
-                                <Input readOnly value={pixelId || ""} className="font-mono text-sm" />
-                                <Button variant="ghost" size="icon" onClick={() => copyToClipboard(pixelId)}><Copy className="h-4 w-4" /></Button>
-                            </div>
+                  <CardContent className="space-y-4">
+                    <div>
+                        <Label className="text-xs text-muted-foreground">Pixel ID</Label>
+                        <div className="flex items-center gap-2">
+                            <Input readOnly value={pixelId || ""} className="font-mono text-sm" />
+                            <Button variant="ghost" size="icon" onClick={() => copyToClipboard(pixelId)}><Copy className="h-4 w-4" /></Button>
                         </div>
-                        <div>
-                            <Label className="text-xs text-muted-foreground">Pixel Code</Label>
-                            <div className="flex items-center gap-2">
-                                <Input readOnly value={pixelCode || ""} className="font-mono text-sm" />
-                                <Button variant="ghost" size="icon" onClick={() => copyToClipboard(pixelCode)}><Copy className="h-4 w-4" /></Button>
-                            </div>
+                    </div>
+                    <div>
+                        <Label className="text-xs text-muted-foreground">Pixel Code</Label>
+                        <div className="flex items-center gap-2">
+                            <Input readOnly value={pixelCode || ""} className="font-mono text-sm" />
+                            <Button variant="ghost" size="icon" onClick={() => copyToClipboard(pixelCode)}><Copy className="h-4 w-4" /></Button>
                         </div>
-                        <Separator />
-                         <p className="text-sm text-muted-foreground text-center pt-2">
-                            Use o Código do Pixel gerado para configurar o campo 'ID do TikTok' na integração com o Hotmart.
-                         </p>
-                    </CardContent>
-                )}
-                {step === 3 && (
-                    <CardFooter>
-                         <Button onClick={handleSendEvent} className="w-full font-bold" disabled={isSendingEvent || eventSent}>
-                            {isSendingEvent ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2" />}
-                            Send Test Event
-                        </Button>
-                    </CardFooter>
-                )}
+                    </div>
+                    <Separator />
+                      <p className="text-sm text-muted-foreground text-center pt-2">
+                        Use o Código do Pixel gerado para configurar o campo 'ID do TikTok' na integração com o Hotmart.
+                      </p>
+                </CardContent>
+                <CardFooter>
+                      <Button onClick={handleSendEvent} className="w-full font-bold" disabled={isSendingEvent || eventSent}>
+                        {isSendingEvent ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2" />}
+                        Send Test Event
+                    </Button>
+                </CardFooter>
             </Card>
             
             {/* Step 4: Complete */}
-            {step === 4 && (
-                 <Card className="bg-green-50 dark:bg-green-900/20 border-green-500">
-                    <CardHeader className="text-center items-center">
-                        <CheckCircle className="h-12 w-12 text-green-500" />
-                        <CardTitle>{getStepTitle(4)}</CardTitle>
-                        <CardDescription>
-                           Please wait a few minutes for the event to be recorded in your TikTok Business/Ads dashboard.
-                        </CardDescription>
-                    </CardHeader>
-                 </Card>
-            )}
+            <Card className="bg-green-50 dark:bg-green-900/20 border-green-500">
+                <CardHeader className="text-center items-center">
+                    <CheckCircle className="h-12 w-12 text-green-500" />
+                    <CardTitle>{getStepTitle(4)}</CardTitle>
+                    <CardDescription>
+                        Please wait a few minutes for the event to be recorded in your TikTok Business/Ads dashboard.
+                    </CardDescription>
+                </CardHeader>
+            </Card>
 
         </div>
       </div>
     </div>
   );
 }
+
+    
