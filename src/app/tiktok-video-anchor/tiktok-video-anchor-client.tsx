@@ -248,16 +248,6 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
       toast({ title: "Erro ao Enviar Evento", description: result.error || "Ocorreu um erro desconhecido.", variant: "destructive" });
     }
   }
-  
-  const getStepTitle = (currentStep: number) => {
-    switch(currentStep) {
-        case 1: return "Passo 1: Autorizar Acesso";
-        case 2: return "Passo 2: Gerar Pixel";
-        case 3: return "Passo 3: Enviar 'Compra Teste'";
-        case 4: return "Passo 4: Configurar Hotmart";
-        case 5: return "Concluído";
-    }
-  }
 
   const selectedAdvertiserId = form.watch("advertiserId");
   const tiktokEventPanelUrl = `https://ads.tiktok.com/i18n/events_manager/datasource/pixel/detail/${pixelCode}?org_id=${selectedAdvertiserId}&open_from=bc_asset_pixel`;
@@ -284,7 +274,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center justify-between">
-                       <span>{getStepTitle(1)}</span>
+                       <span>Autorizar Acesso</span>
                        {step > 1 && <CheckCircle className="h-6 w-6 text-green-500" />}
                     </CardTitle>
                     <CardDescription>Autorize o aplicativo para acessar sua conta do TikTok Ads.</CardDescription>
@@ -324,7 +314,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
             <Card>
                  <CardHeader>
                     <CardTitle className="flex items-center justify-between">
-                       <span>{getStepTitle(2)}</span>
+                       <span>Gerar Pixel</span>
                        {step > 2 && <CheckCircle className="h-6 w-6 text-green-500" />}
                     </CardTitle>
                     <CardDescription>Selecione sua conta de anúncios para criar um novo pixel.</CardDescription>
@@ -390,7 +380,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center justify-between">
-                        <span>{getStepTitle(3)}</span>
+                        <span>Enviar 'Compra Teste'</span>
                         {step > 3 && <CheckCircle className="h-6 w-6 text-green-500" />}
                     </CardTitle>
                     <CardDescription>Envie uma compra teste para validar a instalação do pixel.</CardDescription>
@@ -407,7 +397,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
             <Card>
                  <CardHeader>
                     <CardTitle className="flex items-center justify-between">
-                       <span>{getStepTitle(4)}</span>
+                       <span>Configurar Hotmart</span>
                        {step > 4 && <CheckCircle className="h-6 w-6 text-green-500" />}
                     </CardTitle>
                     <CardDescription>Siga os passos para usar o código do pixel na Hotmart.</CardDescription>
@@ -439,7 +429,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
             <Card className="bg-green-50 dark:bg-green-900/20 border-green-500">
                 <CardHeader className="text-center items-center">
                     <CheckCircle className="h-12 w-12 text-green-500" />
-                    <CardTitle>{getStepTitle(5)}</CardTitle>
+                    <CardTitle>Concluído</CardTitle>
                     <CardDescription>
                         O processo de geração e configuração do pixel do TikTok foi concluído.
                         Aguarde até 24 horas para que o evento seja registrado em seu <br />
