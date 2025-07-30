@@ -4,6 +4,7 @@
 import { get } from "@vercel/edge-config";
 import { z } from "zod";
 import { createHmac, createHash } from "crypto";
+import qs from "qs";
 
 const getAccessTokenSchema = z.object({
   authCode: z.string().min(1, "Authorization Code is required."),
@@ -329,5 +330,93 @@ export async function verifyEmail(params: z.infer<typeof verifyEmailSchema>) {
       success: false,
       error: "Could not verify email. The allowed list might not be set up in Vercel Edge Config.",
     };
+  }
+}
+
+// --- Hotmart API ---
+
+let hotmartAccessToken: string | null = null;
+let hotmartTokenExpiresAt: number = 0;
+
+async function getHotmartToken() {
+  const now = Date.now();
+  if (hotmartAccessToken && now < hotmartTokenExpiresAt) {
+    return hotmartAccessToken;
+  }
+
+  const clientId = process.env.HOTMART_CLIENT_ID;
+  const clientSecret = process.env.HOTMART_CLIENT_SECRET;
+
+  if (!clientId || !clientSecret) {
+    throw new Error("Hotmart client ID or secret is not configured.");
+  }
+
+  const authUrl = "https://api-sec-vlc.hotmart.com/security/oauth/token";
+  
+  const response = await fetch(authUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: qs.stringify({
+      grant_type: 'client_credentials',
+      client_id: clientId,
+      client_secret: clientSecret
+    })
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(`Failed to get Hotmart token: ${errorData.error_description || response.statusText}`);
+  }
+
+  const data = await response.json();
+  hotmartAccessToken = data.access_token;
+  // expires_in is in seconds. Convert to milliseconds and leave a 60-second buffer.
+  hotmartTokenExpiresAt = now + (data.expires_in - 60) * 1000;
+  
+  return hotmartAccessToken;
+}
+
+
+const getHotmartProductSchema = z.object({
+  productId: z.string().min(1, "Product ID is required."),
+});
+
+export async function getHotmartProduct(params: z.infer<typeof getHotmartProductSchema>) {
+  try {
+    const validatedParams = getHotmartProductSchema.parse(params);
+    const { productId } = validatedParams;
+    const accessToken = await getHotmartToken();
+
+    const productApiUrl = `https://developers.hotmart.com/payments/api/v1/products?productId=${productId}`;
+
+    const response = await fetch(productApiUrl, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      return { success: false, error: `Failed to fetch product from Hotmart: ${errorText}` };
+    }
+
+    const data = await response.json();
+    
+    if (data.items && data.items.length > 0) {
+      return { success: true, data: data.items[0] };
+    } else {
+      return { success: false, error: "Product not found on Hotmart." };
+    }
+
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return {
+        success: false,
+        error: error.errors.map((e) => e.message).join(" "),
+      };
+    }
+    const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
+    return { success: false, error: errorMessage };
   }
 }

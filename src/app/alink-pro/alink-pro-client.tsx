@@ -6,6 +6,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import Image from "next/image";
 import {
   Form,
   FormControl,
@@ -25,11 +26,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { createPixel, getAdvertisers, trackEvent, verifyEmail } from "@/app/actions";
+import { createPixel, getAdvertisers, getHotmartProduct, trackEvent, verifyEmail } from "@/app/actions";
 import {
   Anchor,
   CheckCircle,
   Copy,
+  Info,
   Loader2,
   LockKeyhole,
   LogIn,
@@ -43,6 +45,13 @@ type Advertiser = {
   advertiser_id: string;
   advertiser_name: string;
 };
+
+interface HotmartProduct {
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+}
 
 const formSchema = z.object({
   advertiserId: z.string().min(1, "Por favor, selecione uma conta de anunciante."),
@@ -75,6 +84,12 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
   const [emailVerify, setEmailVerify] = useState("");
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
+
+  // State for Hotmart product scanning
+  const [hotmartProductId, setHotmartProductId] = useState("");
+  const [isScanningProduct, setIsScanningProduct] = useState(false);
+  const [scannedProduct, setScannedProduct] = useState<HotmartProduct | null>(null);
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -250,6 +265,24 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
     }
   }
 
+  async function handleScanProduct() {
+    if (!hotmartProductId) {
+      toast({ title: "ID do Produto Necessário", description: "Por favor, insira o ID do produto da Hotmart.", variant: "destructive" });
+      return;
+    }
+    setIsScanningProduct(true);
+    setScannedProduct(null);
+    const result = await getHotmartProduct({ productId: hotmartProductId });
+    setIsScanningProduct(false);
+
+    if (result.success) {
+      toast({ title: "Produto Encontrado!", description: result.data.name, className: "bg-green-600 text-white" });
+      setScannedProduct(result.data);
+    } else {
+      toast({ title: "Erro ao Escanear Produto", description: result.error, variant: "destructive" });
+    }
+  }
+
   const selectedAdvertiserId = form.watch("advertiserId");
   const tiktokEventPanelUrl = `https://ads.tiktok.com/i18n/events_manager/datasource/pixel/detail/${pixelCode}?org_id=${selectedAdvertiserId}&open_from=bc_asset_pixel`;
 
@@ -379,7 +412,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
                     <span>Escanear Produto</span>
-                    {/* {step > X && <CheckCircle className="h-6 w-6 text-green-500" />} */}
+                    {scannedProduct && <CheckCircle className="h-6 w-6 text-green-500" />}
                   </CardTitle>
                   <CardDescription>
                     Forneça o ID do seu produto da Hotmart para escaneamento.
@@ -388,16 +421,48 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="hotmart-product-id">ID do Produto na Hotmart</Label>
-                    <Input id="hotmart-product-id" placeholder="Ex: HP1234567890" />
+                     <Input
+                        id="hotmart-product-id"
+                        placeholder="Ex: HP1234567890"
+                        value={hotmartProductId}
+                        onChange={(e) => setHotmartProductId(e.target.value)}
+                        disabled={isScanningProduct}
+                        onKeyDown={(e) => e.key === 'Enter' && handleScanProduct()}
+                      />
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button className="w-full font-bold">
+                  <Button onClick={handleScanProduct} className="w-full font-bold" disabled={isScanningProduct}>
+                    {isScanningProduct && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     <ScanLine className="mr-2" />
                     Escanear
                   </Button>
                 </CardFooter>
               </Card>
+              
+              {scannedProduct && (
+                  <Card className="animate-in fade-in">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Info className="h-5 w-5 text-primary" />
+                        <span>Produto Encontrado</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex flex-col sm:flex-row gap-4 items-start">
+                      <Image
+                        src={scannedProduct.image}
+                        alt={scannedProduct.name}
+                        width={128}
+                        height={128}
+                        className="rounded-lg object-cover w-full sm:w-32 h-auto aspect-square"
+                      />
+                      <div className="space-y-2">
+                        <h3 className="font-bold text-lg">{scannedProduct.name}</h3>
+                        <p className="text-sm text-muted-foreground line-clamp-4">{scannedProduct.description}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+              )}
 
               <Card>
                 <CardHeader>
