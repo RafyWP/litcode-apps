@@ -292,7 +292,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                 <CardContent>
                     {!isEmailVerified ? (
                     <div className="w-full space-y-2">
-                        <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">E-mail de Membro</Label>
+                        <Label htmlFor="email-verify">E-mail de Membro</Label>
                         <div className="flex items-center gap-2">
                             <Input
                             id="email-verify"
@@ -420,8 +420,8 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                         <li>Escolha TikTok entre a lista de integradores;</li>
                         <li>Preencha o campo ID do TikTok com o Código do Pixel abaixo:</li>
                     </ol>
-                    <div className="pt-2">
-                        <Label className="text-xs text-muted-foreground">Código do Pixel</Label>
+                    <div className="pt-2 space-y-2">
+                        <Label>Código do Pixel</Label>
                         <div className="flex items-center gap-2">
                             <Input readOnly value={pixelCode || ""} className="font-mono text-sm" />
                             <Button variant="ghost" size="icon" onClick={() => copyToClipboard(pixelCode)}><Copy className="h-4 w-4" /></Button>
