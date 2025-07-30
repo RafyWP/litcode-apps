@@ -428,6 +428,11 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                         </div>
                     </div>
                 </CardContent>
+                <CardFooter>
+                    <Button onClick={() => setStep(5)} className="w-full font-bold">
+                        Já preenchi, prosseguir
+                    </Button>
+                </CardFooter>
             </Card>
             
             {/* Step 5: Complete */}
