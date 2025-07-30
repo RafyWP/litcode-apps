@@ -33,6 +33,7 @@ import {
   Loader2,
   LockKeyhole,
   LogIn,
+  ScanLine,
   Send,
   WandSparkles,
 } from "lucide-react";
@@ -376,16 +377,40 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
 
               <Card>
                 <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    <span>Escanear Produto</span>
+                    {/* {step > X && <CheckCircle className="h-6 w-6 text-green-500" />} */}
+                  </CardTitle>
+                  <CardDescription>
+                    Forneça o ID do seu produto da Hotmart para escaneamento.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="hotmart-product-id">ID do Produto na Hotmart</Label>
+                    <Input id="hotmart-product-id" placeholder="Ex: HP1234567890" />
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button className="w-full font-bold">
+                    <ScanLine className="mr-2" />
+                    Escanear
+                  </Button>
+                </CardFooter>
+              </Card>
+
+              <Card>
+                <CardHeader>
                     <CardTitle className="flex items-center justify-between">
-                        <span>Enviar 'Compra Teste'</span>
+                        <span>Enviar Teste</span>
                         {step > 3 && <CheckCircle className="h-6 w-6 text-green-500" />}
                     </CardTitle>
-                    <CardDescription>Envie uma compra teste para validar a instalação do pixel.</CardDescription>
+                    <CardDescription>Envie uma compra teste para validar a instalação do pixel. Nada será cobrado.</CardDescription>
                 </CardHeader>
                 <CardFooter>
                       <Button onClick={handleSendEvent} className="w-full font-bold" disabled={isSendingEvent || eventSent}>
                         {isSendingEvent ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2" />}
-                        Enviar 'Compra Teste'
+                        Testar Pixel
                     </Button>
                 </CardFooter>
               </Card>
@@ -403,8 +428,8 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
                         <li>Visite a página de <a href="https://app.hotmart.com/tools/list/producer" target="_blank" rel="noopener noreferrer" className="text-primary underline">Ferramentas do Hotmart</a>;</li>
                         <li>Digite 'pixel' no campo de busca e selecione 'Pixel de rastreamento';</li>
                         <li>No campo 'Selecione o que você deseja rastrear' escolha 'Página de pagamento e de produto Hotmart', em seguida selecione o produto a que deseja associar o pixel gerado aqui;</li>
-                        <li>Escolha TikTok entre a lista de integradores;</li>
-                        <li>Preencha o campo ID do TikTok com o Código do Pixel abaixo:</li>
+                        <li>Escolha 'TikTok' entre a lista de integradores;</li>
+                        <li>Preencha o campo 'ID do TikTok' com o Código do Pixel abaixo:</li>
                     </ol>
                     <div className="pt-2 space-y-2">
                         <Label>Código do Pixel</Label>
