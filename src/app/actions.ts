@@ -4,7 +4,6 @@
 import { get } from "@vercel/edge-config";
 import { z } from "zod";
 import { createHmac, createHash } from "crypto";
-import qs from "qs";
 
 const getAccessTokenSchema = z.object({
   authCode: z.string().min(1, "Authorization Code is required."),
@@ -343,24 +342,16 @@ async function getHotmartToken() {
   if (hotmartAccessToken && now < hotmartTokenExpiresAt) {
     return hotmartAccessToken;
   }
-
-  const clientId = process.env.HOTMART_CLIENT_ID;
-  const clientSecret = process.env.HOTMART_CLIENT_SECRET;
-
-  if (!clientId || !clientSecret) {
-    throw new Error("Hotmart client ID or secret is not configured.");
-  }
-
-  const authUrl = "https://api-sec-vlc.hotmart.com/security/oauth/token";
   
+  const authUrl = "https://api-sec-vlc.hotmart.com/security/oauth/token?grant_type=client_credentials";
+  const basicToken = "Basic YTI3MTgzYzItOWQ0Mi00ZDJlLWJiOTUtOGUxMjZmMzBiMjhmOjMzYmZiYmI2LTViYTctNGQ5OC04NjdlLTk3MTNkMWQ1Y2QzOA==";
+
   const response = await fetch(authUrl, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: qs.stringify({
-      grant_type: 'client_credentials',
-      client_id: clientId,
-      client_secret: clientSecret
-    })
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': basicToken
+    },
   });
 
   if (!response.ok) {
