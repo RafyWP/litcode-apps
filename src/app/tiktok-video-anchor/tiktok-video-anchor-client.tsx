@@ -37,7 +37,6 @@ import {
   WandSparkles,
 } from "lucide-react";
 import { Card, CardDescription, CardHeader, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 
 type Advertiser = {
   advertiser_id: string;
@@ -260,13 +259,8 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
     }
   }
 
-  if (isAuthLoading) {
-    return (
-      <div className="flex-grow bg-background flex items-center justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-primary" />
-      </div>
-    );
-  }
+  const selectedAdvertiserId = form.watch("advertiserId");
+  const tiktokEventPanelUrl = `https://ads.tiktok.com/i18n/events_manager/datasource/pixel/detail/${pixelCode}?org_id=${selectedAdvertiserId}&open_from=bc_asset_pixel`;
 
   return (
     <div className="flex-grow bg-background text-foreground flex flex-col items-center justify-center p-4 font-body">
@@ -442,7 +436,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                     <CheckCircle className="h-12 w-12 text-green-500" />
                     <CardTitle>{getStepTitle(5)}</CardTitle>
                     <CardDescription>
-                        Aguarde alguns minutos para que o evento seja registrado no seu painel do TikTok Business/Ads.
+                        O processo de geração e configuração do pixel do TikTok foi concluído. Aguarde até 24 horas para que o evento seja registrado em seu <a href={tiktokEventPanelUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline">painel do TikTok Business</a>.
                     </CardDescription>
                 </CardHeader>
             </Card>
