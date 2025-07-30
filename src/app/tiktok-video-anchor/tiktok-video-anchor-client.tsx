@@ -441,7 +441,9 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                     <CheckCircle className="h-12 w-12 text-green-500" />
                     <CardTitle>{getStepTitle(5)}</CardTitle>
                     <CardDescription>
-                        O processo de geração e configuração do pixel do TikTok foi concluído. Aguarde até 24 horas para que o evento seja registrado em seu <a href={tiktokEventPanelUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline">painel do TikTok Business</a>.
+                        O processo de geração e configuração do pixel do TikTok foi concluído.
+                        Aguarde até 24 horas para que o evento seja registrado em seu <br />
+                        <a href={tiktokEventPanelUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline">painel do TikTok Business</a>.
                     </CardDescription>
                 </CardHeader>
             </Card>
