@@ -48,8 +48,8 @@ type Advertiser = {
 };
 
 const formSchema = z.object({
-  advertiserId: z.string().min(1, "Please select an Advertiser account."),
-  pixelName: z.string().min(1, "Pixel Name is required"),
+  advertiserId: z.string().min(1, "Por favor, selecione uma conta de anunciante."),
+  pixelName: z.string().min(1, "O nome do pixel é obrigatório."),
   externalId: z.string().optional(),
   email: z.string().optional(),
   phone: z.string().optional(),
@@ -83,7 +83,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
     resolver: zodResolver(formSchema),
     defaultValues: {
       advertiserId: "",
-      pixelName: "My Pixel 01",
+      pixelName: "Meu Pixel 01",
       externalId: "",
       email: emailFromConfig || "",
       phone: phoneFromConfig || "",
@@ -128,8 +128,8 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
     if (urlAuthCode && !accessToken) {
       login(urlAuthCode).catch((err: Error) => {
         toast({
-          title: "Authorization Error",
-          description: err.message || "Could not retrieve access token.",
+          title: "Erro de Autorização",
+          description: err.message || "Não foi possível obter o token de acesso.",
           variant: "destructive",
         });
       });
@@ -150,14 +150,14 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
         setAdvertisers(result.data || []);
         if (!result.data || result.data.length === 0) {
           toast({
-            title: "No Advertiser Accounts Found",
-            description: "We couldn't find any advertiser accounts linked to your TikTok profile.",
+            title: "Nenhuma Conta de Anunciante Encontrada",
+            description: "Não encontramos nenhuma conta de anunciante vinculada ao seu perfil do TikTok.",
             variant: "destructive",
           });
         }
       } else {
         toast({
-          title: "Error fetching advertisers",
+          title: "Erro ao buscar anunciantes",
           description: result.error,
           variant: "destructive",
         });
@@ -171,7 +171,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
 
   const handleVerifyEmail = async () => {
     if (!emailVerify) {
-      toast({ title: "Email Required", description: "Please enter your order email.", variant: "destructive" });
+      toast({ title: "E-mail Necessário", description: "Por favor, insira o e-mail do seu pedido.", variant: "destructive" });
       return;
     }
     setIsCheckingEmail(true);
@@ -180,9 +180,9 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
 
     if (result.success) {
       setIsEmailVerified(true);
-      toast({ title: "Email Verified!", description: "You can now log in with TikTok.", className: "bg-green-600 text-white" });
+      toast({ title: "E-mail Verificado!", description: "Você já pode fazer login com o TikTok.", className: "bg-green-600 text-white" });
     } else {
-      toast({ title: "Verification Failed", description: result.error, variant: "destructive" });
+      toast({ title: "Falha na Verificação", description: result.error, variant: "destructive" });
     }
   };
 
@@ -204,8 +204,8 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
       setStep(3); // Move to next step
     } else {
       toast({
-        title: "Error Creating Pixel",
-        description: result.error || "An unknown error occurred.",
+        title: "Erro ao Criar o Pixel",
+        description: result.error || "Ocorreu um erro desconhecido.",
         variant: "destructive",
       });
     }
@@ -214,7 +214,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
   const copyToClipboard = (textToCopy: string | null) => {
     if (textToCopy) {
       navigator.clipboard.writeText(textToCopy);
-      toast({ title: "Copied!", description: "Copied to clipboard.", className: "bg-green-600 text-white" });
+      toast({ title: "Copiado!", description: "Copiado para a área de transferência.", className: "bg-green-600 text-white" });
     }
   };
 
@@ -234,20 +234,20 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
     setIsSendingEvent(false);
 
     if (result.success) {
-      toast({ title: "Test Event Sent!", description: "The 'Purchase' event was sent successfully.", className: "bg-green-600 text-white" });
+      toast({ title: "Evento de Teste Enviado!", description: "O evento 'Purchase' foi enviado com sucesso.", className: "bg-green-600 text-white" });
       setEventSent(true);
       setStep(4);
     } else {
-      toast({ title: "Error Sending Event", description: result.error || "An unknown error occurred.", variant: "destructive" });
+      toast({ title: "Erro ao Enviar Evento", description: result.error || "Ocorreu um erro desconhecido.", variant: "destructive" });
     }
   }
   
   const getStepTitle = (currentStep: number) => {
     switch(currentStep) {
-        case 1: return "Step 1: Authorize Access";
-        case 2: return "Step 2: Generate Pixel";
-        case 3: return "Step 3: Send Test Event";
-        case 4: return "Complete";
+        case 1: return "Passo 1: Autorizar Acesso";
+        case 2: return "Passo 2: Gerar Pixel";
+        case 3: return "Passo 3: Enviar Evento de Teste";
+        case 4: return "Concluído";
     }
   }
 
@@ -270,7 +270,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
             Âncora Link App
           </h1>
           <p className="text-muted-foreground mt-3 text-lg max-w-sm mx-auto">
-            Anchor every item in your videos with clickable links that convert views into sales.
+            Use o mesmo e-mail que usou na compra via Info Achadinhos / Hotmart.
           </p>
         </header>
 
@@ -283,12 +283,12 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                        <span>{getStepTitle(1)}</span>
                        {step > 1 && <CheckCircle className="h-6 w-6 text-green-500" />}
                     </CardTitle>
-                    <CardDescription>Authorize the application to access your TikTok Ads account.</CardDescription>
+                    <CardDescription>Autorize o aplicativo para acessar sua conta do TikTok Ads.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     {!isEmailVerified ? (
                     <div className="w-full space-y-2">
-                        <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">Order Email / E-mail do Pedido</Label>
+                        <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">E-mail do Pedido</Label>
                         <div className="flex items-center gap-2">
                             <Input
                             id="email-verify"
@@ -299,7 +299,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                             disabled={isCheckingEmail}
                             onKeyDown={(e) => e.key === 'Enter' && handleVerifyEmail()}
                             />
-                            <Button variant="outline" onClick={handleVerifyEmail} disabled={isCheckingEmail} aria-label="Verify Email">
+                            <Button variant="outline" onClick={handleVerifyEmail} disabled={isCheckingEmail} aria-label="Verificar E-mail">
                             {isCheckingEmail ? <Loader2 className="animate-spin" /> : <LockKeyhole />}
                             </Button>
                         </div>
@@ -310,7 +310,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                         onClick={() => { if (authUrl) window.location.href = authUrl; }}
                     >
                         <LogIn className="mr-2" />
-                        Login with TikTok Business
+                        Login com TikTok Business
                     </Button>
                     )}
                 </CardContent>
@@ -323,7 +323,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                        <span>{getStepTitle(2)}</span>
                        {step > 2 && <CheckCircle className="h-6 w-6 text-green-500" />}
                     </CardTitle>
-                    <CardDescription>Select your ad account and create a new pixel.</CardDescription>
+                    <CardDescription>Selecione sua conta de anúncios e crie um novo pixel.</CardDescription>
                 </CardHeader>
                 <CardContent>
                       <Form {...form}>
@@ -335,17 +335,17 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                                         name="advertiserId"
                                         render={({ field }) => (
                                             <FormItem>
-                                            <FormLabel>Advertiser Account</FormLabel>
+                                            <FormLabel>Conta de Anunciante</FormLabel>
                                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                 <FormControl>
                                                     <SelectTrigger disabled={isFetchingAdvertisers}>
                                                         {isFetchingAdvertisers ? (
                                                         <span className="flex items-center text-muted-foreground">
                                                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                            Loading Accounts...
+                                                            Carregando Contas...
                                                         </span>
                                                         ) : (
-                                                        <SelectValue placeholder="Select an advertiser account" />
+                                                        <SelectValue placeholder="Selecione uma conta de anunciante" />
                                                         )}
                                                     </SelectTrigger>
                                                 </FormControl>
@@ -357,7 +357,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                                                     </SelectItem>
                                                     ))
                                                 ) : (
-                                                    <SelectItem value="none" disabled>No accounts found</SelectItem>
+                                                    <SelectItem value="none" disabled>Nenhuma conta encontrada</SelectItem>
                                                 )}
                                                 </SelectContent>
                                             </Select>
@@ -370,8 +370,8 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                                         name="pixelName"
                                         render={({ field }) => (
                                             <FormItem>
-                                                <FormLabel>Pixel Name</FormLabel>
-                                                <FormControl><Input placeholder="e.g., My Awesome Pixel" {...field} /></FormControl>
+                                                <FormLabel>Nome do Pixel</FormLabel>
+                                                <FormControl><Input placeholder="ex: Meu Pixel Incrível" {...field} /></FormControl>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
@@ -384,7 +384,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                                 <Button type="submit" className="w-full font-bold mt-4" disabled={isLoading || isFetchingAdvertisers}>
                                     {(isLoading || isFetchingAdvertisers) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                                     <WandSparkles className="mr-2" />
-                                    Generate Pixel
+                                    Gerar Pixel
                                 </Button>
                             </fieldset>
                         </form>
@@ -399,18 +399,18 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                         <span>{getStepTitle(3)}</span>
                         {step > 3 && <CheckCircle className="h-6 w-6 text-green-500" />}
                     </CardTitle>
-                    <CardDescription>Copy your new pixel details and send a test event.</CardDescription>
+                    <CardDescription>Copie os detalhes do seu novo pixel e envie um evento de teste.</CardDescription>
                 </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                        <Label className="text-xs text-muted-foreground">Pixel ID</Label>
+                        <Label className="text-xs text-muted-foreground">ID do Pixel</Label>
                         <div className="flex items-center gap-2">
                             <Input readOnly value={pixelId || ""} className="font-mono text-sm" />
                             <Button variant="ghost" size="icon" onClick={() => copyToClipboard(pixelId)}><Copy className="h-4 w-4" /></Button>
                         </div>
                     </div>
                     <div>
-                        <Label className="text-xs text-muted-foreground">Pixel Code</Label>
+                        <Label className="text-xs text-muted-foreground">Código do Pixel</Label>
                         <div className="flex items-center gap-2">
                             <Input readOnly value={pixelCode || ""} className="font-mono text-sm" />
                             <Button variant="ghost" size="icon" onClick={() => copyToClipboard(pixelCode)}><Copy className="h-4 w-4" /></Button>
@@ -424,7 +424,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                 <CardFooter>
                       <Button onClick={handleSendEvent} className="w-full font-bold" disabled={isSendingEvent || eventSent}>
                         {isSendingEvent ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2" />}
-                        Send Test Event
+                        Enviar Evento de Teste
                     </Button>
                 </CardFooter>
             </Card>
@@ -435,7 +435,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                     <CheckCircle className="h-12 w-12 text-green-500" />
                     <CardTitle>{getStepTitle(4)}</CardTitle>
                     <CardDescription>
-                        Please wait a few minutes for the event to be recorded in your TikTok Business/Ads dashboard.
+                        Aguarde alguns minutos para que o evento seja registrado no seu painel do TikTok Business/Ads.
                     </CardDescription>
                 </CardHeader>
             </Card>
