@@ -71,9 +71,9 @@ export default function Header() {
                 onMouseLeave={() => setIsAppsMenuOpen(false)}
               >
                 <DropdownMenuItem asChild>
-                  <Link href="/tiktok-video-anchor">
+                  <Link href="/alink-pro">
                     <Anchor className="mr-2 h-4 w-4" />
-                    <span>TikTok Video Anchor</span>
+                    <span>Âncora Link PRO</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>

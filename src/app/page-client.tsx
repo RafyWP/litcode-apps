@@ -110,7 +110,7 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
   useEffect(() => {
     if (accessToken) {
       setIsRedirecting(true);
-      router.push("/tiktok-video-anchor");
+      router.push("/alink-pro");
     }
   }, [accessToken, router]);
 
@@ -255,7 +255,7 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
                       </div>
                       <div className="flex flex-col overflow-hidden">
                         <CardTitle className="font-headline text-base md:text-xl font-bold tracking-tight text-left">
-                          TikTok Video Anchor
+                          Âncora Link PRO
                         </CardTitle>
                         <CardDescription className="md:mt-1 text-left md:overflow-visible md:whitespace-normal">
                           Anchor every item in your videos with clickable links that convert views into sales.
@@ -274,7 +274,7 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
                     </div>
                     <CardFooter className="mt-auto p-0 pt-4">
                       <Button className="w-full" asChild>
-                        <Link href="/tiktok-video-anchor">
+                        <Link href="/alink-pro">
                           <LogIn className="mr-2" />
                           Login to Use
                         </Link>

@@ -26,7 +26,7 @@ export default function AppsPage() {
                       </div>
                       <div className="flex flex-col overflow-hidden">
                         <CardTitle className="font-headline text-base md:text-xl font-bold tracking-tight text-left">
-                          TikTok Video Anchor
+                          Âncora Link PRO
                         </CardTitle>
                         <CardDescription className="md:mt-1 text-left md:overflow-visible md:whitespace-normal">
                           Anchor every item in your videos with clickable links that convert views into sales.
@@ -45,7 +45,7 @@ export default function AppsPage() {
                     </div>
                     <CardFooter className="mt-auto p-0 pt-4">
                       <Button className="w-full" asChild>
-                        <Link href="/tiktok-video-anchor">
+                        <Link href="/alink-pro">
                           <LogIn className="mr-2" />
                           Login to Use
                         </Link>

@@ -38,8 +38,8 @@ Before running the project, you need to configure your application in the TikTok
 
 1.  Go to **My Apps** and select your application.
 2.  **Set the Redirect URI**: In your app's settings, find the "Redirect URI" field. 
-    - For **local development**, set it to `http://localhost:9002/tiktok-video-anchor`.
-    - For **production on Vercel**, set it to your Vercel site URL (e.g., `https://apps.litcode.store/tiktok-video-anchor`).
+    - For **local development**, set it to `http://localhost:9002/alink-pro`.
+    - For **production on Vercel**, set it to your Vercel site URL (e.g., `https://apps.litcode.store/alink-pro`).
 3.  **Enable Permissions (Scopes)**: Go to the "Permissions" section and ensure the following scopes are enabled:
     *   `bc.read` (Ad Account Management)
     *   `cm.manage` (Pixel Management)
@@ -78,9 +78,9 @@ MAIL_BYPASS_TTVA="r8%!&9@9idb;JgcO"
 # Used to build the authorization URL.
 NEXT_PUBLIC_TIKTOK_APP_ID="7529715857170104321"
 
-# Use http://localhost:9002/tiktok-video-anchor for local development.
+# Use http://localhost:9002/alink-pro for local development.
 # For production, use your live Vercel URL.
-NEXT_PUBLIC_TIKTOK_REDIRECT_URI="https://apps.litcode.store/tiktok-video-anchor"
+NEXT_PUBLIC_TIKTOK_REDIRECT_URI="https://apps.litcode.store/alink-pro"
 ```
 
 **Note**:
