@@ -267,7 +267,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
             <Anchor className="h-8 w-8 sm:h-10 sm:w-10" />
           </div>
           <h1 className="font-headline text-3xl sm:text-5xl font-bold text-card-foreground">
-            TT Anchor | Âncora Link App
+            Âncora Link App
           </h1>
           <p className="text-muted-foreground mt-3 text-lg max-w-sm mx-auto">
             Anchor every item in your videos with clickable links that convert views into sales.
@@ -445,5 +445,3 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
     </div>
   );
 }
-
-    
