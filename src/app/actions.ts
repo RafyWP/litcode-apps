@@ -233,6 +233,10 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
       ],
     };
 
+    console.log("--- DEBUG: TikTok Track Event Request Body ---");
+    console.log(JSON.stringify(requestBody, null, 2));
+
+
     const response = await fetch(
       "https://business-api.tiktok.com/open_api/v1.3/event/track/",
       {
@@ -248,6 +252,9 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
     const data = await response.json();
 
     if (data.code !== 0) {
+      console.error("--- DEBUG: TikTok Track Event FAILED ---");
+      console.error("Response:", data);
+      console.error("Request Payload:", requestBody);
       return {
         success: false,
         error: data.message || "Failed to track event.",
@@ -256,6 +263,8 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
       };
     }
 
+    console.log("--- DEBUG: TikTok Track Event SUCCESS ---");
+    console.log("Response:", data);
     return {
       success: true,
       data: data,
@@ -268,6 +277,7 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
         error: error.errors.map((e) => e.message).join(" "),
       };
     }
+    console.error("--- DEBUG: TikTok Track Event UNEXPECTED ERROR ---", error);
     return {
       success: false,
       error: "An unexpected error occurred while tracking the event.",
@@ -359,6 +369,7 @@ async function getHotmartToken(): Promise<string | null> {
     const data = await response.json();
 
     if (!response.ok) {
+      console.error("--- DEBUG: Hotmart Auth FAILED ---", data);
       throw new Error(data.error_description || 'Failed to get Hotmart token');
     }
 
@@ -366,9 +377,10 @@ async function getHotmartToken(): Promise<string | null> {
     // expires_in is in seconds. Convert to milliseconds and leave a 60-second buffer.
     hotmartTokenExpiresAt = now + (data.expires_in - 60) * 1000;
     
+    console.log("--- DEBUG: Hotmart Token Obtained Successfully ---");
     return hotmartAccessToken;
   } catch (error) {
-    console.error("Hotmart auth error:", error);
+    console.error("--- DEBUG: Hotmart Auth UNEXPECTED ERROR ---", error);
     return null;
   }
 }
@@ -399,10 +411,12 @@ export async function getHotmartProduct(params: z.infer<typeof getHotmartProduct
 
     if (!response.ok) {
         const errorText = await response.text();
+        console.error("--- DEBUG: Get Hotmart Product FAILED ---", { status: response.status, text: errorText });
         return { success: false, error: `Failed to fetch product from Hotmart: ${errorText}` };
     }
     
     const data = await response.json();
+    console.log("--- DEBUG: Get Hotmart Product SUCCESS ---", data);
     
     if (data) {
       return { success: true, data: data };
@@ -418,6 +432,7 @@ export async function getHotmartProduct(params: z.infer<typeof getHotmartProduct
       };
     }
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
+    console.error("--- DEBUG: Get Hotmart Product UNEXPECTED ERROR ---", error);
     return { success: false, error: errorMessage };
   }
 }

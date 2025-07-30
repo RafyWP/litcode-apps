@@ -254,6 +254,8 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
       phone: formValues.phone || "",
     });
 
+    console.log("--- DEBUG: Track Event Client Result ---", result);
+
     setIsSendingEvent(false);
 
     if (result.success) {
