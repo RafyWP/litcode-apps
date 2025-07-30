@@ -400,13 +400,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                     <CardDescription>Copie os detalhes do seu novo pixel e envie um evento de teste.</CardDescription>
                 </CardHeader>
                   <CardContent className="space-y-4">
-                    <div>
-                        <Label className="text-xs text-muted-foreground">ID do Pixel</Label>
-                        <div className="flex items-center gap-2">
-                            <Input readOnly value={pixelId || ""} className="font-mono text-sm" />
-                            <Button variant="ghost" size="icon" onClick={() => copyToClipboard(pixelId)}><Copy className="h-4 w-4" /></Button>
-                        </div>
-                    </div>
+                    <input type="hidden" value={pixelId || ""} />
                     <div>
                         <Label className="text-xs text-muted-foreground">Código do Pixel</Label>
                         <div className="flex items-center gap-2">
