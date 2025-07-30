@@ -288,7 +288,8 @@ export async function verifyEmail(params: z.infer<typeof verifyEmailSchema>) {
     try {
       bypassCode = await get<string>('mailByPassTTVA');
     } catch {
-      // Edge Config not available or key not found. It will be undefined.
+      // Edge Config not available, try env var.
+      bypassCode = process.env.MAIL_BYPASS_TTVA;
     }
 
     if (bypassCode && email === bypassCode) {
