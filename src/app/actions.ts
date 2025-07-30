@@ -190,6 +190,20 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
 
     const eventName = "Purchase";
     const eventTime = Math.floor(new Date().getTime() / 1000);
+    
+    // As per TikTok docs, email/phone must be hashed. external_id is not specified to be hashed.
+    const userObject = {
+        email: email ? hashValue(email) : undefined,
+        phone: phone ? hashValue(phone) : undefined,
+        external_id: externalId || undefined,
+        ttclid: null,
+        ip: null,
+        user_agent: null,
+    };
+
+    // Remove undefined keys from user object
+    Object.keys(userObject).forEach(key => userObject[key as keyof typeof userObject] === undefined && delete userObject[key as keyof typeof userObject]);
+
 
     const requestBody = {
       event_source: "web",
@@ -198,14 +212,7 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
         {
           event: eventName,
           event_time: eventTime,
-          user: {
-            email: email ? hashValue(email) : undefined,
-            phone: phone ? hashValue(phone) : undefined,
-            external_id: externalId ? hashValue(externalId) : undefined,
-            ttclid: null,
-            ip: null,
-            user_agent: null,
-          },
+          user: userObject,
           properties: {
             contents: [
               {
@@ -277,23 +284,17 @@ export async function verifyEmail(params: z.infer<typeof verifyEmailSchema>) {
     const validatedParams = verifyEmailSchema.parse(params);
     const { email } = validatedParams;
 
-    // 1. Check for bypass code
     let bypassCode: string | undefined;
     try {
       bypassCode = await get<string>('mailByPassTTVA');
     } catch {
-      // Edge Config not available, try env var
-    }
-    
-    if (!bypassCode) {
-      bypassCode = process.env.MAIL_BYPASS_TTVA;
+      // Edge Config not available or key not found. It will be undefined.
     }
 
     if (bypassCode && email === bypassCode) {
       return { success: true, isBypass: true };
     }
 
-    // 2. If not bypass, check against allowed emails list
     const allowedEmailsStr = await get<string>('allowedEmails');
 
     if (!allowedEmailsStr) {
@@ -305,7 +306,6 @@ export async function verifyEmail(params: z.infer<typeof verifyEmailSchema>) {
 
     const allowedEmails = allowedEmailsStr.split(',').map(e => e.trim().toLowerCase());
     
-    // Validate if the input is a proper email before checking the list
     const emailValidation = z.string().email().safeParse(email);
     if (!emailValidation.success) {
       return { success: false, error: "This email is not authorized." };
