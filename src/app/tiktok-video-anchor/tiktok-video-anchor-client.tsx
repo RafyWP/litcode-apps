@@ -275,10 +275,10 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
             <Anchor className="h-8 w-8 sm:h-10 sm:w-10" />
           </div>
           <h1 className="font-headline text-3xl sm:text-5xl font-bold text-card-foreground">
-            Âncora Link App
+            Insira Links em seus Vídeos do TikTok
           </h1>
           <p className="text-muted-foreground mt-3 text-lg max-w-sm mx-auto">
-            Use o mesmo e-mail que usou na compra via Info Achadinhos / Hotmart.
+            Converta visualizações em Vendas
           </p>
         </header>
 
