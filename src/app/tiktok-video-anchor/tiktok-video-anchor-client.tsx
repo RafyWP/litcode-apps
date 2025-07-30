@@ -254,8 +254,8 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
     switch(currentStep) {
         case 1: return "Passo 1: Autorizar Acesso";
         case 2: return "Passo 2: Gerar Pixel";
-        case 3: return "Passo 3: Enviar Evento de Teste";
-        case 4: return "Passo 4: Configuração Hotmart";
+        case 3: return "Passo 3: Enviar 'Compra Teste'";
+        case 4: return "Passo 4: Configurar Hotmart";
         case 5: return "Concluído";
     }
   }
@@ -276,9 +276,10 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
             <Anchor className="h-8 w-8 sm:h-10 sm:w-10" />
           </div>
           <h1 className="font-headline text-3xl sm:text-5xl font-bold text-card-foreground">
-            Insira Links em seus Vídeos do TikTok
+            Âncora Link App
           </h1>
           <p className="text-muted-foreground mt-3 text-lg max-w-sm mx-auto">
+            Insira Links em seus Vídeos do TikTok <br />
             Converta visualizações em Vendas
           </p>
         </header>
@@ -297,7 +298,7 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                 <CardContent>
                     {!isEmailVerified ? (
                     <div className="w-full space-y-2">
-                        <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">E-mail do Pedido / Código de Acesso</Label>
+                        <Label htmlFor="email-verify" className="text-left block text-xs text-muted-foreground">E-mail de Membro</Label>
                         <div className="flex items-center gap-2">
                             <Input
                             id="email-verify"
@@ -398,12 +399,12 @@ export default function TikTokVideoAnchorClient({ emailFromConfig, phoneFromConf
                         <span>{getStepTitle(3)}</span>
                         {step > 3 && <CheckCircle className="h-6 w-6 text-green-500" />}
                     </CardTitle>
-                    <CardDescription>Envie um evento de teste para validar a instalação do pixel.</CardDescription>
+                    <CardDescription>Envie uma compra teste para validar a instalação do pixel.</CardDescription>
                 </CardHeader>
                 <CardFooter>
                       <Button onClick={handleSendEvent} className="w-full font-bold" disabled={isSendingEvent || eventSent}>
                         {isSendingEvent ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2" />}
-                        Enviar Evento de Teste
+                        Enviar 'Compra Teste'
                     </Button>
                 </CardFooter>
             </Card>
