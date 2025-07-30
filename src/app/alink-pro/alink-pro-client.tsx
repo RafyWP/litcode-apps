@@ -423,7 +423,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
                     <Label htmlFor="hotmart-product-id">ID do Produto na Hotmart</Label>
                      <Input
                         id="hotmart-product-id"
-                        placeholder="Ex: HP1234567890"
+                        placeholder="Ex: 367382"
                         value={hotmartProductId}
                         onChange={(e) => setHotmartProductId(e.target.value)}
                         disabled={isScanningProduct}

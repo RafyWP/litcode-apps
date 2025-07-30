@@ -337,7 +337,7 @@ export async function verifyEmail(params: z.infer<typeof verifyEmailSchema>) {
 let hotmartAccessToken: string | null = null;
 let hotmartTokenExpiresAt: number = 0;
 
-async function getHotmartToken() {
+async function getHotmartToken(): Promise<string | null> {
   const now = Date.now();
   if (hotmartAccessToken && now < hotmartTokenExpiresAt) {
     return hotmartAccessToken;
@@ -346,25 +346,31 @@ async function getHotmartToken() {
   const authUrl = "https://api-sec-vlc.hotmart.com/security/oauth/token?grant_type=client_credentials";
   const basicToken = "Basic YTI3MTgzYzItOWQ0Mi00ZDJlLWJiOTUtOGUxMjZmMzBiMjhmOjMzYmZiYmI2LTViYTctNGQ5OC04NjdlLTk3MTNkMWQ1Y2QzOA==";
 
-  const response = await fetch(authUrl, {
-    method: 'POST',
-    headers: { 
-      'Content-Type': 'application/json',
-      'Authorization': basicToken
-    },
-  });
-  
-  const responseText = await response.text();
-  if (!response.ok) {
-    throw new Error(`Failed to get Hotmart token: ${responseText}`);
-  }
+  try {
+    const response = await fetch(authUrl, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': basicToken
+      },
+      body: JSON.stringify({}) // API expects an empty JSON object
+    });
+    
+    const data = await response.json();
 
-  const data = JSON.parse(responseText);
-  hotmartAccessToken = data.access_token;
-  // expires_in is in seconds. Convert to milliseconds and leave a 60-second buffer.
-  hotmartTokenExpiresAt = now + (data.expires_in - 60) * 1000;
-  
-  return hotmartAccessToken;
+    if (!response.ok) {
+      throw new Error(data.error_description || 'Failed to get Hotmart token');
+    }
+
+    hotmartAccessToken = data.access_token;
+    // expires_in is in seconds. Convert to milliseconds and leave a 60-second buffer.
+    hotmartTokenExpiresAt = now + (data.expires_in - 60) * 1000;
+    
+    return hotmartAccessToken;
+  } catch (error) {
+    console.error("Hotmart auth error:", error);
+    return null;
+  }
 }
 
 
@@ -378,7 +384,11 @@ export async function getHotmartProduct(params: z.infer<typeof getHotmartProduct
     const { productId } = validatedParams;
     const accessToken = await getHotmartToken();
 
-    const productApiUrl = `https://developers.hotmart.com/payments/api/v1/products?productId=${productId}`;
+    if (!accessToken) {
+        return { success: false, error: "Could not authenticate with Hotmart. Please check server credentials." };
+    }
+
+    const productApiUrl = `https://developers.hotmart.com/payments/api/v1/products/${productId}`;
 
     const response = await fetch(productApiUrl, {
       method: "GET",
@@ -387,15 +397,15 @@ export async function getHotmartProduct(params: z.infer<typeof getHotmartProduct
       },
     });
 
-    const responseText = await response.text();
     if (!response.ok) {
-      return { success: false, error: `Failed to fetch product from Hotmart: ${responseText}` };
+        const errorText = await response.text();
+        return { success: false, error: `Failed to fetch product from Hotmart: ${errorText}` };
     }
-
-    const data = JSON.parse(responseText);
     
-    if (data.items && data.items.length > 0) {
-      return { success: true, data: data.items[0] };
+    const data = await response.json();
+    
+    if (data) {
+      return { success: true, data: data };
     } else {
       return { success: false, error: "Product not found on Hotmart." };
     }
