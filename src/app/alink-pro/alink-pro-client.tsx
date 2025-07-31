@@ -235,7 +235,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
       phone: formValues.phone || "",
       productName: formValues.productName,
       productDescription: formValues.productDescription,
-      productPrice: formValues.productPrice,
+      productPrice: z.coerce.number().parse(formValues.productPrice),
       currency: formValues.currency,
     });
 
