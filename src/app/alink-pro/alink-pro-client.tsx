@@ -218,11 +218,6 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
   async function handleSendEvent() {
     if (!accessToken || !pixelCode) return;
     
-    // const validationResult = await form.trigger();
-    // if (!validationResult) {
-    //     toast({ title: "Erro de Validação", description: "Por favor, preencha todos os campos obrigatórios corretamente.", variant: "destructive" });
-    //     return;
-    // }
     const formValues = form.getValues();
 
     setIsSendingEvent(true);
@@ -234,7 +229,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
       email: formValues.email || "",
       phone: formValues.phone || "",
       productName: "Produto de Teste",
-      // productDescription: formValues.productDescription || "Este record é para teste do pixel.",
+      productDescription: "Este record é para teste do pixel.",
       productPrice: 0.01,
       currency: "BRL",
     });
@@ -285,7 +280,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              {step >= 2 && (
+              
                 <PixelCard
                   form={form}
                   step={step}
@@ -295,38 +290,38 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
                   selectedAdvertiserName={selectedAdvertiserName}
                   pixelName={pixelName}
                 />
-              )}
+              
               
               {/* {step === 2 && (
                  <ProductDetailsCard form={form} />
               )} */}
               
-              {step >= 3 && (
+              
                 <TestEventCard
                   step={step}
                   isSendingEvent={isSendingEvent}
                   eventSent={eventSent}
                   handleSendEvent={handleSendEvent}
                 />
-              )}
+              
             </form>
           </Form>
 
-          {step >= 4 && (
+          
             <HotmartCard
               step={step}
               setStep={setStep}
               pixelCode={pixelCode}
               copyToClipboard={copyToClipboard}
             />
-          )}
+          
         
-          {step >= 5 && (
+          
             <CompletionCard
               step={step}
               tiktokEventPanelUrl={tiktokEventPanelUrl}
             />
-          )}
+          
         </div>
       </div>
     </div>

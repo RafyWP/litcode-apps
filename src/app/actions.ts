@@ -4,6 +4,7 @@
 import { get } from "@vercel/edge-config";
 import { z } from "zod";
 import { createHmac, createHash } from "crypto";
+import { headers } from 'next/headers';
 
 const getAccessTokenSchema = z.object({
   authCode: z.string().min(1, "Authorization Code is required."),
@@ -192,21 +193,23 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
     const validatedParams = trackEventSchema.parse(params);
     const { accessToken, pixelCode, externalId, email, phone, productName, productDescription, productPrice, currency } = validatedParams;
 
+    const headersList = headers();
+    const userAgent = headersList.get('user-agent');
+    const ip = headersList.get('x-forwarded-for') || headersList.get('remote-addr');
+
     const eventName = "Purchase";
     const eventTime = Math.floor(new Date().getTime() / 1000);
     
-    // As per TikTok docs, email/phone must be hashed. external_id is not specified to be hashed.
     const userObject = {
         email: email ? hashValue(email) : undefined,
         phone: phone ? hashValue(phone) : undefined,
         external_id: externalId || undefined,
         ttclid: null,
-        ip: null,
-        user_agent: null,
+        ip: ip || undefined,
+        user_agent: userAgent || undefined,
     };
 
-    // Remove undefined keys from user object
-    Object.keys(userObject).forEach(key => userObject[key as keyof typeof userObject] === undefined && delete userObject[key as keyof typeof userObject]);
+    Object.keys(userObject).forEach(key => (userObject[key as keyof typeof userObject] === undefined || userObject[key as keyof typeof userObject] === null) && delete userObject[key as keyof typeof userObject]);
 
 
     const requestBody = {
