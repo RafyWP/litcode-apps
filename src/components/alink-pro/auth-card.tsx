@@ -57,7 +57,7 @@ export function AuthCard({
         <CardContent>
           {!isEmailVerified ? (
             <div className="w-full space-y-2">
-              <Label htmlFor="email-verify">E-mail de Membro</Label>
+              <Label htmlFor="email-verify">E-mail de Membro "Âncora Link PRO"</Label>
               <div className="flex items-center gap-2">
                 <Input
                   id="email-verify"
