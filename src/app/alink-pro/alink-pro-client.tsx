@@ -211,6 +211,7 @@ export default function AlinkProClient() {
       return;
     }
     setIsCheckingEmail(true);
+    // This should use the API route to avoid exposing Vercel Edge Config directly to client
     const result = await fetch('/api/verify-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -380,7 +381,7 @@ export default function AlinkProClient() {
               <HotmartCard
                 isCompleted={step > 3}
                 setStep={setStep}
-                pixelCode={selectedPixelCode}
+                pixelCode={selectedPixelCode || null}
                 copyToClipboard={copyToClipboard}
               />
             </CollapsibleTrigger>
