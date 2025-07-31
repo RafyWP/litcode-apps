@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { createPixel, getAdvertisers, trackEvent } from "@/app/actions";
+import { getAdvertisers, createPixel } from "@/app/actions";
 import { Anchor } from "lucide-react";
 
 import { AuthCard } from "@/components/alink-pro/auth-card";
@@ -16,11 +16,8 @@ import { PixelCard } from "@/components/alink-pro/pixel-card";
 import { TestEventCard } from "@/components/alink-pro/test-event-card";
 import { HotmartCard } from "@/components/alink-pro/hotmart-card";
 import { CompletionCard } from "@/components/alink-pro/completion-card";
-
-export type Advertiser = {
-  advertiser_id: string;
-  advertiser_name: string;
-};
+import { Advertiser } from "@/lib/types";
+// import { ProductDetailsCard } from "@/components/alink-pro/product-details-card";
 
 const formSchema = z.object({
   advertiserId: z.string().min(1, "Por favor, selecione uma conta de anunciante."),
@@ -28,6 +25,11 @@ const formSchema = z.object({
   externalId: z.string().optional(),
   email: z.string().optional(),
   phone: z.string().optional(),
+  // productName: z.string().min(1, "O nome do produto é obrigatório."),
+  // productDescription: z.string().max(255, "A descrição não pode exceder 255 caracteres.").optional(),
+  // productImageUrl: z.string().url("Por favor, insira uma URL válida.").optional().or(z.literal('')),
+  // productPrice: z.coerce.number().min(0.01, "O preço deve ser pelo menos 0.01."),
+  // currency: z.string().min(1, "Selecione a moeda."),
 });
 
 interface AlinkProClientProps {
@@ -49,6 +51,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
 
   const [isFetchingAdvertisers, setIsFetchingAdvertisers] = useState(true);
   const [advertisers, setAdvertisers] = useState<Advertiser[]>([]);
+  const [selectedAdvertiserName, setSelectedAdvertiserName] = useState<string | null>(null);
 
   const [emailVerify, setEmailVerify] = useState("");
   const [isEmailVerified, setIsEmailVerified] = useState(false);
@@ -62,6 +65,11 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
       externalId: "",
       email: emailFromConfig || "",
       phone: phoneFromConfig || "",
+      // productName: "Produto de Teste",
+      // productDescription: "Este record é para teste do pixel.",
+      // productImageUrl: "https://placehold.co/600x400.png",
+      // productPrice: 0.01,
+      // currency: "BRL",
     },
   });
 
@@ -192,6 +200,8 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
     if (result.success && result.data.pixel_id && result.data.pixel_code) {
       setPixelId(result.data.pixel_id);
       setPixelCode(result.data.pixel_code);
+      const selectedAdvertiser = advertisers.find(ad => ad.advertiser_id === values.advertiserId);
+      setSelectedAdvertiserName(selectedAdvertiser?.advertiser_name || null);
       setStep(3);
     } else {
       toast({
@@ -213,29 +223,40 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
     if (!accessToken || !pixelCode) return;
     
     const formValues = form.getValues();
-
     setIsSendingEvent(true);
 
-    const result = await trackEvent({
-      accessToken,
-      pixelCode,
-      externalId: formValues.externalId || "",
-      email: formValues.email || "",
-      phone: formValues.phone || "",
-      productName: "Produto de Teste",
-      productDescription: "Este record é para teste do pixel.",
-      productPrice: 0.01,
-      currency: "BRL",
-    });
+    try {
+      const response = await fetch("/api/track-event", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          accessToken,
+          pixelCode,
+          externalId: formValues.externalId || "",
+          email: formValues.email || "",
+          phone: formValues.phone || "",
+          productName: "Produto de Teste",
+          productDescription: "Este record é para teste do pixel.",
+          productPrice: 0.01,
+          currency: "BRL",
+        }),
+      });
 
-    setIsSendingEvent(false);
+      const result = await response.json();
+      setIsSendingEvent(false);
 
-    if (result.success) {
-      toast({ title: "Evento de Teste Enviado!", description: "O evento 'Purchase' foi enviado com sucesso.", className: "bg-green-600 text-white" });
-      setEventSent(true);
-      setStep(4);
-    } else {
-      toast({ title: "Erro ao Enviar Evento", description: result.error || "Ocorreu um erro desconhecido.", variant: "destructive" });
+      if (result.success) {
+        toast({ title: "Evento de Teste Enviado!", description: "O evento 'Purchase' foi enviado com sucesso.", className: "bg-green-600 text-white" });
+        setEventSent(true);
+        setStep(4);
+      } else {
+        toast({ title: "Erro ao Enviar Evento", description: result.error || "Ocorreu um erro desconhecido.", variant: "destructive" });
+      }
+    } catch (error) {
+      setIsSendingEvent(false);
+      toast({ title: "Erro de Rede", description: "Não foi possível conectar ao servidor para enviar o evento.", variant: "destructive" });
     }
   }
   
@@ -283,6 +304,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
                   pixelName={pixelName}
                   pixelId={pixelId}
                   pixelCode={pixelCode}
+                  selectedAdvertiserName={selectedAdvertiserName}
                 />
               
               
@@ -321,5 +343,3 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
     </div>
   );
 }
-
-    

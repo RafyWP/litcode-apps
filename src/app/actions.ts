@@ -4,7 +4,6 @@
 import { get } from "@vercel/edge-config";
 import { z } from "zod";
 import { createHmac, createHash } from "crypto";
-import { headers } from 'next/headers';
 
 const getAccessTokenSchema = z.object({
   authCode: z.string().min(1, "Authorization Code is required."),
@@ -24,7 +23,7 @@ export async function getAccessToken(
       return {
         success: false,
         error:
-          "App ID or Secret is not configured in server environment variables.",
+          "App ID ou Secret não está configurado nas variáveis de ambiente do servidor.",
       };
     }
 
@@ -48,7 +47,7 @@ export async function getAccessToken(
     if (data.code !== 0) {
       return {
         success: false,
-        error: data.message || "Failed to retrieve access token.",
+        error: data.message || "Falha ao obter o token de acesso.",
       };
     }
 
@@ -60,7 +59,7 @@ export async function getAccessToken(
         error: error.errors.map((e) => e.message).join(" "),
       };
     }
-    return { success: false, error: "An unexpected error occurred." };
+    return { success: false, error: "Ocorreu um erro inesperado." };
   }
 }
 
@@ -81,7 +80,7 @@ export async function getAdvertisers(
       return {
         success: false,
         error:
-          "App ID or Secret is not configured in server environment variables.",
+          "App ID ou Secret não está configurado nas variáveis de ambiente do servidor.",
       };
     }
 
@@ -106,7 +105,7 @@ export async function getAdvertisers(
     if (data.code !== 0) {
       return {
         success: false,
-        error: data.message || "Failed to fetch advertisers.",
+        error: data.message || "Falha ao buscar anunciantes.",
       };
     }
 
@@ -120,7 +119,7 @@ export async function getAdvertisers(
     }
     return {
       success: false,
-      error: "An unexpected error occurred while fetching advertisers.",
+      error: "Ocorreu um erro inesperado ao buscar anunciantes.",
     };
   }
 }
@@ -156,7 +155,7 @@ export async function createPixel(params: z.infer<typeof createPixelSchema>) {
     if (data.code !== 0) {
       return {
         success: false,
-        error: data.message || "Failed to create pixel.",
+        error: data.message || "Falha ao criar o pixel.",
       };
     }
 
@@ -168,7 +167,7 @@ export async function createPixel(params: z.infer<typeof createPixelSchema>) {
         error: error.errors.map((e) => e.message).join(" "),
       };
     }
-    return { success: false, error: "An unexpected error occurred." };
+    return { success: false, error: "Ocorreu um erro inesperado." };
   }
 }
 
@@ -182,7 +181,10 @@ const trackEventSchema = z.object({
   productDescription: z.string().optional(),
   productPrice: z.number(),
   currency: z.string(),
+  ip: z.string().optional(),
+  userAgent: z.string().optional(),
 });
+
 
 function hashValue(value: string): string {
   return createHash("sha256").update(value).digest("hex");
@@ -191,16 +193,12 @@ function hashValue(value: string): string {
 export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
   try {
     const validatedParams = trackEventSchema.parse(params);
-    const { accessToken, pixelCode, externalId, email, phone, productName, productDescription, productPrice, currency } = validatedParams;
-
-    const headersList = headers();
-    const userAgent = headersList.get('user-agent');
-    const ip = headersList.get('x-forwarded-for') || headersList.get('remote-addr');
+    const { accessToken, pixelCode, externalId, email, phone, productName, productDescription, productPrice, currency, ip, userAgent } = validatedParams;
 
     const eventName = "Purchase";
     const eventTime = Math.floor(new Date().getTime() / 1000);
     
-    const userObject = {
+    const userObject: { [key: string]: string | null | undefined } = {
         email: email ? hashValue(email) : undefined,
         phone: phone ? hashValue(phone) : undefined,
         external_id: externalId || undefined,
@@ -231,7 +229,7 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
             currency: currency,
             value: productPrice,
             content_type: "product",
-            description: productDescription || "This record is intended to test the pixel.",
+            description: productDescription || "Este record é para teste do pixel.",
           },
           page: {
             url: "https://ia.litcode.store/produto/test-product",
@@ -258,7 +256,7 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
     if (data.code !== 0) {
       return {
         success: false,
-        error: data.message || "Failed to track event.",
+        error: data.message || "Falha ao rastrear o evento.",
         details: data,
       };
     }
@@ -276,13 +274,13 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
     }
     return {
       success: false,
-      error: "An unexpected error occurred while tracking the event.",
+      error: "Ocorreu um erro inesperado ao rastrear o evento.",
     };
   }
 }
 
 const verifyEmailSchema = z.object({
-  email: z.string().min(1, "Please enter a valid email or bypass code."),
+  email: z.string().min(1, "Por favor, insira um e-mail válido ou código de acesso."),
 });
 
 export async function verifyEmail(params: z.infer<typeof verifyEmailSchema>) {
@@ -307,7 +305,7 @@ export async function verifyEmail(params: z.infer<typeof verifyEmailSchema>) {
     if (!allowedEmailsStr) {
       return {
         success: false,
-        error: "Email list is not configured. Please contact support.",
+        error: "A lista de e-mails não está configurada. Por favor, contate o suporte.",
       };
     }
 
@@ -315,14 +313,14 @@ export async function verifyEmail(params: z.infer<typeof verifyEmailSchema>) {
     
     const emailValidation = z.string().email().safeParse(email);
     if (!emailValidation.success) {
-      return { success: false, error: "This email is not authorized." };
+      return { success: false, error: "Este e-mail não está autorizado." };
     }
 
 
     if (allowedEmails.includes(email.toLowerCase())) {
       return { success: true };
     } else {
-      return { success: false, error: "This email is not authorized." };
+      return { success: false, error: "Este e-mail não está autorizado." };
     }
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -333,7 +331,7 @@ export async function verifyEmail(params: z.infer<typeof verifyEmailSchema>) {
     }
     return {
       success: false,
-      error: "Could not verify email. The allowed list might not be set up in Vercel Edge Config.",
+      error: "Não foi possível verificar o e-mail. A lista de permissões pode não estar configurada no Vercel Edge Config.",
     };
   }
 }

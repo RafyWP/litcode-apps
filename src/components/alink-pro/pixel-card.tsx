@@ -25,7 +25,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Loader2, WandSparkles } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
-import { Advertiser } from "@/app/alink-pro/alink-pro-client";
+import { Advertiser } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 interface PixelCardProps {
@@ -37,6 +37,7 @@ interface PixelCardProps {
   pixelName?: string;
   pixelId?: string | null;
   pixelCode?: string | null;
+  selectedAdvertiserName?: string | null;
 }
 
 export function PixelCard({
@@ -48,6 +49,7 @@ export function PixelCard({
   pixelName,
   pixelId,
   pixelCode,
+  selectedAdvertiserName,
 }: PixelCardProps) {
   if (step < 2) {
     return null;
@@ -152,5 +154,3 @@ export function PixelCard({
     </Card>
   );
 }
-
-    
