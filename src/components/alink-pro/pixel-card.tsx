@@ -34,8 +34,9 @@ interface PixelCardProps {
   isLoading: boolean;
   isFetchingAdvertisers: boolean;
   advertisers: Advertiser[];
-  selectedAdvertiserName?: string;
   pixelName?: string;
+  pixelId?: string | null;
+  pixelCode?: string | null;
 }
 
 export function PixelCard({
@@ -44,8 +45,9 @@ export function PixelCard({
   isLoading,
   isFetchingAdvertisers,
   advertisers,
-  selectedAdvertiserName,
   pixelName,
+  pixelId,
+  pixelCode,
 }: PixelCardProps) {
   if (step < 2) {
     return null;
@@ -64,11 +66,21 @@ export function PixelCard({
           <span>Gerar Pixel</span>
           {isCompleted && <CheckCircle className="h-6 w-6 text-green-500" />}
         </CardTitle>
-        <CardDescription>
-          {isCompleted
-            ? `Pixel '${pixelName}' criado para a conta '${selectedAdvertiserName}'.`
-            : "Selecione sua conta de anúncios para criar um novo pixel."}
-        </CardDescription>
+        {!isCompleted ? (
+          <CardDescription>
+            Selecione sua conta de anúncios para criar um novo pixel.
+          </CardDescription>
+        ) : (
+          <div className="grid grid-cols-3 gap-x-4 gap-y-1 pt-2 text-sm">
+            <div className="font-semibold text-muted-foreground">Nome</div>
+            <div className="font-semibold text-muted-foreground">ID</div>
+            <div className="font-semibold text-muted-foreground">Código</div>
+            
+            <div className="text-foreground truncate" title={pixelName}>{pixelName}</div>
+            <div className="text-foreground font-mono text-xs" title={pixelId || ""}>{pixelId}</div>
+            <div className="text-foreground font-mono text-xs" title={pixelCode || ""}>{pixelCode}</div>
+          </div>
+        )}
       </CardHeader>
       {!isCompleted && (
         <CardContent>
@@ -140,3 +152,5 @@ export function PixelCard({
     </Card>
   );
 }
+
+    

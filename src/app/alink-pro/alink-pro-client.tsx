@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { createPixel, getAdvertisers, trackEvent, verifyEmail } from "@/app/actions";
+import { createPixel, getAdvertisers, trackEvent } from "@/app/actions";
 import { Anchor } from "lucide-react";
 
 import { AuthCard } from "@/components/alink-pro/auth-card";
@@ -16,7 +16,6 @@ import { PixelCard } from "@/components/alink-pro/pixel-card";
 import { TestEventCard } from "@/components/alink-pro/test-event-card";
 import { HotmartCard } from "@/components/alink-pro/hotmart-card";
 import { CompletionCard } from "@/components/alink-pro/completion-card";
-// import { ProductDetailsCard } from "@/components/alink-pro/product-details-card";
 
 export type Advertiser = {
   advertiser_id: string;
@@ -29,11 +28,6 @@ const formSchema = z.object({
   externalId: z.string().optional(),
   email: z.string().optional(),
   phone: z.string().optional(),
-  // productName: z.string().min(1, "O nome do produto é obrigatório."),
-  // productDescription: z.string().max(255, "A descrição deve ter no máximo 255 caracteres.").optional(),
-  // productImageUrl: z.string().url("Por favor, insira uma URL válida.").or(z.literal("")).optional(),
-  // productPrice: z.coerce.number().min(0.01, "O preço deve ser positivo."),
-  // currency: z.string().min(1, "Selecione uma moeda."),
 });
 
 interface AlinkProClientProps {
@@ -68,11 +62,6 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
       externalId: "",
       email: emailFromConfig || "",
       phone: phoneFromConfig || "",
-      // productName: "Produto de Teste",
-      // productDescription: "",
-      // productImageUrl: "https://placehold.co/600x400.png",
-      // productPrice: 0.01,
-      // currency: "BRL",
     },
   });
 
@@ -172,14 +161,19 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
       return;
     }
     setIsCheckingEmail(true);
-    const result = await verifyEmail({ email: emailVerify });
+    const result = await fetch('/api/verify-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailVerify }),
+    });
     setIsCheckingEmail(false);
+    const data = await result.json();
 
-    if (result.success) {
+    if (data.success) {
       setIsEmailVerified(true);
       toast({ title: "E-mail Verificado!", description: "Você já pode fazer login com o TikTok.", className: "bg-green-600 text-white" });
     } else {
-      toast({ title: "Falha na Verificação", description: result.error, variant: "destructive" });
+      toast({ title: "Falha na Verificação", description: data.error, variant: "destructive" });
     }
   };
 
@@ -246,7 +240,6 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
   }
   
   const selectedAdvertiserId = form.watch("advertiserId");
-  const selectedAdvertiserName = advertisers.find(ad => ad.advertiser_id === selectedAdvertiserId)?.advertiser_name;
   const pixelName = form.watch("pixelName");
 
   const tiktokEventPanelUrl = `https://ads.tiktok.com/i18n/events_manager/datasource/pixel/detail/${pixelCode}?org_id=${selectedAdvertiserId}&open_from=bc_asset_pixel`;
@@ -287,8 +280,9 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
                   isLoading={isLoading}
                   isFetchingAdvertisers={isFetchingAdvertisers}
                   advertisers={advertisers}
-                  selectedAdvertiserName={selectedAdvertiserName}
                   pixelName={pixelName}
+                  pixelId={pixelId}
+                  pixelCode={pixelCode}
                 />
               
               
@@ -327,3 +321,5 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
     </div>
   );
 }
+
+    
