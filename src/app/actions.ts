@@ -257,14 +257,12 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
         success: false,
         error: data.message || "Failed to track event.",
         details: data,
-        requestPayload: requestBody,
       };
     }
 
     return {
       success: true,
       data: data,
-      requestPayload: requestBody,
     };
   } catch (error) {
     if (error instanceof z.ZodError) {
