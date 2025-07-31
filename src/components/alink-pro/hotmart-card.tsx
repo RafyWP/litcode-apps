@@ -16,39 +16,32 @@ import { CheckCircle, Copy } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface HotmartCardProps {
-  step: number;
+  isCompleted: boolean;
   setStep: (step: number) => void;
   pixelCode: string | null;
   copyToClipboard: (text: string | null) => void;
 }
 
 export function HotmartCard({
-  step,
+  isCompleted,
   setStep,
   pixelCode,
   copyToClipboard,
 }: HotmartCardProps) {
-  if (step < 4) {
-    return null;
-  }
-  const isCompleted = step > 4;
-
   return (
     <Card>
       <CardHeader>
         <CardTitle
           className={cn(
-            "flex items-center justify-between",
-            isCompleted && "text-lg font-medium"
+            "flex items-center",
+            !isCompleted && "justify-between"
           )}
         >
-          <span>Configurar Hotmart</span>
-          {isCompleted && <CheckCircle className="h-6 w-6 text-green-500" />}
+          <span>4. Configurar Hotmart</span>
+          {isCompleted && <CheckCircle className="ml-2 h-6 w-6 text-green-500" />}
         </CardTitle>
         <CardDescription>
-          {isCompleted
-            ? `O Pixel Code ${pixelCode} foi copiado e está pronto para ser colado na Hotmart.`
-            : "Siga os passos para usar o código do pixel na Hotmart."}
+          Siga os passos para usar o código do pixel na Hotmart.
         </CardDescription>
       </CardHeader>
       {!isCompleted && (

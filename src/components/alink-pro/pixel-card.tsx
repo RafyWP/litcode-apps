@@ -30,59 +30,34 @@ import { cn } from "@/lib/utils";
 
 interface PixelCardProps {
   form: UseFormReturn<any>;
-  step: number;
+  isCompleted: boolean;
   isLoading: boolean;
   isFetchingAdvertisers: boolean;
   advertisers: Advertiser[];
-  pixelName?: string;
-  pixelId?: string | null;
-  pixelCode?: string | null;
-  selectedAdvertiserName?: string | null;
 }
 
 export function PixelCard({
   form,
-  step,
+  isCompleted,
   isLoading,
   isFetchingAdvertisers,
   advertisers,
-  pixelName,
-  pixelId,
-  pixelCode,
-  selectedAdvertiserName,
 }: PixelCardProps) {
-  if (step < 2) {
-    return null;
-  }
-  const isCompleted = step > 2;
-
   return (
     <Card>
       <CardHeader>
         <CardTitle
           className={cn(
-            "flex items-center justify-between",
-            isCompleted && "text-lg font-medium"
+            "flex items-center",
+            !isCompleted && "justify-between"
           )}
         >
-          <span>Gerar Pixel</span>
-          {isCompleted && <CheckCircle className="h-6 w-6 text-green-500" />}
+          <span>2. Gerar Pixel</span>
+          {isCompleted && <CheckCircle className="ml-2 h-6 w-6 text-green-500" />}
         </CardTitle>
-        {!isCompleted ? (
-          <CardDescription>
-            Selecione sua conta de anúncios para criar um novo pixel.
-          </CardDescription>
-        ) : (
-          <div className="grid grid-cols-3 gap-x-4 gap-y-1 pt-2 text-sm">
-            <div className="font-semibold text-muted-foreground">Nome</div>
-            <div className="font-semibold text-muted-foreground">ID</div>
-            <div className="font-semibold text-muted-foreground">Código</div>
-            
-            <div className="text-foreground truncate" title={pixelName}>{pixelName}</div>
-            <div className="text-foreground font-mono text-xs" title={pixelId || ""}>{pixelId}</div>
-            <div className="text-foreground font-mono text-xs" title={pixelCode || ""}>{pixelCode}</div>
-          </div>
-        )}
+        <CardDescription>
+          Selecione sua conta de anúncios para criar um novo pixel.
+        </CardDescription>
       </CardHeader>
       {!isCompleted && (
         <CardContent>

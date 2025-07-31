@@ -15,7 +15,7 @@ import { CheckCircle, Loader2, LockKeyhole, LogIn } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface AuthCardProps {
-  step: number;
+  isCompleted: boolean;
   isEmailVerified: boolean;
   emailVerify: string;
   setEmailVerify: (value: string) => void;
@@ -25,7 +25,7 @@ interface AuthCardProps {
 }
 
 export function AuthCard({
-  step,
+  isCompleted,
   isEmailVerified,
   emailVerify,
   setEmailVerify,
@@ -33,31 +33,27 @@ export function AuthCard({
   handleVerifyEmail,
   authUrl,
 }: AuthCardProps) {
-  const isCompleted = step > 1;
-
   return (
     <Card>
       <CardHeader>
         <CardTitle
           className={cn(
-            "flex items-center justify-between",
-            isCompleted && "text-lg font-medium"
+            "flex items-center",
+            !isCompleted && "justify-between"
           )}
         >
-          <span>Autorizar Acesso</span>
-          {isCompleted && <CheckCircle className="h-6 w-6 text-green-500" />}
+          <span>1. Autorizar Acesso</span>
+          {isCompleted && <CheckCircle className="ml-2 h-6 w-6 text-green-500" />}
         </CardTitle>
         <CardDescription>
-          {isCompleted
-            ? "Conexão com o TikTok estabelecida com sucesso."
-            : "Autorize o aplicativo para acessar sua conta do TikTok Ads."}
+          Autorize o aplicativo para acessar sua conta do TikTok Ads.
         </CardDescription>
       </CardHeader>
       {!isCompleted && (
         <CardContent>
           {!isEmailVerified ? (
             <div className="w-full space-y-2">
-              <Label htmlFor="email-verify">E-mail de Membro "Âncora Link PRO"</Label>
+              <Label htmlFor="email-verify">E-mail de Membro</Label>
               <div className="flex items-center gap-2">
                 <Input
                   id="email-verify"

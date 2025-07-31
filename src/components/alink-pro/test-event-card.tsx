@@ -13,39 +13,33 @@ import { CheckCircle, Loader2, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface TestEventCardProps {
-  step: number;
+  isCompleted: boolean;
   isSendingEvent: boolean;
   eventSent: boolean;
   handleSendEvent: () => void;
 }
 
 export function TestEventCard({
-  step,
+  isCompleted,
   isSendingEvent,
   eventSent,
   handleSendEvent,
 }: TestEventCardProps) {
-  if (step < 3) {
-    return null;
-  }
-  const isCompleted = step > 3;
-
   return (
     <Card>
       <CardHeader>
         <CardTitle
           className={cn(
-            "flex items-center justify-between",
-            isCompleted && "text-lg font-medium"
+            "flex items-center",
+            !isCompleted && "justify-between"
           )}
         >
-          <span>Enviar Teste</span>
-          {isCompleted && <CheckCircle className="h-6 w-6 text-green-500" />}
+          <span>3. Enviar Teste</span>
+          {isCompleted && <CheckCircle className="ml-2 h-6 w-6 text-green-500" />}
         </CardTitle>
         <CardDescription>
-          {isCompleted
-            ? "O evento de teste 'Purchase' foi enviado para o TikTok com sucesso."
-            : "Envie uma compra teste para validar a instalação do pixel. Nada será cobrado."}
+          Envie uma compra teste para validar a instalação do pixel. Nada será
+          cobrado.
         </CardDescription>
       </CardHeader>
       {!isCompleted && (

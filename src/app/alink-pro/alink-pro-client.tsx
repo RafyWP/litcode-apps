@@ -16,6 +16,11 @@ import { PixelCard } from "@/components/alink-pro/pixel-card";
 import { TestEventCard } from "@/components/alink-pro/test-event-card";
 import { HotmartCard } from "@/components/alink-pro/hotmart-card";
 import { CompletionCard } from "@/components/alink-pro/completion-card";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { Advertiser } from "@/lib/types";
 
 const formSchema = z.object({
@@ -45,7 +50,6 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
 
   const [isFetchingAdvertisers, setIsFetchingAdvertisers] = useState(true);
   const [advertisers, setAdvertisers] = useState<Advertiser[]>([]);
-  const [selectedAdvertiserName, setSelectedAdvertiserName] = useState<string | null>(null);
 
   const [emailVerify, setEmailVerify] = useState("");
   const [isEmailVerified, setIsEmailVerified] = useState(false);
@@ -187,10 +191,13 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
     setIsLoading(false);
 
     if (result.success && result.data.pixel_id && result.data.pixel_code) {
+      toast({
+        title: "Pixel Criado!",
+        description: `Pixel '${values.pixelName}' criado para a conta '${values.advertiserId}'.`,
+        className: "bg-green-600 text-white",
+      });
       setPixelId(result.data.pixel_id);
       setPixelCode(result.data.pixel_code);
-      const selectedAdvertiser = advertisers.find(ad => ad.advertiser_id === values.advertiserId);
-      setSelectedAdvertiserName(selectedAdvertiser?.advertiser_name || null);
       setStep(3);
     } else {
       toast({
@@ -259,57 +266,75 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
         </header>
 
         <div className="space-y-6">
-          <AuthCard
-            step={step}
-            isEmailVerified={isEmailVerified}
-            emailVerify={emailVerify}
-            setEmailVerify={setEmailVerify}
-            isCheckingEmail={isCheckingEmail}
-            handleVerifyEmail={handleVerifyEmail}
-            authUrl={authUrl}
-          />
+          <Collapsible open={step === 1} className="w-full">
+            <CollapsibleTrigger asChild>
+              <AuthCard
+                isCompleted={step > 1}
+                isEmailVerified={isEmailVerified}
+                emailVerify={emailVerify}
+                setEmailVerify={setEmailVerify}
+                isCheckingEmail={isCheckingEmail}
+                handleVerifyEmail={handleVerifyEmail}
+                authUrl={authUrl}
+              />
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              {/* Content is inside the card for this step */}
+            </CollapsibleContent>
+          </Collapsible>
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              
-                <PixelCard
-                  form={form}
-                  step={step}
-                  isLoading={isLoading}
-                  isFetchingAdvertisers={isFetchingAdvertisers}
-                  advertisers={advertisers}
-                  pixelName={pixelName}
-                  pixelId={pixelId}
-                  pixelCode={pixelCode}
-                  selectedAdvertiserName={selectedAdvertiserName}
-                />
-              
-              
-                <TestEventCard
-                  step={step}
-                  isSendingEvent={isSendingEvent}
-                  eventSent={eventSent}
-                  handleSendEvent={handleSendEvent}
-                />
-              
+              <Collapsible open={step === 2} className="w-full">
+                <CollapsibleTrigger asChild>
+                  <PixelCard
+                    form={form}
+                    isCompleted={step > 2}
+                    isLoading={isLoading}
+                    isFetchingAdvertisers={isFetchingAdvertisers}
+                    advertisers={advertisers}
+                  />
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  {/* Content is inside the card for this step */}
+                </CollapsibleContent>
+              </Collapsible>
+
+              <Collapsible open={step === 3} className="w-full">
+                <CollapsibleTrigger asChild>
+                  <TestEventCard
+                    isCompleted={step > 3}
+                    isSendingEvent={isSendingEvent}
+                    eventSent={eventSent}
+                    handleSendEvent={handleSendEvent}
+                  />
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  {/* Content is inside the card for this step */}
+                </CollapsibleContent>
+              </Collapsible>
             </form>
           </Form>
 
-          
-            <HotmartCard
-              step={step}
-              setStep={setStep}
-              pixelCode={pixelCode}
-              copyToClipboard={copyToClipboard}
-            />
-          
-        
-          
+          <Collapsible open={step === 4} className="w-full">
+            <CollapsibleTrigger asChild>
+              <HotmartCard
+                isCompleted={step > 4}
+                setStep={setStep}
+                pixelCode={pixelCode}
+                copyToClipboard={copyToClipboard}
+              />
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              {/* Content is inside the card for this step */}
+            </CollapsibleContent>
+          </Collapsible>
+
+          <Collapsible open={step === 5} className="w-full">
             <CompletionCard
-              step={step}
               tiktokEventPanelUrl={tiktokEventPanelUrl}
             />
-          
+          </Collapsible>
         </div>
       </div>
     </div>
