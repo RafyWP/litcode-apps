@@ -42,6 +42,9 @@ export function PixelCard({
   isFetchingAdvertisers,
   advertisers,
 }: PixelCardProps) {
+  if (step < 2) {
+    return null;
+  }
   return (
     <Card>
       <CardHeader>
@@ -54,7 +57,7 @@ export function PixelCard({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <fieldset disabled={isLoading || isFetchingAdvertisers}>
+        <fieldset disabled={isLoading || isFetchingAdvertisers || step > 2}>
           <div className="space-y-4">
             <FormField
               control={form.control}
@@ -108,7 +111,7 @@ export function PixelCard({
           <Button
             type="submit"
             className="w-full font-bold mt-4"
-            disabled={isLoading || isFetchingAdvertisers}
+            disabled={isLoading || isFetchingAdvertisers || step > 2}
           >
             {(isLoading || isFetchingAdvertisers) && (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />

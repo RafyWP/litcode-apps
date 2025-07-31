@@ -24,6 +24,10 @@ export function TestEventCard({
   eventSent,
   handleSendEvent,
 }: TestEventCardProps) {
+  if (step < 3) {
+    return null;
+  }
+
   return (
     <Card>
       <CardHeader>

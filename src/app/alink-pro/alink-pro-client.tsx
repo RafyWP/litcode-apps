@@ -284,36 +284,45 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <PixelCard
-                form={form}
-                step={step}
-                isLoading={isLoading}
-                isFetchingAdvertisers={isFetchingAdvertisers}
-                advertisers={advertisers}
-              />
+              {step >= 2 && (
+                <>
+                  <PixelCard
+                    form={form}
+                    step={step}
+                    isLoading={isLoading}
+                    isFetchingAdvertisers={isFetchingAdvertisers}
+                    advertisers={advertisers}
+                  />
+                  <ProductDetailsCard form={form} />
+                </>
+              )}
               
-              <ProductDetailsCard form={form} />
-
-              <TestEventCard
-                step={step}
-                isSendingEvent={isSendingEvent}
-                eventSent={eventSent}
-                handleSendEvent={handleSendEvent}
-              />
+              {step >= 3 && (
+                <TestEventCard
+                  step={step}
+                  isSendingEvent={isSendingEvent}
+                  eventSent={eventSent}
+                  handleSendEvent={handleSendEvent}
+                />
+              )}
             </form>
           </Form>
 
-          <HotmartCard
-            step={step}
-            setStep={setStep}
-            pixelCode={pixelCode}
-            copyToClipboard={copyToClipboard}
-          />
+          {step >= 4 && (
+            <HotmartCard
+              step={step}
+              setStep={setStep}
+              pixelCode={pixelCode}
+              copyToClipboard={copyToClipboard}
+            />
+          )}
         
-          <CompletionCard
-            step={step}
-            tiktokEventPanelUrl={tiktokEventPanelUrl}
-          />
+          {step >= 5 && (
+            <CompletionCard
+              step={step}
+              tiktokEventPanelUrl={tiktokEventPanelUrl}
+            />
+          )}
         </div>
       </div>
     </div>

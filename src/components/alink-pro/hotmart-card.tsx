@@ -27,6 +27,10 @@ export function HotmartCard({
   pixelCode,
   copyToClipboard,
 }: HotmartCardProps) {
+  if (step < 4) {
+    return null;
+  }
+
   return (
     <Card>
       <CardHeader>
