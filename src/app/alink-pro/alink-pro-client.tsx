@@ -239,8 +239,6 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
       currency: formValues.currency,
     });
 
-    console.log("--- DEBUG: Track Event Client Result ---", result);
-
     setIsSendingEvent(false);
 
     if (result.success) {

@@ -238,10 +238,6 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
       ],
     };
 
-    console.log("--- DEBUG: TikTok Track Event Request Body ---");
-    console.log(JSON.stringify(requestBody, null, 2));
-
-
     const response = await fetch(
       "https://business-api.tiktok.com/open_api/v1.3/event/track/",
       {
@@ -257,9 +253,6 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
     const data = await response.json();
 
     if (data.code !== 0) {
-      console.error("--- DEBUG: TikTok Track Event FAILED ---");
-      console.error("Response:", data);
-      console.error("Request Payload:", requestBody);
       return {
         success: false,
         error: data.message || "Failed to track event.",
@@ -268,8 +261,6 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
       };
     }
 
-    console.log("--- DEBUG: TikTok Track Event SUCCESS ---");
-    console.log("Response:", data);
     return {
       success: true,
       data: data,
@@ -282,7 +273,6 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
         error: error.errors.map((e) => e.message).join(" "),
       };
     }
-    console.error("--- DEBUG: TikTok Track Event UNEXPECTED ERROR ---", error);
     return {
       success: false,
       error: "An unexpected error occurred while tracking the event.",
