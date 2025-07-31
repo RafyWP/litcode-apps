@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { getAdvertisers, createPixel } from "@/app/actions";
+import { getAdvertisers, createPixel, trackEvent } from "@/app/actions";
 import { Anchor } from "lucide-react";
 
 import { AuthCard } from "@/components/alink-pro/auth-card";
@@ -17,7 +17,6 @@ import { TestEventCard } from "@/components/alink-pro/test-event-card";
 import { HotmartCard } from "@/components/alink-pro/hotmart-card";
 import { CompletionCard } from "@/components/alink-pro/completion-card";
 import { Advertiser } from "@/lib/types";
-// import { ProductDetailsCard } from "@/components/alink-pro/product-details-card";
 
 const formSchema = z.object({
   advertiserId: z.string().min(1, "Por favor, selecione uma conta de anunciante."),
@@ -215,38 +214,26 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
     const formValues = form.getValues();
     setIsSendingEvent(true);
 
-    try {
-      const response = await fetch("/api/track-event", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          accessToken,
-          pixelCode,
-          externalId: formValues.externalId || "",
-          email: formValues.email || "",
-          phone: formValues.phone || "",
-          productName: "Produto de Teste",
-          productDescription: "Este record é para teste do pixel.",
-          productPrice: 0.01,
-          currency: "BRL",
-        }),
-      });
+    const result = await trackEvent({
+      accessToken,
+      pixelCode,
+      externalId: formValues.externalId || "",
+      email: formValues.email || "",
+      phone: formValues.phone || "",
+      productName: "Produto de Teste",
+      productDescription: "Este record é para teste do pixel.",
+      productPrice: 0.01,
+      currency: "BRL",
+    });
 
-      const result = await response.json();
-      setIsSendingEvent(false);
+    setIsSendingEvent(false);
 
-      if (result.success) {
-        toast({ title: "Evento de Teste Enviado!", description: "O evento 'Purchase' foi enviado com sucesso.", className: "bg-green-600 text-white" });
-        setEventSent(true);
-        setStep(4);
-      } else {
-        toast({ title: "Erro ao Enviar Evento", description: result.error || "Ocorreu um erro desconhecido.", variant: "destructive" });
-      }
-    } catch (error) {
-      setIsSendingEvent(false);
-      toast({ title: "Erro de Rede", description: "Não foi possível conectar ao servidor para enviar o evento.", variant: "destructive" });
+    if (result.success) {
+      toast({ title: "Evento de Teste Enviado!", description: "O evento 'Purchase' foi enviado com sucesso.", className: "bg-green-600 text-white" });
+      setEventSent(true);
+      setStep(4);
+    } else {
+      toast({ title: "Erro ao Enviar Evento", description: result.error || "Ocorreu um erro desconhecido.", variant: "destructive" });
     }
   }
   

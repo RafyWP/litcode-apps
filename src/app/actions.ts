@@ -181,8 +181,6 @@ const trackEventSchema = z.object({
   productDescription: z.string().optional(),
   productPrice: z.number(),
   currency: z.string(),
-  ip: z.string().optional(),
-  userAgent: z.string().optional(),
 });
 
 
@@ -193,7 +191,7 @@ function hashValue(value: string): string {
 export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
   try {
     const validatedParams = trackEventSchema.parse(params);
-    const { accessToken, pixelCode, externalId, email, phone, productName, productDescription, productPrice, currency, ip, userAgent } = validatedParams;
+    const { accessToken, pixelCode, externalId, email, phone, productName, productDescription, productPrice, currency } = validatedParams;
 
     const eventName = "Purchase";
     const eventTime = Math.floor(new Date().getTime() / 1000);
@@ -203,8 +201,6 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
         phone: phone ? hashValue(phone) : undefined,
         external_id: externalId || undefined,
         ttclid: null,
-        ip: ip || undefined,
-        user_agent: userAgent || undefined,
     };
 
     Object.keys(userObject).forEach(key => (userObject[key as keyof typeof userObject] === undefined || userObject[key as keyof typeof userObject] === null) && delete userObject[key as keyof typeof userObject]);
