@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { getAdvertisers, createPixel } from "@/app/actions";
+import { getAdvertisers, createPixel, getPixels } from "@/app/actions";
 import { Anchor } from "lucide-react";
 
 import { AuthCard } from "@/components/alink-pro/auth-card";
@@ -22,11 +22,12 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Advertiser } from "@/lib/types";
+import { Advertiser, Pixel } from "@/lib/types";
 
 const formSchema = z.object({
   advertiserId: z.string().min(1, "Por favor, selecione uma conta de anunciante."),
   pixelName: z.string().min(1, "O nome do pixel é obrigatório."),
+  pixelCode: z.string().min(1, "Por favor, selecione um pixel para testar."),
   externalId: z.string().optional(),
   email: z.string().email({ message: "Por favor, insira um e-mail válido." }).optional().or(z.literal('')),
   phone: z.string().optional(),
@@ -53,6 +54,9 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
   const [isFetchingAdvertisers, setIsFetchingAdvertisers] = useState(true);
   const [advertisers, setAdvertisers] = useState<Advertiser[]>([]);
 
+  const [pixels, setPixels] = useState<Pixel[]>([]);
+  const [isFetchingPixels, setIsFetchingPixels] = useState(false);
+
   const [emailVerify, setEmailVerify] = useState("");
   const [isEmailVerified, setIsEmailVerified] = useState(false);
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
@@ -62,6 +66,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
     defaultValues: {
       advertiserId: "",
       pixelName: "",
+      pixelCode: "",
       externalId: "",
       email: emailFromConfig || "",
       phone: phoneFromConfig || "",
@@ -190,6 +195,23 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
     }
   };
 
+  async function fetchPixels(advertiserId: string) {
+    if (!accessToken) return;
+    setIsFetchingPixels(true);
+    const result = await getPixels({ accessToken, advertiserId });
+    if (result.success && result.data) {
+      setPixels(result.data);
+    } else {
+      toast({
+        title: "Erro ao buscar pixels",
+        description: result.error,
+        variant: "destructive",
+      });
+      setPixels([]);
+    }
+    setIsFetchingPixels(false);
+  }
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!accessToken) return;
     setIsLoading(true);
@@ -210,6 +232,11 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
       });
       setPixelId(result.data.pixel_id);
       setPixelCode(result.data.pixel_code);
+
+      // Fetch all pixels for the advertiser and set the new one as selected
+      await fetchPixels(values.advertiserId);
+      form.setValue("pixelCode", result.data.pixel_code);
+      
       setStep(3);
     } else {
       toast({
@@ -228,9 +255,9 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
   };
 
   async function handleSendEvent() {
-    if (!accessToken || !pixelCode) return;
-    
     const formValues = form.getValues();
+    if (!accessToken || !formValues.pixelCode) return;
+    
     setIsSendingEvent(true);
     
     try {
@@ -241,7 +268,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
         },
         body: JSON.stringify({
             accessToken,
-            pixelCode,
+            pixelCode: formValues.pixelCode,
             externalId: formValues.externalId || "",
             email: formValues.email || "",
             phone: formValues.phone || "",
@@ -272,8 +299,9 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
   }
   
   const selectedAdvertiserId = form.watch("advertiserId");
+  const selectedPixelCode = form.watch("pixelCode");
   
-  const tiktokEventPanelUrl = `https://ads.tiktok.com/i18n/events_manager/datasource/pixel/detail/${pixelCode}?org_id=${selectedAdvertiserId}&open_from=bc_asset_pixel`;
+  const tiktokEventPanelUrl = `https://ads.tiktok.com/i18n/events_manager/datasource/pixel/detail/${selectedPixelCode}?org_id=${selectedAdvertiserId}&open_from=bc_asset_pixel`;
   
   return (
     <div className="flex-grow bg-background text-foreground flex flex-col items-center justify-center px-4 py-10">
@@ -338,11 +366,14 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
               <Collapsible open={step === 4} className="w-full">
                 <CollapsibleTrigger asChild>
                   <TestEventCard
+                    form={form}
                     isCompleted={step > 4}
                     isSendingEvent={isSendingEvent}
                     eventSent={eventSent}
                     handleSendEvent={handleSendEvent}
                     onContinue={() => setStep(5)}
+                    pixels={pixels}
+                    isFetchingPixels={isFetchingPixels}
                   />
                 </CollapsibleTrigger>
                 <CollapsibleContent>
@@ -357,7 +388,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
               <HotmartCard
                 isCompleted={step > 5}
                 setStep={setStep}
-                pixelCode={pixelCode}
+                pixelCode={selectedPixelCode}
                 copyToClipboard={copyToClipboard}
               />
             </CollapsibleTrigger>

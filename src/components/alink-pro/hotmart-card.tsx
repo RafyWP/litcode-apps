@@ -75,7 +75,7 @@ export function HotmartCard({
               </li>
             </ol>
             <div className="pt-2 space-y-2">
-              <Label>Código do Pixel</Label>
+              <Label>Código do Pixel Selecionado</Label>
               <div className="flex items-center gap-2">
                 <Input
                   readOnly

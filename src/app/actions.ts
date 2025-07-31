@@ -171,7 +171,55 @@ export async function createPixel(params: z.infer<typeof createPixelSchema>) {
   }
 }
 
-const trackEventSchema = z.object({
+const getPixelsSchema = z.object({
+  accessToken: z.string().min(1, "Access Token is required."),
+  advertiserId: z.string().min(1, "Advertiser ID is required."),
+});
+
+export async function getPixels(params: z.infer<typeof getPixelsSchema>) {
+  try {
+    const validatedParams = getPixelsSchema.parse(params);
+    const { accessToken, advertiserId } = validatedParams;
+
+    const urlParams = new URLSearchParams({
+      advertiser_id: advertiserId,
+    });
+
+    const response = await fetch(
+      `https://business-api.tiktok.com/open_api/v1.3/pixel/list/?${urlParams.toString()}`,
+      {
+        method: "GET",
+        headers: {
+          "Access-Token": accessToken,
+        },
+      }
+    );
+    
+    const data = await response.json();
+
+    if (data.code !== 0) {
+      return {
+        success: false,
+        error: data.message || "Falha ao buscar pixels.",
+      };
+    }
+
+    return { success: true, data: data.data.list };
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return {
+        success: false,
+        error: error.errors.map((e) => e.message).join(" "),
+      };
+    }
+    return {
+      success: false,
+      error: "Ocorreu um erro inesperado ao buscar pixels.",
+    };
+  }
+}
+
+const trackEventActionSchema = z.object({
   accessToken: z.string(),
   pixelCode: z.string(),
   externalId: z.string(),
@@ -191,9 +239,9 @@ function hashValue(value: string): string {
   return createHash("sha256").update(value).digest("hex");
 }
 
-export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
+export async function trackEvent(params: z.infer<typeof trackEventActionSchema>) {
   try {
-    const validatedParams = trackEventSchema.parse(params);
+    const validatedParams = trackEventActionSchema.parse(params);
     const { accessToken, pixelCode, externalId, email, phone, productName, productDescription, productPrice, currency, ttclid, ip, userAgent } = validatedParams;
 
     const eventName = "Purchase";
