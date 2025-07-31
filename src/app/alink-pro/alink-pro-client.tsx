@@ -29,11 +29,6 @@ const formSchema = z.object({
   externalId: z.string().optional(),
   email: z.string().optional(),
   phone: z.string().optional(),
-  productName: z.string().min(1, "O nome do produto é obrigatório."),
-  productDescription: z.string().max(255, "A descrição não pode ter mais de 255 caracteres.").optional(),
-  productImageUrl: z.string().url("Por favor, insira uma URL válida.").optional().or(z.literal('')),
-  productPrice: z.coerce.number().min(0.01, "O preço deve ser maior que zero."),
-  currency: z.string().min(2, "A moeda é obrigatória."),
 });
 
 interface AlinkProClientProps {
@@ -68,11 +63,6 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
       externalId: "",
       email: emailFromConfig || "",
       phone: phoneFromConfig || "",
-      productName: "Produto de Teste",
-      productDescription: "",
-      productImageUrl: "",
-      productPrice: 0.01,
-      currency: "BRL",
     },
   });
 
@@ -233,10 +223,10 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
       externalId: formValues.externalId || "",
       email: formValues.email || "",
       phone: formValues.phone || "",
-      productName: formValues.productName,
-      productDescription: formValues.productDescription,
-      productPrice: z.coerce.number().parse(formValues.productPrice),
-      currency: formValues.currency,
+      productName: "Produto de Teste",
+      productDescription: "Descrição de teste",
+      productPrice: 0.01,
+      currency: "BRL",
     });
 
     setIsSendingEvent(false);
@@ -291,7 +281,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
                     isFetchingAdvertisers={isFetchingAdvertisers}
                     advertisers={advertisers}
                   />
-                  <ProductDetailsCard form={form} />
+                  {/* <ProductDetailsCard form={form} /> */}
                 </>
               )}
               
