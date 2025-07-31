@@ -20,7 +20,7 @@ const trackEventSchema = z.object({
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const ip = req.ip ?? req.headers.get("x-forwarded-for");
+    const ip = req.headers.get("x-forwarded-for");
     const userAgent = req.headers.get("user-agent");
 
     const validatedBody = trackEventSchema.safeParse(body);
