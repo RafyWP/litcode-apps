@@ -177,6 +177,9 @@ const trackEventSchema = z.object({
   externalId: z.string(),
   email: z.string().optional(),
   phone: z.string().optional(),
+  productName: z.string(),
+  productPrice: z.number(),
+  currency: z.string(),
 });
 
 function hashValue(value: string): string {
@@ -186,7 +189,7 @@ function hashValue(value: string): string {
 export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
   try {
     const validatedParams = trackEventSchema.parse(params);
-    const { accessToken, pixelCode, externalId, email, phone } = validatedParams;
+    const { accessToken, pixelCode, externalId, email, phone, productName, productPrice, currency } = validatedParams;
 
     const eventName = "Purchase";
     const eventTime = Math.floor(new Date().getTime() / 1000);
@@ -216,18 +219,19 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
           properties: {
             contents: [
               {
-                content_id: "123",
-                content_name: "Test Product",
+                content_id: externalId,
+                content_name: productName,
+                price: productPrice,
               },
             ],
-            currency: "USD",
-            value: 0,
+            currency: currency,
+            value: productPrice,
             content_type: "product",
             description: "This record is intended to test the pixel.",
           },
           page: {
             url: "https://ia.litcode.store/produto/test-product",
-            referrer: "123",
+            referrer: externalId,
           },
         },
       ],
@@ -339,100 +343,5 @@ export async function verifyEmail(params: z.infer<typeof verifyEmailSchema>) {
       success: false,
       error: "Could not verify email. The allowed list might not be set up in Vercel Edge Config.",
     };
-  }
-}
-
-// --- Hotmart API ---
-
-let hotmartAccessToken: string | null = null;
-let hotmartTokenExpiresAt: number = 0;
-
-async function getHotmartToken(): Promise<string | null> {
-  const now = Date.now();
-  if (hotmartAccessToken && now < hotmartTokenExpiresAt) {
-    return hotmartAccessToken;
-  }
-  
-  const authUrl = "https://api-sec-vlc.hotmart.com/security/oauth/token?grant_type=client_credentials";
-  const basicToken = "Basic YTI3MTgzYzItOWQ0Mi00ZDJlLWJiOTUtOGUxMjZmMzBiMjhmOjMzYmZiYmI2LTViYTctNGQ5OC04NjdlLTk3MTNkMWQ1Y2QzOA==";
-
-  try {
-    const response = await fetch(authUrl, {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': basicToken
-      },
-      body: JSON.stringify({}) // API expects an empty JSON object
-    });
-    
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error("--- DEBUG: Hotmart Auth FAILED ---", data);
-      throw new Error(data.error_description || 'Failed to get Hotmart token');
-    }
-
-    hotmartAccessToken = data.access_token;
-    // expires_in is in seconds. Convert to milliseconds and leave a 60-second buffer.
-    hotmartTokenExpiresAt = now + (data.expires_in - 60) * 1000;
-    
-    console.log("--- DEBUG: Hotmart Token Obtained Successfully ---");
-    return hotmartAccessToken;
-  } catch (error) {
-    console.error("--- DEBUG: Hotmart Auth UNEXPECTED ERROR ---", error);
-    return null;
-  }
-}
-
-
-const getHotmartProductSchema = z.object({
-  productId: z.string().min(1, "Product ID is required."),
-});
-
-export async function getHotmartProduct(params: z.infer<typeof getHotmartProductSchema>) {
-  try {
-    const validatedParams = getHotmartProductSchema.parse(params);
-    const { productId } = validatedParams;
-    const accessToken = await getHotmartToken();
-
-    if (!accessToken) {
-        return { success: false, error: "Could not authenticate with Hotmart. Please check server credentials." };
-    }
-
-    const productApiUrl = `https://developers.hotmart.com/payments/api/v1/products/${productId}`;
-
-    const response = await fetch(productApiUrl, {
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${accessToken}`,
-      },
-    });
-
-    if (!response.ok) {
-        const errorText = await response.text();
-        console.error("--- DEBUG: Get Hotmart Product FAILED ---", { status: response.status, text: errorText });
-        return { success: false, error: `Failed to fetch product from Hotmart: ${errorText}` };
-    }
-    
-    const data = await response.json();
-    console.log("--- DEBUG: Get Hotmart Product SUCCESS ---", data);
-    
-    if (data) {
-      return { success: true, data: data };
-    } else {
-      return { success: false, error: "Product not found on Hotmart." };
-    }
-
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        error: error.errors.map((e) => e.message).join(" "),
-      };
-    }
-    const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
-    console.error("--- DEBUG: Get Hotmart Product UNEXPECTED ERROR ---", error);
-    return { success: false, error: errorMessage };
   }
 }
