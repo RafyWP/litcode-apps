@@ -13,10 +13,10 @@ import { Anchor } from "lucide-react";
 
 import { AuthCard } from "@/components/alink-pro/auth-card";
 import { PixelCard } from "@/components/alink-pro/pixel-card";
-import { ProductDetailsCard } from "@/components/alink-pro/product-details-card";
 import { TestEventCard } from "@/components/alink-pro/test-event-card";
 import { HotmartCard } from "@/components/alink-pro/hotmart-card";
 import { CompletionCard } from "@/components/alink-pro/completion-card";
+// import { ProductDetailsCard } from "@/components/alink-pro/product-details-card";
 
 export type Advertiser = {
   advertiser_id: string;
@@ -29,6 +29,11 @@ const formSchema = z.object({
   externalId: z.string().optional(),
   email: z.string().optional(),
   phone: z.string().optional(),
+  // productName: z.string().min(1, "O nome do produto é obrigatório."),
+  // productDescription: z.string().max(255, "A descrição deve ter no máximo 255 caracteres.").optional(),
+  // productImageUrl: z.string().url("Por favor, insira uma URL válida.").or(z.literal("")).optional(),
+  // productPrice: z.coerce.number().min(0.01, "O preço deve ser positivo."),
+  // currency: z.string().min(1, "Selecione uma moeda."),
 });
 
 interface AlinkProClientProps {
@@ -63,6 +68,11 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
       externalId: "",
       email: emailFromConfig || "",
       phone: phoneFromConfig || "",
+      // productName: "Produto de Teste",
+      // productDescription: "",
+      // productImageUrl: "https://placehold.co/600x400.png",
+      // productPrice: 0.01,
+      // currency: "BRL",
     },
   });
 
@@ -208,11 +218,11 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
   async function handleSendEvent() {
     if (!accessToken || !pixelCode) return;
     
-    const validationResult = await form.trigger();
-    if (!validationResult) {
-        toast({ title: "Erro de Validação", description: "Por favor, preencha todos os campos obrigatórios corretamente.", variant: "destructive" });
-        return;
-    }
+    // const validationResult = await form.trigger();
+    // if (!validationResult) {
+    //     toast({ title: "Erro de Validação", description: "Por favor, preencha todos os campos obrigatórios corretamente.", variant: "destructive" });
+    //     return;
+    // }
     const formValues = form.getValues();
 
     setIsSendingEvent(true);
@@ -224,7 +234,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
       email: formValues.email || "",
       phone: formValues.phone || "",
       productName: "Produto de Teste",
-      productDescription: "Descrição de teste",
+      // productDescription: formValues.productDescription || "Este record é para teste do pixel.",
       productPrice: 0.01,
       currency: "BRL",
     });
@@ -241,6 +251,9 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
   }
   
   const selectedAdvertiserId = form.watch("advertiserId");
+  const selectedAdvertiserName = advertisers.find(ad => ad.advertiser_id === selectedAdvertiserId)?.advertiser_name;
+  const pixelName = form.watch("pixelName");
+
   const tiktokEventPanelUrl = `https://ads.tiktok.com/i18n/events_manager/datasource/pixel/detail/${pixelCode}?org_id=${selectedAdvertiserId}&open_from=bc_asset_pixel`;
   
   return (
@@ -273,17 +286,20 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               {step >= 2 && (
-                <>
-                  <PixelCard
-                    form={form}
-                    step={step}
-                    isLoading={isLoading}
-                    isFetchingAdvertisers={isFetchingAdvertisers}
-                    advertisers={advertisers}
-                  />
-                  {/* <ProductDetailsCard form={form} /> */}
-                </>
+                <PixelCard
+                  form={form}
+                  step={step}
+                  isLoading={isLoading}
+                  isFetchingAdvertisers={isFetchingAdvertisers}
+                  advertisers={advertisers}
+                  selectedAdvertiserName={selectedAdvertiserName}
+                  pixelName={pixelName}
+                />
               )}
+              
+              {/* {step === 2 && (
+                 <ProductDetailsCard form={form} />
+              )} */}
               
               {step >= 3 && (
                 <TestEventCard

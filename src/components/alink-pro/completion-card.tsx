@@ -30,7 +30,7 @@ export function CompletionCard({
         <CardDescription>
           O processo de geração e configuração do pixel do TikTok foi
           concluído. Aguarde até 24 horas para que o evento seja registrado em
-          seu <br />
+          seu{" "}
           <a
             href={tiktokEventPanelUrl}
             target="_blank"

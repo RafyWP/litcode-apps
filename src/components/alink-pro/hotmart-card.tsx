@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CheckCircle, Copy } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface HotmartCardProps {
   step: number;
@@ -30,69 +31,81 @@ export function HotmartCard({
   if (step < 4) {
     return null;
   }
+  const isCompleted = step > 4;
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center justify-between">
+        <CardTitle
+          className={cn(
+            "flex items-center justify-between",
+            isCompleted && "text-lg font-medium"
+          )}
+        >
           <span>Configurar Hotmart</span>
-          {step > 4 && <CheckCircle className="h-6 w-6 text-green-500" />}
+          {isCompleted && <CheckCircle className="h-6 w-6 text-green-500" />}
         </CardTitle>
         <CardDescription>
-          Siga os passos para usar o código do pixel na Hotmart.
+          {isCompleted
+            ? `O Pixel Code ${pixelCode} foi copiado e está pronto para ser colado na Hotmart.`
+            : "Siga os passos para usar o código do pixel na Hotmart."}
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
-          <li>
-            Visite a página de{" "}
-            <a
-              href="https://app.hotmart.com/tools/list/producer"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary underline"
-            >
-              Ferramentas do Hotmart
-            </a>
-            ;
-          </li>
-          <li>
-            Digite 'pixel' no campo de busca e selecione 'Pixel de
-            rastreamento';
-          </li>
-          <li>
-            No campo 'Selecione o que você deseja rastrear' escolha 'Página de
-            pagamento e de produto Hotmart', em seguida selecione o produto a que
-            deseja associar o pixel gerado aqui;
-          </li>
-          <li>Escolha 'TikTok' entre a lista de integradores;</li>
-          <li>
-            Preencha o campo 'ID do TikTok' com o Código do Pixel abaixo:
-          </li>
-        </ol>
-        <div className="pt-2 space-y-2">
-          <Label>Código do Pixel</Label>
-          <div className="flex items-center gap-2">
-            <Input
-              readOnly
-              value={pixelCode || ""}
-              className="font-mono text-sm"
-            />
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => copyToClipboard(pixelCode)}
-            >
-              <Copy className="h-4 w-4" />
+      {!isCompleted && (
+        <>
+          <CardContent className="space-y-4">
+            <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
+              <li>
+                Visite a página de{" "}
+                <a
+                  href="https://app.hotmart.com/tools/list/producer"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary underline"
+                >
+                  Ferramentas do Hotmart
+                </a>
+                ;
+              </li>
+              <li>
+                Digite 'pixel' no campo de busca e selecione 'Pixel de
+                rastreamento';
+              </li>
+              <li>
+                No campo 'Selecione o que você deseja rastrear' escolha 'Página
+                de pagamento e de produto Hotmart', em seguida selecione o
+                produto a que deseja associar o pixel gerado aqui;
+              </li>
+              <li>Escolha 'TikTok' entre a lista de integradores;</li>
+              <li>
+                Preencha o campo 'ID do TikTok' com o Código do Pixel abaixo:
+              </li>
+            </ol>
+            <div className="pt-2 space-y-2">
+              <Label>Código do Pixel</Label>
+              <div className="flex items-center gap-2">
+                <Input
+                  readOnly
+                  value={pixelCode || ""}
+                  className="font-mono text-sm"
+                />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => copyToClipboard(pixelCode)}
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Button onClick={() => setStep(5)} className="w-full font-bold">
+              Já preenchi, prosseguir
             </Button>
-          </div>
-        </div>
-      </CardContent>
-      <CardFooter>
-        <Button onClick={() => setStep(5)} className="w-full font-bold">
-          Já preenchi, prosseguir
-        </Button>
-      </CardFooter>
+          </CardFooter>
+        </>
+      )}
     </Card>
   );
 }
