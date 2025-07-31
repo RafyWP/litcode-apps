@@ -8,7 +8,6 @@ const trackEventApiSchema = z.object({
   pixelCode: z.string(),
   externalId: z.string(),
   email: z.string().optional(),
-  phone: z.string().optional(),
   ttclid: z.string().optional(),
   productName: z.string(),
   productDescription: z.string().optional(),

@@ -186,36 +186,6 @@ export function PixelCard({
                     )}
                   />
                 )}
-                
-                <hr className="my-4 border-dashed" />
-
-                <h3 className="text-sm font-medium text-muted-foreground">Dados do Usuário para Teste</h3>
-                 <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>E-mail</FormLabel>
-                        <FormControl>
-                          <Input placeholder="user@test.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Telefone</FormLabel>
-                        <FormControl>
-                          <Input placeholder="+5511999998888" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
 
                 {/* Hidden Fields */}
                 <input type="hidden" {...form.register("externalId")} />

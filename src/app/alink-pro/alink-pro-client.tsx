@@ -28,8 +28,6 @@ const formSchema = z.object({
   pixelName: z.string().optional(),
   pixelCode: z.string().optional(), // The code of the selected or newly created pixel
   externalId: z.string().optional(),
-  email: z.string().email({ message: "Por favor, insira um e-mail válido." }).optional().or(z.literal('')),
-  phone: z.string().optional(),
 }).refine(data => {
   if (data.pixelSelection === 'create_new') {
     return !!data.pixelName && data.pixelName.length > 0;
@@ -41,12 +39,7 @@ const formSchema = z.object({
 });
 
 
-interface AlinkProClientProps {
-  emailFromConfig?: string;
-  phoneFromConfig?: string;
-}
-
-export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: AlinkProClientProps) {
+export default function AlinkProClient() {
   const { accessToken, isLoading: isAuthLoading, login } = useAuth();
   const { toast } = useToast();
 
@@ -74,8 +67,6 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
       pixelName: "",
       pixelCode: "",
       externalId: "",
-      email: emailFromConfig || "",
-      phone: phoneFromConfig || "",
     },
   });
 
@@ -298,8 +289,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
             accessToken,
             pixelCode: formValues.pixelCode,
             externalId: formValues.externalId || "",
-            email: formValues.email || "",
-            phone: formValues.phone || "",
+            email: emailVerify,
             ttclid: ttclid || "",
             productName: "Produto de Teste",
             productDescription: "Este record é para teste do pixel.",

@@ -224,7 +224,6 @@ const trackEventSchema = z.object({
   pixelCode: z.string(),
   externalId: z.string(),
   email: z.string().optional(),
-  phone: z.string().optional(),
   ttclid: z.string().optional(),
   productName: z.string(),
   productDescription: z.string().optional(),
@@ -242,14 +241,13 @@ function hashValue(value: string): string {
 export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
   try {
     const validatedParams = trackEventSchema.parse(params);
-    const { accessToken, pixelCode, externalId, email, phone, productName, productDescription, productPrice, currency, ttclid, ip, userAgent } = validatedParams;
+    const { accessToken, pixelCode, externalId, email, productName, productDescription, productPrice, currency, ttclid, ip, userAgent } = validatedParams;
 
     const eventName = "Purchase";
     const eventTime = Math.floor(new Date().getTime() / 1000);
     
     const userObject: { [key: string]: string | null | undefined } = {
         email: email ? hashValue(email) : undefined,
-        phone: phone ? hashValue(phone) : undefined,
         external_id: externalId || undefined,
         ttclid: ttclid || undefined,
         ip: ip || undefined,
