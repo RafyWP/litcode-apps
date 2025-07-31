@@ -42,6 +42,7 @@ import {
   WandSparkles,
 } from "lucide-react";
 import { Card, CardDescription, CardHeader, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
 
 type Advertiser = {
   advertiser_id: string;
@@ -55,7 +56,9 @@ const formSchema = z.object({
   email: z.string().optional(),
   phone: z.string().optional(),
   productName: z.string().min(1, "O nome do produto é obrigatório."),
-  productPrice: z.coerce.number().min(0, "O preço deve ser um número positivo."),
+  productDescription: z.string().max(255, "A descrição não pode ter mais de 255 caracteres.").optional(),
+  productImageUrl: z.string().url("Por favor, insira uma URL válida.").optional().or(z.literal('')),
+  productPrice: z.coerce.number().min(0.01, "O preço deve ser maior que zero."),
   currency: z.string().min(2, "A moeda é obrigatória."),
 });
 
@@ -92,7 +95,9 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
       email: emailFromConfig || "",
       phone: phoneFromConfig || "",
       productName: "Produto de Teste",
-      productPrice: 0.00,
+      productDescription: "",
+      productImageUrl: "",
+      productPrice: 0.01,
       currency: "BRL",
     },
   });
@@ -239,14 +244,13 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
   async function handleSendEvent() {
     if (!accessToken || !pixelCode) return;
     
-    const formValues = form.getValues();
-    
-    // Trigger validation manually for product fields
-    const validationResult = await form.trigger(["productName", "productPrice", "currency"]);
+    // Trigger validation manually for all fields
+    const validationResult = await form.trigger();
     if (!validationResult) {
-        toast({ title: "Erro de Validação", description: "Por favor, preencha os detalhes do produto corretamente.", variant: "destructive" });
+        toast({ title: "Erro de Validação", description: "Por favor, preencha todos os campos obrigatórios corretamente.", variant: "destructive" });
         return;
     }
+    const formValues = form.getValues();
 
     setIsSendingEvent(true);
 
@@ -257,6 +261,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
       email: formValues.email || "",
       phone: formValues.phone || "",
       productName: formValues.productName,
+      productDescription: formValues.productDescription,
       productPrice: formValues.productPrice,
       currency: formValues.currency,
     });
@@ -276,6 +281,10 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
   
   const selectedAdvertiserId = form.watch("advertiserId");
   const tiktokEventPanelUrl = `https://ads.tiktok.com/i18n/events_manager/datasource/pixel/detail/${pixelCode}?org_id=${selectedAdvertiserId}&open_from=bc_asset_pixel`;
+  
+  const productImageUrl = form.watch("productImageUrl");
+  const isProductImageUrlValid = z.string().url().safeParse(productImageUrl).success;
+
 
   return (
     <div className="flex-grow bg-background text-foreground flex flex-col items-center justify-center px-4 py-10">
@@ -408,6 +417,17 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                   {isProductImageUrlValid && (
+                    <div className="mb-4 aspect-video w-full overflow-hidden rounded-lg border">
+                      <Image
+                        src={productImageUrl}
+                        alt="Imagem do Produto"
+                        width={600}
+                        height={400}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  )}
                    <FormField
                       control={form.control}
                       name="productName"
@@ -416,6 +436,32 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
                           <FormLabel>Nome do Produto</FormLabel>
                           <FormControl>
                             <Input placeholder="Ex: E-book de Receitas" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                          </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="productDescription"
+                      render={({ field }) => (
+                          <FormItem>
+                          <FormLabel>Descrição</FormLabel>
+                          <FormControl>
+                            <Textarea placeholder="Descreva brevemente seu produto..." {...field} />
+                          </FormControl>
+                          <FormMessage />
+                          </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="productImageUrl"
+                      render={({ field }) => (
+                          <FormItem>
+                          <FormLabel>URL da Imagem do Produto</FormLabel>
+                          <FormControl>
+                            <Input placeholder="https://..." {...field} />
                           </FormControl>
                           <FormMessage />
                           </FormItem>

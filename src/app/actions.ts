@@ -178,6 +178,7 @@ const trackEventSchema = z.object({
   email: z.string().optional(),
   phone: z.string().optional(),
   productName: z.string(),
+  productDescription: z.string().optional(),
   productPrice: z.number(),
   currency: z.string(),
 });
@@ -189,7 +190,7 @@ function hashValue(value: string): string {
 export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
   try {
     const validatedParams = trackEventSchema.parse(params);
-    const { accessToken, pixelCode, externalId, email, phone, productName, productPrice, currency } = validatedParams;
+    const { accessToken, pixelCode, externalId, email, phone, productName, productDescription, productPrice, currency } = validatedParams;
 
     const eventName = "Purchase";
     const eventTime = Math.floor(new Date().getTime() / 1000);
@@ -227,7 +228,7 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
             currency: currency,
             value: productPrice,
             content_type: "product",
-            description: "This record is intended to test the pixel.",
+            description: productDescription || "This record is intended to test the pixel.",
           },
           page: {
             url: "https://ia.litcode.store/produto/test-product",
