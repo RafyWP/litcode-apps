@@ -37,7 +37,7 @@ export function HotmartCard({
             !isCompleted && "justify-between"
           )}
         >
-          <span>5. Configurar Hotmart</span>
+          <span>3. Configurar Hotmart</span>
           {isCompleted && <CheckCircle className="ml-2 h-6 w-6 text-green-500" />}
         </CardTitle>
         <CardDescription>
@@ -93,7 +93,7 @@ export function HotmartCard({
             </div>
           </CardContent>
           <CardFooter>
-            <Button onClick={() => setStep(6)} className="w-full font-bold">
+            <Button onClick={() => setStep(4)} className="w-full font-bold">
               Já preenchi, prosseguir
             </Button>
           </CardFooter>

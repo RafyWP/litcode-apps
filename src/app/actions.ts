@@ -219,7 +219,7 @@ export async function getPixels(params: z.infer<typeof getPixelsSchema>) {
   }
 }
 
-const trackEventActionSchema = z.object({
+const trackEventSchema = z.object({
   accessToken: z.string(),
   pixelCode: z.string(),
   externalId: z.string(),
@@ -239,9 +239,9 @@ function hashValue(value: string): string {
   return createHash("sha256").update(value).digest("hex");
 }
 
-export async function trackEvent(params: z.infer<typeof trackEventActionSchema>) {
+export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
   try {
-    const validatedParams = trackEventActionSchema.parse(params);
+    const validatedParams = trackEventSchema.parse(params);
     const { accessToken, pixelCode, externalId, email, phone, productName, productDescription, productPrice, currency, ttclid, ip, userAgent } = validatedParams;
 
     const eventName = "Purchase";

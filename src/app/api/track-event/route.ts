@@ -3,8 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { trackEvent } from "@/app/actions";
 
-// Schema must be defined here because 'use server' files can only export functions
-const trackEventSchema = z.object({
+const trackEventApiSchema = z.object({
   accessToken: z.string(),
   pixelCode: z.string(),
   externalId: z.string(),
@@ -23,7 +22,7 @@ export async function POST(req: NextRequest) {
     const ip = req.headers.get("x-forwarded-for");
     const userAgent = req.headers.get("user-agent");
 
-    const validatedBody = trackEventSchema.safeParse(body);
+    const validatedBody = trackEventApiSchema.safeParse(body);
     
     if (!validatedBody.success) {
       return NextResponse.json(
