@@ -559,8 +559,8 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
           <Card className="bg-green-50 dark:bg-green-900/20 border-green-500">
             <CardHeader className="text-center items-center">
                 <CheckCircle className="h-12 w-12 text-green-500" />
-                <CardTitle>Concluído</CardTitle>
-                <CardDescription>
+                <CardTitle className="mt-4">Concluído</CardTitle>
+                <CardDescription className="mt-2">
                     O processo de geração e configuração do pixel do TikTok foi concluído.
                     Aguarde até 24 horas para que o evento seja registrado em seu <br />
                     <a href={tiktokEventPanelUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline">painel do TikTok Business</a>.
