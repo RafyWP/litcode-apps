@@ -8,11 +8,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { getAdvertisers, createPixel, trackEvent } from "@/app/actions";
+import { getAdvertisers, createPixel } from "@/app/actions";
 import { Anchor } from "lucide-react";
 
 import { AuthCard } from "@/components/alink-pro/auth-card";
 import { PixelCard } from "@/components/alink-pro/pixel-card";
+import { UserDataCard } from "@/components/alink-pro/user-data-card";
 import { TestEventCard } from "@/components/alink-pro/test-event-card";
 import { HotmartCard } from "@/components/alink-pro/hotmart-card";
 import { CompletionCard } from "@/components/alink-pro/completion-card";
@@ -27,7 +28,7 @@ const formSchema = z.object({
   advertiserId: z.string().min(1, "Por favor, selecione uma conta de anunciante."),
   pixelName: z.string().min(1, "O nome do pixel é obrigatório."),
   externalId: z.string().optional(),
-  email: z.string().optional(),
+  email: z.string().email({ message: "Por favor, insira um e-mail válido." }).optional().or(z.literal('')),
   phone: z.string().optional(),
 });
 
@@ -47,6 +48,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
   const [isLoading, setIsLoading] = useState(false);
   const [isSendingEvent, setIsSendingEvent] = useState(false);
   const [authUrl, setAuthUrl] = useState("");
+  const [ttclid, setTtclid] = useState<string | null>(null);
 
   const [isFetchingAdvertisers, setIsFetchingAdvertisers] = useState(true);
   const [advertisers, setAdvertisers] = useState<Advertiser[]>([]);
@@ -111,6 +113,16 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
     
     const urlParams = new URLSearchParams(window.location.search);
     const urlAuthCode = urlParams.get("auth_code");
+    const urlTtclid = urlParams.get("ttclid");
+
+    if (urlTtclid) {
+      setTtclid(urlTtclid);
+      toast({
+        title: "TikTok Click ID Capturado!",
+        description: "O ttclid foi encontrado na URL e será usado no evento de teste.",
+        className: "bg-green-600 text-white",
+      });
+    }
 
     if (urlAuthCode && !accessToken) {
       login(urlAuthCode).catch((err: Error) => {
@@ -193,7 +205,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
     if (result.success && result.data.pixel_id && result.data.pixel_code) {
       toast({
         title: "Pixel Criado!",
-        description: `Pixel '${values.pixelName}' criado para a conta '${values.advertiserId}'.`,
+        description: `Pixel '${values.pixelName}' criado com sucesso.`,
         className: "bg-green-600 text-white",
       });
       setPixelId(result.data.pixel_id);
@@ -220,33 +232,47 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
     
     const formValues = form.getValues();
     setIsSendingEvent(true);
+    
+    try {
+      const response = await fetch("/api/track-event", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            accessToken,
+            pixelCode,
+            externalId: formValues.externalId || "",
+            email: formValues.email || "",
+            phone: formValues.phone || "",
+            ttclid: ttclid || "",
+            productName: "Produto de Teste",
+            productDescription: "Este record é para teste do pixel.",
+            productPrice: 0.01,
+            currency: "BRL",
+        })
+      });
 
-    const result = await trackEvent({
-      accessToken,
-      pixelCode,
-      externalId: formValues.externalId || "",
-      email: formValues.email || "",
-      phone: formValues.phone || "",
-      productName: "Produto de Teste",
-      productDescription: "Este record é para teste do pixel.",
-      productPrice: 0.01,
-      currency: "BRL",
-    });
+      const result = await response.json();
 
-    setIsSendingEvent(false);
+      setIsSendingEvent(false);
 
-    if (result.success) {
-      toast({ title: "Evento de Teste Enviado!", description: "O evento 'Purchase' foi enviado com sucesso.", className: "bg-green-600 text-white" });
-      setEventSent(true);
-      setStep(4);
-    } else {
-      toast({ title: "Erro ao Enviar Evento", description: result.error || "Ocorreu um erro desconhecido.", variant: "destructive" });
+      if (result.success) {
+        toast({ title: "Evento de Teste Enviado!", description: "O evento 'Purchase' foi enviado com sucesso.", className: "bg-green-600 text-white" });
+        setEventSent(true);
+        setStep(5);
+      } else {
+        toast({ title: "Erro ao Enviar Evento", description: result.error || "Ocorreu um erro desconhecido.", variant: "destructive" });
+        console.error("Tracking Error Details:", result.details);
+      }
+    } catch(err) {
+        setIsSendingEvent(false);
+        toast({ title: "Erro de Rede", description: "Não foi possível conectar ao servidor para enviar o evento.", variant: "destructive" });
     }
   }
   
   const selectedAdvertiserId = form.watch("advertiserId");
-  const pixelName = form.watch("pixelName");
-
+  
   const tiktokEventPanelUrl = `https://ads.tiktok.com/i18n/events_manager/datasource/pixel/detail/${pixelCode}?org_id=${selectedAdvertiserId}&open_from=bc_asset_pixel`;
   
   return (
@@ -302,11 +328,21 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
 
               <Collapsible open={step === 3} className="w-full">
                 <CollapsibleTrigger asChild>
+                    <UserDataCard form={form} isCompleted={step > 3} />
+                </CollapsibleTrigger>
+                 <CollapsibleContent>
+                    {/* Content is inside the card for this step */}
+                </CollapsibleContent>
+              </Collapsible>
+
+              <Collapsible open={step === 4} className="w-full">
+                <CollapsibleTrigger asChild>
                   <TestEventCard
-                    isCompleted={step > 3}
+                    isCompleted={step > 4}
                     isSendingEvent={isSendingEvent}
                     eventSent={eventSent}
                     handleSendEvent={handleSendEvent}
+                    onContinue={() => setStep(5)}
                   />
                 </CollapsibleTrigger>
                 <CollapsibleContent>
@@ -316,10 +352,10 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
             </form>
           </Form>
 
-          <Collapsible open={step === 4} className="w-full">
+          <Collapsible open={step === 5} className="w-full">
             <CollapsibleTrigger asChild>
               <HotmartCard
-                isCompleted={step > 4}
+                isCompleted={step > 5}
                 setStep={setStep}
                 pixelCode={pixelCode}
                 copyToClipboard={copyToClipboard}
@@ -330,7 +366,7 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
             </CollapsibleContent>
           </Collapsible>
 
-          <Collapsible open={step === 5} className="w-full">
+          <Collapsible open={step === 6} className="w-full">
             <CompletionCard
               tiktokEventPanelUrl={tiktokEventPanelUrl}
             />

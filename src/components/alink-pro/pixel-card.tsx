@@ -109,8 +109,6 @@ export function PixelCard({
               {/* Hidden Fields */}
               <input type="hidden" {...form.register("pixelName")} />
               <input type="hidden" {...form.register("externalId")} />
-              <input type="hidden" {...form.register("email")} />
-              <input type="hidden" {...form.register("phone")} />
             </div>
             <Button
               type="submit"

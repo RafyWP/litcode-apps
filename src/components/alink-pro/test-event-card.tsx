@@ -17,6 +17,7 @@ interface TestEventCardProps {
   isSendingEvent: boolean;
   eventSent: boolean;
   handleSendEvent: () => void;
+  onContinue: () => void;
 }
 
 export function TestEventCard({
@@ -24,6 +25,7 @@ export function TestEventCard({
   isSendingEvent,
   eventSent,
   handleSendEvent,
+  onContinue,
 }: TestEventCardProps) {
   return (
     <Card>
@@ -34,29 +36,40 @@ export function TestEventCard({
             !isCompleted && "justify-between"
           )}
         >
-          <span>3. Enviar Teste</span>
+          <span>4. Enviar Teste</span>
           {isCompleted && <CheckCircle className="ml-2 h-6 w-6 text-green-500" />}
         </CardTitle>
         <CardDescription>
-          Envie uma compra teste para validar a instalação do pixel. Nada será
-          cobrado.
+          {eventSent
+            ? "Evento de teste enviado com sucesso! Você pode prosseguir."
+            : "Envie uma compra teste para validar a instalação do pixel. Nada será cobrado."}
         </CardDescription>
       </CardHeader>
       {!isCompleted && (
         <CardFooter>
-          <Button
-            onClick={handleSendEvent}
-            type="button"
-            className="w-full font-bold"
-            disabled={isSendingEvent || eventSent}
-          >
-            {isSendingEvent ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Send className="mr-2" />
-            )}
-            Testar Pixel
-          </Button>
+          {eventSent ? (
+            <Button
+              onClick={onContinue}
+              type="button"
+              className="w-full font-bold"
+            >
+              Prosseguir
+            </Button>
+          ) : (
+            <Button
+              onClick={handleSendEvent}
+              type="button"
+              className="w-full font-bold"
+              disabled={isSendingEvent}
+            >
+              {isSendingEvent ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Send className="mr-2" />
+              )}
+              Testar Pixel
+            </Button>
+          )}
         </CardFooter>
       )}
     </Card>
