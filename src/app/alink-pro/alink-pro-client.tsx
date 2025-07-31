@@ -25,11 +25,6 @@ const formSchema = z.object({
   externalId: z.string().optional(),
   email: z.string().optional(),
   phone: z.string().optional(),
-  // productName: z.string().min(1, "O nome do produto é obrigatório."),
-  // productDescription: z.string().max(255, "A descrição não pode exceder 255 caracteres.").optional(),
-  // productImageUrl: z.string().url("Por favor, insira uma URL válida.").optional().or(z.literal('')),
-  // productPrice: z.coerce.number().min(0.01, "O preço deve ser pelo menos 0.01."),
-  // currency: z.string().min(1, "Selecione a moeda."),
 });
 
 interface AlinkProClientProps {
@@ -65,11 +60,6 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
       externalId: "",
       email: emailFromConfig || "",
       phone: phoneFromConfig || "",
-      // productName: "Produto de Teste",
-      // productDescription: "Este record é para teste do pixel.",
-      // productImageUrl: "https://placehold.co/600x400.png",
-      // productPrice: 0.01,
-      // currency: "BRL",
     },
   });
 
@@ -306,11 +296,6 @@ export default function AlinkProClient({ emailFromConfig, phoneFromConfig }: Ali
                   pixelCode={pixelCode}
                   selectedAdvertiserName={selectedAdvertiserName}
                 />
-              
-              
-              {/* {step === 2 && (
-                 <ProductDetailsCard form={form} />
-              )} */}
               
               
                 <TestEventCard
