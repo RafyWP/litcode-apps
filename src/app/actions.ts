@@ -280,7 +280,7 @@ export async function trackEvent(params: z.infer<typeof trackEventSchema>) {
             description: productDescription || "Este record é para teste do pixel.",
           },
           page: {
-            url: pageUrl || "https://ia.litcode.store/produto/test-product",
+            url: pageUrl,
             referrer: externalId,
           },
         },
