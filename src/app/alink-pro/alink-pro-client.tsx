@@ -181,10 +181,7 @@ export default function AlinkProClient() {
       if (!accessToken || !selectedAdvertiserId) return;
       setIsFetchingPixels(true);
       
-      // Temporary hardcoded advertiser ID for testing
-      const testAdvertiserId = "7531208448131022849";
-
-      const result = await getPixels({ accessToken, advertiserId: testAdvertiserId });
+      const result = await getPixels({ accessToken, advertiserId: selectedAdvertiserId });
       
       if (result.success && result.data) {
         setPixels(result.data);
