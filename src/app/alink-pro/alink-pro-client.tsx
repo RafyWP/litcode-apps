@@ -17,7 +17,6 @@ import { HotmartCard } from "@/components/alink-pro/hotmart-card";
 import { CompletionCard } from "@/components/alink-pro/completion-card";
 import { Advertiser, Pixel } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { Collapsible } from "@/components/ui/collapsible";
 
 
 const formSchema = z.object({
@@ -336,19 +335,17 @@ export default function AlinkProClient() {
         </header>
 
         <div className="space-y-4">
-          <Collapsible open={step >= 1} className="w-full">
-            <AuthCard
-              isCompleted={step > 1}
-              isEmailVerified={isEmailVerified}
-              emailVerify={emailVerify}
-              setEmailVerify={setEmailVerify}
-              isCheckingEmail={isCheckingEmail}
-              handleVerifyEmail={handleVerifyEmail}
-              authUrl={authUrl}
-            />
-          </Collapsible>
-
-          <Collapsible open={step >= 2} className="w-full">
+          <AuthCard
+            isCompleted={step > 1}
+            isEmailVerified={isEmailVerified}
+            emailVerify={emailVerify}
+            setEmailVerify={setEmailVerify}
+            isCheckingEmail={isCheckingEmail}
+            handleVerifyEmail={handleVerifyEmail}
+            authUrl={authUrl}
+          />
+          
+          {step >= 2 && (
             <Form {...form}>
               <form>
                 <PixelCard
@@ -365,22 +362,22 @@ export default function AlinkProClient() {
                 />
               </form>
             </Form>
-          </Collapsible>
+          )}
 
-          <Collapsible open={step >= 3} className="w-full">
+          {step >= 3 && (
             <HotmartCard
               isCompleted={step > 3}
               setStep={setStep}
               pixelCode={selectedPixelCode || null}
               copyToClipboard={copyToClipboard}
             />
-          </Collapsible>
+          )}
 
-          <Collapsible open={step >= 4} className="w-full">
+          {step >= 4 && (
             <CompletionCard
               tiktokEventPanelUrl={tiktokEventPanelUrl}
             />
-          </Collapsible>
+          )}
         </div>
       </div>
     </div>
