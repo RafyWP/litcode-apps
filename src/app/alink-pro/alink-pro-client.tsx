@@ -292,6 +292,7 @@ export default function AlinkProClient() {
             externalId: formValues.externalId || "",
             email: emailVerify,
             ttclid: ttclid || "",
+            pageUrl: window.location.href, // Send current URL
             productName: "Produto de Teste",
             productDescription: "Este record é para teste do pixel.",
             productPrice: 0.01,
