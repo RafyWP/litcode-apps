@@ -343,6 +343,7 @@ export default function AlinkProClient() {
             isCheckingEmail={isCheckingEmail}
             handleVerifyEmail={handleVerifyEmail}
             authUrl={authUrl}
+            advertisers={advertisers}
           />
           
           {step >= 2 && (
