@@ -204,7 +204,7 @@ export async function getPixels(params: z.infer<typeof getPixelsSchema>) {
       };
     }
 
-    return { success: true, data: data.data?.list || [] };
+    return { success: true, data: data.data?.pixels || [] };
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {
