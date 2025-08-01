@@ -38,7 +38,7 @@ const formSchema = z.object({
 
 
 export default function AlinkProClient() {
-  const { accessToken, isLoading: isAuthLoading, login } = useAuth();
+  const { accessToken, isLoading: isAuthLoading, login, verifiedEmail } = useAuth();
   const { toast } = useToast();
 
   const [step, setStep] = useState(1);
@@ -53,8 +53,8 @@ export default function AlinkProClient() {
   const [pixels, setPixels] = useState<Pixel[]>([]);
   const [isFetchingPixels, setIsFetchingPixels] = useState(false);
 
-  const [emailVerify, setEmailVerify] = useState("");
-  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
+  const [isEmailVerified, setIsEmailVerified] = useState(!!verifiedEmail);
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -68,7 +68,7 @@ export default function AlinkProClient() {
       externalId: "",
     },
   });
-
+  
   const { watch, setValue } = form;
   const selectedAdvertiserId = watch("advertiserId");
   const pixelSelection = watch("pixelSelection");
@@ -96,7 +96,10 @@ export default function AlinkProClient() {
     if (accessToken) {
         setStep(2);
     }
-  }, [accessToken]);
+    if (verifiedEmail) {
+        setIsEmailVerified(true);
+    }
+  }, [accessToken, verifiedEmail]);
 
 
   useEffect(() => {
@@ -129,8 +132,8 @@ export default function AlinkProClient() {
       });
     }
 
-    if (urlAuthCode && !accessToken) {
-      login(urlAuthCode).catch((err: Error) => {
+    if (urlAuthCode && !accessToken && isEmailVerified) {
+      login(urlAuthCode, verifiedEmail || emailInput).catch((err: Error) => {
         toast({
           title: "Erro de Autorização",
           description: err.message || "Não foi possível obter o token de acesso.",
@@ -142,7 +145,7 @@ export default function AlinkProClient() {
       url.searchParams.delete("error");
       window.history.replaceState(null, "", url.toString());
     }
-  }, [login, toast, accessToken]);
+  }, [login, toast, accessToken, isEmailVerified, verifiedEmail, emailInput]);
 
 
   useEffect(() => {
@@ -207,7 +210,7 @@ export default function AlinkProClient() {
 
 
   const handleVerifyEmail = async () => {
-    if (!emailVerify) {
+    if (!emailInput) {
       toast({ title: "E-mail Necessário", description: "Por favor, insira o e-mail do seu pedido ou código de acesso.", variant: "destructive" });
       return;
     }
@@ -215,7 +218,7 @@ export default function AlinkProClient() {
     const result = await fetch('/api/verify-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: emailVerify }),
+        body: JSON.stringify({ email: emailInput }),
     });
     setIsCheckingEmail(false);
     const data = await result.json();
@@ -289,7 +292,7 @@ export default function AlinkProClient() {
             accessToken,
             pixelCode: formValues.pixelCode,
             externalId: formValues.externalId || "",
-            email: emailVerify,
+            email: verifiedEmail || emailInput,
             ttclid: ttclid || "",
             pageUrl: formValues.pageUrl,
             productName: "Produto de Teste",
@@ -338,12 +341,13 @@ export default function AlinkProClient() {
           <AuthCard
             isCompleted={step > 1}
             isEmailVerified={isEmailVerified}
-            emailVerify={emailVerify}
-            setEmailVerify={setEmailVerify}
+            emailVerify={emailInput}
+            setEmailVerify={setEmailInput}
             isCheckingEmail={isCheckingEmail}
             handleVerifyEmail={handleVerifyEmail}
             authUrl={authUrl}
             advertisers={advertisers}
+            verifiedEmail={verifiedEmail}
           />
           
           {step >= 2 && (

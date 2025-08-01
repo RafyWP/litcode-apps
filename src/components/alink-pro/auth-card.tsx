@@ -24,6 +24,7 @@ interface AuthCardProps {
   handleVerifyEmail: () => void;
   authUrl: string;
   advertisers: Advertiser[];
+  verifiedEmail: string | null;
 }
 
 export function AuthCard({
@@ -35,6 +36,7 @@ export function AuthCard({
   handleVerifyEmail,
   authUrl,
   advertisers,
+  verifiedEmail,
 }: AuthCardProps) {
   const tiktokAccountName = advertisers[0]?.advertiser_name;
   const tiktokAccountId = advertisers[0]?.advertiser_id;
@@ -56,7 +58,7 @@ export function AuthCard({
             <div className="text-sm text-muted-foreground space-y-1 pt-2">
               <p>
                 Você está logado em nosso sistema como:{" "}
-                <span className="font-semibold text-foreground">{emailVerify}</span>
+                <span className="font-semibold text-foreground">{verifiedEmail}</span>
               </p>
               {tiktokAccountName && (
                  <p>

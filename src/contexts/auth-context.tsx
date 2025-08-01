@@ -9,16 +9,18 @@ const TOKEN_KEY = "tiktok_auth_data";
 interface AuthData {
   token: string;
   expiresAt: number;
+  email: string;
 }
 
 interface AuthContextType {
   accessToken: string | null;
+  verifiedEmail: string | null;
   isLoading: boolean;
   pixelId: string | null;
   advertiserId: string | null;
   pixelCode: string | null;
   eventSent: boolean;
-  login: (authCode: string) => Promise<void>;
+  login: (authCode: string, email: string) => Promise<void>;
   logout: () => void;
   setPixelId: (id: string | null) => void;
   setAdvertiserId: (id: string | null) => void;
@@ -30,6 +32,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [verifiedEmail, setVerifiedEmail] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   
   // State for the tool's progress
@@ -43,9 +46,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const storedData = localStorage.getItem(TOKEN_KEY);
       if (storedData) {
-        const { token, expiresAt }: AuthData = JSON.parse(storedData);
+        const { token, expiresAt, email }: AuthData = JSON.parse(storedData);
         if (new Date().getTime() < expiresAt) {
           setAccessToken(token);
+          setVerifiedEmail(email);
         } else {
           localStorage.removeItem(TOKEN_KEY);
         }
@@ -57,7 +61,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  const login = useCallback(async (authCode: string) => {
+  const login = useCallback(async (authCode: string, email: string) => {
     setIsLoading(true);
     try {
       const result = await getAccessToken({ authCode });
@@ -68,9 +72,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const expiresInMs = expiresInSeconds * 1000;
         const expiresAt = new Date().getTime() + expiresInMs;
 
-        const authData: AuthData = { token: access_token, expiresAt };
+        const authData: AuthData = { token: access_token, expiresAt, email };
         localStorage.setItem(TOKEN_KEY, JSON.stringify(authData));
         setAccessToken(access_token);
+        setVerifiedEmail(email);
       } else {
         throw new Error(result.error || "Failed to retrieve access token.");
       }
@@ -82,6 +87,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY);
     setAccessToken(null);
+    setVerifiedEmail(null);
     setPixelId(null);
     setAdvertiserId(null);
     setPixelCode(null);
@@ -90,6 +96,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const value = {
     accessToken,
+    verifiedEmail,
     isLoading,
     login,
     logout,
