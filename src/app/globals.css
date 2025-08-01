@@ -78,3 +78,47 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .timeline-container {
+    position: relative;
+    padding-left: 3rem; 
+  }
+
+  .timeline-container::before {
+    content: '';
+    position: absolute;
+    left: calc(1rem - 1px);
+    top: 1rem;
+    bottom: 1rem;
+    width: 2px;
+    background-color: hsl(var(--border));
+    z-index: 0;
+  }
+
+  .timeline-step {
+    position: relative;
+    padding-bottom: 2rem; 
+  }
+  .timeline-step:last-child {
+    padding-bottom: 0;
+  }
+
+  .timeline-step::before {
+    content: '';
+    position: absolute;
+    left: -2rem; 
+    top: calc(1.5rem - 8px); 
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    background-color: hsl(var(--border));
+    border: 3px solid hsl(var(--background));
+    z-index: 1;
+    transition: background-color 0.3s ease;
+  }
+
+  .timeline-step-completed::before {
+    background-color: hsl(var(--primary));
+  }
+}

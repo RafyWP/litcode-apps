@@ -15,19 +15,15 @@ import { AuthCard } from "@/components/alink-pro/auth-card";
 import { PixelCard } from "@/components/alink-pro/pixel-card";
 import { HotmartCard } from "@/components/alink-pro/hotmart-card";
 import { CompletionCard } from "@/components/alink-pro/completion-card";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 import { Advertiser, Pixel } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   advertiserId: z.string().min(1, "Por favor, selecione uma conta de anunciante."),
   pixelSelection: z.string(), // "create_new" or a pixel_code
   pixelName: z.string().optional(),
   pixelCode: z.string().optional(), // The code of the selected or newly created pixel
-  pageUrl: z.string().url({ message: "Por favor, insira uma URL válida." }).optional(),
+  pageUrl: z.string().url({ message: "Por favor, insira uma URL válida." }),
   externalId: z.string().optional(),
 }).refine(data => {
   if (data.pixelSelection === 'create_new') {
@@ -321,6 +317,18 @@ export default function AlinkProClient() {
   const selectedPixelCode = form.watch("pixelCode");
   const tiktokEventPanelUrl = `https://ads.tiktok.com/i18n/events_manager/datasource/pixel/detail/${selectedPixelCode}?org_id=${selectedAdvertiserId}&open_from=bc_asset_pixel`;
   
+  const renderStep = (stepNumber: number, card: React.ReactNode) => (
+    <div
+      className={cn(
+        'timeline-step transition-opacity duration-500',
+        step > stepNumber && 'timeline-step-completed',
+        step < stepNumber && 'opacity-50 pointer-events-none'
+      )}
+    >
+      <div className="timeline-content">{card}</div>
+    </div>
+  );
+
   return (
     <div className="flex-grow bg-background text-foreground flex flex-col items-center justify-center px-4 py-10">
       <div className="w-full max-w-lg mx-auto">
@@ -337,67 +345,52 @@ export default function AlinkProClient() {
           </p>
         </header>
 
-        <div className="space-y-6">
-          <Collapsible open={step === 1} className="w-full">
-            <CollapsibleTrigger asChild>
-              <AuthCard
-                isCompleted={step > 1}
-                isEmailVerified={isEmailVerified}
-                emailVerify={emailVerify}
-                setEmailVerify={setEmailVerify}
-                isCheckingEmail={isCheckingEmail}
-                handleVerifyEmail={handleVerifyEmail}
-                authUrl={authUrl}
-              />
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              {/* Content is inside the card for this step */}
-            </CollapsibleContent>
-          </Collapsible>
+        <div className="timeline-container space-y-8">
+            {renderStep(1, 
+                <AuthCard
+                    isCompleted={step > 1}
+                    isEmailVerified={isEmailVerified}
+                    emailVerify={emailVerify}
+                    setEmailVerify={setEmailVerify}
+                    isCheckingEmail={isCheckingEmail}
+                    handleVerifyEmail={handleVerifyEmail}
+                    authUrl={authUrl}
+                />
+            )}
+            
+            <Form {...form}>
+              <form>
+                {renderStep(2, 
+                    <PixelCard
+                        form={form}
+                        isCompleted={step > 2}
+                        isCreatingPixel={isCreatingPixel}
+                        isSendingEvent={isSendingEvent}
+                        isFetchingAdvertisers={isFetchingAdvertisers}
+                        advertisers={advertisers}
+                        pixels={pixels}
+                        isFetchingPixels={isFetchingPixels}
+                        onCreatePixel={handleCreatePixel}
+                        onSendEvent={handleSendEvent}
+                    />
+                )}
+              </form>
+            </Form>
 
-          <Form {...form}>
-            <form className="space-y-6">
-              <Collapsible open={step === 2} className="w-full">
-                <CollapsibleTrigger asChild>
-                  <PixelCard
-                    form={form}
-                    isCompleted={step > 2}
-                    isCreatingPixel={isCreatingPixel}
-                    isSendingEvent={isSendingEvent}
-                    isFetchingAdvertisers={isFetchingAdvertisers}
-                    advertisers={advertisers}
-                    pixels={pixels}
-                    isFetchingPixels={isFetchingPixels}
-                    onCreatePixel={handleCreatePixel}
-                    onSendEvent={handleSendEvent}
-                  />
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  {/* Content is inside the card for this step */}
-                </CollapsibleContent>
-              </Collapsible>
-            </form>
-          </Form>
+            {renderStep(3,
+                <HotmartCard
+                    isCompleted={step > 3}
+                    setStep={setStep}
+                    pixelCode={selectedPixelCode || null}
+                    copyToClipboard={copyToClipboard}
+                />
+            )}
 
-          <Collapsible open={step === 3} className="w-full">
-            <CollapsibleTrigger asChild>
-              <HotmartCard
-                isCompleted={step > 3}
-                setStep={setStep}
-                pixelCode={selectedPixelCode || null}
-                copyToClipboard={copyToClipboard}
-              />
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              {/* Content is inside the card for this step */}
-            </CollapsibleContent>
-          </Collapsible>
-
-          <Collapsible open={step === 4} className="w-full">
-            <CompletionCard
-              tiktokEventPanelUrl={tiktokEventPanelUrl}
-            />
-          </Collapsible>
+            {renderStep(4, 
+                <CompletionCard
+                    tiktokEventPanelUrl={tiktokEventPanelUrl}
+                />
+            )}
         </div>
       </div>
     </div>
