@@ -27,8 +27,8 @@ const formSchema = z.object({
   pixelSelection: z.string(), // "create_new" or a pixel_code
   pixelName: z.string().optional(),
   pixelCode: z.string().optional(), // The code of the selected or newly created pixel
-  externalId: z.string().optional(),
   pageUrl: z.string().url({ message: "Por favor, insira uma URL válida." }).optional(),
+  externalId: z.string().optional(),
 }).refine(data => {
   if (data.pixelSelection === 'create_new') {
     return !!data.pixelName && data.pixelName.length > 0;
@@ -67,8 +67,8 @@ export default function AlinkProClient() {
       pixelSelection: "create_new",
       pixelName: "",
       pixelCode: "",
-      externalId: "",
       pageUrl: "https://ia.litcode.store/produto/test-product",
+      externalId: "",
     },
   });
 
@@ -180,7 +180,12 @@ export default function AlinkProClient() {
     async function fetchPixels() {
       if (!accessToken || !selectedAdvertiserId) return;
       setIsFetchingPixels(true);
-      const result = await getPixels({ accessToken, advertiserId: selectedAdvertiserId });
+      
+      // Temporary hardcoded advertiser ID for testing
+      const testAdvertiserId = "7531208448131022849";
+
+      const result = await getPixels({ accessToken, advertiserId: testAdvertiserId });
+      
       if (result.success && result.data) {
         setPixels(result.data);
       } else {
@@ -213,7 +218,6 @@ export default function AlinkProClient() {
       return;
     }
     setIsCheckingEmail(true);
-    // This should use the API route to avoid exposing Vercel Edge Config directly to client
     const result = await fetch('/api/verify-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -249,7 +253,6 @@ export default function AlinkProClient() {
         description: `Pixel '${pixelName}' criado com sucesso.`,
         className: "bg-green-600 text-white",
       });
-      // Fetch new list of pixels and select the new one
       const pixelsResult = await getPixels({ accessToken, advertiserId });
       if (pixelsResult.success && pixelsResult.data) {
         setPixels(pixelsResult.data);
@@ -308,7 +311,7 @@ export default function AlinkProClient() {
 
       if (result.success) {
         toast({ title: "Evento de Teste Enviado!", description: "O evento 'Purchase' foi enviado com sucesso.", className: "bg-green-600 text-white" });
-        setStep(3); // Go to Hotmart step
+        setStep(3);
       } else {
         toast({ title: "Erro ao Enviar Evento", description: result.error || "Ocorreu um erro desconhecido.", variant: "destructive" });
       }
