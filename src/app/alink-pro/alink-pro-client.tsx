@@ -120,7 +120,6 @@ export default function AlinkProClient() {
     generateAuthUrl();
     
     const urlParams = new URLSearchParams(window.location.search);
-    const urlAuthCode = urlParams.get("auth_code");
     const urlTtclid = urlParams.get("ttclid");
 
     if (urlTtclid) {
@@ -132,18 +131,22 @@ export default function AlinkProClient() {
       });
     }
 
+    const urlAuthCode = urlParams.get("auth_code");
     if (urlAuthCode && !accessToken && isEmailVerified) {
-      login(urlAuthCode, verifiedEmail || emailInput).catch((err: Error) => {
-        toast({
-          title: "Erro de Autorização",
-          description: err.message || "Não foi possível obter o token de acesso.",
-          variant: "destructive",
+      const emailToUse = verifiedEmail || emailInput;
+      if (emailToUse) {
+        login(urlAuthCode, emailToUse).catch((err: Error) => {
+          toast({
+            title: "Erro de Autorização",
+            description: err.message || "Não foi possível obter o token de acesso.",
+            variant: "destructive",
+          });
         });
-      });
-      const url = new URL(window.location.href);
-      url.searchParams.delete("auth_code");
-      url.searchParams.delete("error");
-      window.history.replaceState(null, "", url.toString());
+        const url = new URL(window.location.href);
+        url.searchParams.delete("auth_code");
+        url.searchParams.delete("error");
+        window.history.replaceState(null, "", url.toString());
+      }
     }
   }, [login, toast, accessToken, isEmailVerified, verifiedEmail, emailInput]);
 
@@ -226,6 +229,21 @@ export default function AlinkProClient() {
     if (data.success) {
       setIsEmailVerified(true);
       toast({ title: "E-mail Verificado!", description: "Você já pode fazer login com o TikTok.", className: "bg-green-600 text-white" });
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlAuthCode = urlParams.get("auth_code");
+      if (urlAuthCode && !accessToken) {
+        login(urlAuthCode, emailInput).catch((err: Error) => {
+          toast({
+            title: "Erro de Autorização",
+            description: err.message || "Não foi possível obter o token de acesso.",
+            variant: "destructive",
+          });
+        });
+        const url = new URL(window.location.href);
+        url.searchParams.delete("auth_code");
+        url.searchParams.delete("error");
+        window.history.replaceState(null, "", url.toString());
+      }
     } else {
       toast({ title: "Falha na Verificação", description: data.error, variant: "destructive" });
     }
