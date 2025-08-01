@@ -28,6 +28,7 @@ const formSchema = z.object({
   pixelName: z.string().optional(),
   pixelCode: z.string().optional(), // The code of the selected or newly created pixel
   externalId: z.string().optional(),
+  pageUrl: z.string().url({ message: "Por favor, insira uma URL válida." }).optional(),
 }).refine(data => {
   if (data.pixelSelection === 'create_new') {
     return !!data.pixelName && data.pixelName.length > 0;
@@ -67,6 +68,7 @@ export default function AlinkProClient() {
       pixelName: "",
       pixelCode: "",
       externalId: "",
+      pageUrl: "https://ia.litcode.store/produto/test-product",
     },
   });
 
@@ -292,7 +294,7 @@ export default function AlinkProClient() {
             externalId: formValues.externalId || "",
             email: emailVerify,
             ttclid: ttclid || "",
-            pageUrl: window.location.href, // Send current URL
+            pageUrl: formValues.pageUrl,
             productName: "Produto de Teste",
             productDescription: "Este record é para teste do pixel.",
             productPrice: 0.01,

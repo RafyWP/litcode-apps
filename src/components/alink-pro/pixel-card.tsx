@@ -186,6 +186,21 @@ export function PixelCard({
                     )}
                   />
                 )}
+                
+                <FormField
+                  control={form.control}
+                  name="pageUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>URL da Página</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://..." {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
 
                 {/* Hidden Fields */}
                 <input type="hidden" {...form.register("externalId")} />
