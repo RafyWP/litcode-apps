@@ -224,20 +224,22 @@ export function PixelCard({
                       Gerar Pixel
                   </Button>
               )}
-              <Button
-                type="button"
-                variant="secondary"
-                onClick={onSendEvent}
-                className="w-full font-bold"
-                disabled={isLoading || !pixelCode}
-              >
-                {isSendingEvent ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Send className="mr-2" />
-                )}
-                Testar Pixel
-              </Button>
+              {pixelSelection !== 'create_new' && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={onSendEvent}
+                  className="w-full font-bold"
+                  disabled={isLoading || !pixelCode}
+                >
+                  {isSendingEvent ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <Send className="mr-2" />
+                  )}
+                  Testar Pixel
+                </Button>
+              )}
           </CardFooter>
         </>
       )}
