@@ -39,7 +39,7 @@ export function AuthCard({
         <CardTitle
           className={cn(
             "flex items-center",
-            !isCompleted && "justify-between"
+            isCompleted && "justify-between"
           )}
         >
           <span>1. Autorizar Acesso</span>
@@ -49,48 +49,46 @@ export function AuthCard({
           Autorize o aplicativo para acessar sua conta do TikTok Ads.
         </CardDescription>
       </CardHeader>
-      {!isCompleted && (
-        <CardContent>
-          {!isEmailVerified ? (
-            <div className="w-full space-y-2">
-              <Label htmlFor="email-verify">E-mail de Membro</Label>
-              <div className="flex items-center gap-2">
-                <Input
-                  id="email-verify"
-                  type="text"
-                  placeholder="email..."
-                  value={emailVerify}
-                  onChange={(e) => setEmailVerify(e.target.value)}
-                  disabled={isCheckingEmail}
-                  onKeyDown={(e) => e.key === "Enter" && handleVerifyEmail()}
-                />
-                <Button
-                  variant="outline"
-                  onClick={handleVerifyEmail}
-                  disabled={isCheckingEmail}
-                  aria-label="Verificar E-mail"
-                >
-                  {isCheckingEmail ? (
-                    <Loader2 className="animate-spin" />
-                  ) : (
-                    <LockKeyhole />
-                  )}
-                </Button>
-              </div>
+      <CardContent>
+        {!isEmailVerified ? (
+          <div className="w-full space-y-2">
+            <Label htmlFor="email-verify">E-mail de Membro</Label>
+            <div className="flex items-center gap-2">
+              <Input
+                id="email-verify"
+                type="text"
+                placeholder="email..."
+                value={emailVerify}
+                onChange={(e) => setEmailVerify(e.target.value)}
+                disabled={isCheckingEmail}
+                onKeyDown={(e) => e.key === "Enter" && handleVerifyEmail()}
+              />
+              <Button
+                variant="outline"
+                onClick={handleVerifyEmail}
+                disabled={isCheckingEmail}
+                aria-label="Verificar E-mail"
+              >
+                {isCheckingEmail ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <LockKeyhole />
+                )}
+              </Button>
             </div>
-          ) : (
-            <Button
-              className="w-full animate-in fade-in"
-              onClick={() => {
-                if (authUrl) window.location.href = authUrl;
-              }}
-            >
-              <LogIn className="mr-2" />
-              Login com TikTok Business
-            </Button>
-          )}
-        </CardContent>
-      )}
+          </div>
+        ) : (
+          <Button
+            className="w-full animate-in fade-in"
+            onClick={() => {
+              if (authUrl) window.location.href = authUrl;
+            }}
+          >
+            <LogIn className="mr-2" />
+            Login com TikTok Business
+          </Button>
+        )}
+      </CardContent>
     </Card>
   );
 }

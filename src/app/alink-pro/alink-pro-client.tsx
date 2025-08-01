@@ -17,6 +17,8 @@ import { HotmartCard } from "@/components/alink-pro/hotmart-card";
 import { CompletionCard } from "@/components/alink-pro/completion-card";
 import { Advertiser, Pixel } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { Collapsible } from "@/components/ui/collapsible";
+
 
 const formSchema = z.object({
   advertiserId: z.string().min(1, "Por favor, selecione uma conta de anunciante."),
@@ -317,18 +319,6 @@ export default function AlinkProClient() {
   const selectedPixelCode = form.watch("pixelCode");
   const tiktokEventPanelUrl = `https://ads.tiktok.com/i18n/events_manager/datasource/pixel/detail/${selectedPixelCode}?org_id=${selectedAdvertiserId}&open_from=bc_asset_pixel`;
   
-  const renderStep = (stepNumber: number, card: React.ReactNode) => (
-    <div
-      className={cn(
-        'timeline-step transition-opacity duration-500',
-        step > stepNumber && 'timeline-step-completed',
-        step < stepNumber && 'opacity-50 pointer-events-none'
-      )}
-    >
-      <div className="timeline-content">{card}</div>
-    </div>
-  );
-
   return (
     <div className="flex-grow bg-background text-foreground flex flex-col items-center justify-center px-4 py-10">
       <div className="w-full max-w-lg mx-auto">
@@ -345,52 +335,52 @@ export default function AlinkProClient() {
           </p>
         </header>
 
-        <div className="timeline-container space-y-8">
-            {renderStep(1, 
-                <AuthCard
-                    isCompleted={step > 1}
-                    isEmailVerified={isEmailVerified}
-                    emailVerify={emailVerify}
-                    setEmailVerify={setEmailVerify}
-                    isCheckingEmail={isCheckingEmail}
-                    handleVerifyEmail={handleVerifyEmail}
-                    authUrl={authUrl}
-                />
-            )}
-            
+        <div className="space-y-4">
+          <Collapsible open={step >= 1} className="w-full">
+            <AuthCard
+              isCompleted={step > 1}
+              isEmailVerified={isEmailVerified}
+              emailVerify={emailVerify}
+              setEmailVerify={setEmailVerify}
+              isCheckingEmail={isCheckingEmail}
+              handleVerifyEmail={handleVerifyEmail}
+              authUrl={authUrl}
+            />
+          </Collapsible>
+
+          <Collapsible open={step >= 2} className="w-full">
             <Form {...form}>
               <form>
-                {renderStep(2, 
-                    <PixelCard
-                        form={form}
-                        isCompleted={step > 2}
-                        isCreatingPixel={isCreatingPixel}
-                        isSendingEvent={isSendingEvent}
-                        isFetchingAdvertisers={isFetchingAdvertisers}
-                        advertisers={advertisers}
-                        pixels={pixels}
-                        isFetchingPixels={isFetchingPixels}
-                        onCreatePixel={handleCreatePixel}
-                        onSendEvent={handleSendEvent}
-                    />
-                )}
+                <PixelCard
+                  form={form}
+                  isCompleted={step > 2}
+                  isCreatingPixel={isCreatingPixel}
+                  isSendingEvent={isSendingEvent}
+                  isFetchingAdvertisers={isFetchingAdvertisers}
+                  advertisers={advertisers}
+                  pixels={pixels}
+                  isFetchingPixels={isFetchingPixels}
+                  onCreatePixel={handleCreatePixel}
+                  onSendEvent={handleSendEvent}
+                />
               </form>
             </Form>
+          </Collapsible>
 
-            {renderStep(3,
-                <HotmartCard
-                    isCompleted={step > 3}
-                    setStep={setStep}
-                    pixelCode={selectedPixelCode || null}
-                    copyToClipboard={copyToClipboard}
-                />
-            )}
+          <Collapsible open={step >= 3} className="w-full">
+            <HotmartCard
+              isCompleted={step > 3}
+              setStep={setStep}
+              pixelCode={selectedPixelCode || null}
+              copyToClipboard={copyToClipboard}
+            />
+          </Collapsible>
 
-            {renderStep(4, 
-                <CompletionCard
-                    tiktokEventPanelUrl={tiktokEventPanelUrl}
-                />
-            )}
+          <Collapsible open={step >= 4} className="w-full">
+            <CompletionCard
+              tiktokEventPanelUrl={tiktokEventPanelUrl}
+            />
+          </Collapsible>
         </div>
       </div>
     </div>

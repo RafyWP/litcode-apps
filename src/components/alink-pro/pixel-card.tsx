@@ -66,7 +66,7 @@ export function PixelCard({
         <CardTitle
           className={cn(
             "flex items-center",
-            !isCompleted && "justify-between"
+            isCompleted && "justify-between"
           )}
         >
           <span>2. Pixel e Teste</span>
@@ -76,171 +76,167 @@ export function PixelCard({
           Crie um novo pixel ou selecione um existente para testar.
         </CardDescription>
       </CardHeader>
-      {!isCompleted && (
-        <>
-        <CardContent>
-          <fieldset disabled={isLoading} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="advertiserId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Conta de Anunciante</FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                      form.setValue("pixelSelection", "create_new");
-                      form.setValue("pixelCode", "");
-                    }}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger disabled={isFetchingAdvertisers}>
-                        {isFetchingAdvertisers ? (
-                          <span className="flex items-center text-muted-foreground">
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Carregando...
-                          </span>
-                        ) : (
-                          <SelectValue placeholder="Selecione uma conta" />
-                        )}
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {advertisers.length > 0 ? (
-                        advertisers.map((ad) => (
-                          <SelectItem
-                            key={ad.advertiser_id}
-                            value={ad.advertiser_id}
-                          >
-                            {ad.advertiser_name} ({ad.advertiser_id})
-                          </SelectItem>
-                        ))
+      <CardContent>
+        <fieldset disabled={isLoading} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="advertiserId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Conta de Anunciante</FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    form.setValue("pixelSelection", "create_new");
+                    form.setValue("pixelCode", "");
+                  }}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger disabled={isFetchingAdvertisers}>
+                      {isFetchingAdvertisers ? (
+                        <span className="flex items-center text-muted-foreground">
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Carregando...
+                        </span>
                       ) : (
-                        <SelectItem value="none" disabled>
-                          Nenhuma conta encontrada
-                        </SelectItem>
+                        <SelectValue placeholder="Selecione uma conta" />
                       )}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {selectedAdvertiserId && (
-              <>
-                <FormField
-                  control={form.control}
-                  name="pixelSelection"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Pixel</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                        disabled={isFetchingPixels}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            {isFetchingPixels ? (
-                              <span className="flex items-center text-muted-foreground">
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                Carregando Pixels...
-                              </span>
-                            ) : (
-                              <SelectValue placeholder="Selecione um pixel" />
-                            )}
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                            <SelectItem value="create_new">
-                                ✨ Criar um novo pixel
-                            </SelectItem>
-                            {pixels.length > 0 && (
-                                pixels.map((p) => (
-                                <SelectItem key={p.pixel_code} value={p.pixel_code}>
-                                    {p.pixel_name} ({p.pixel_code})
-                                </SelectItem>
-                                ))
-                            )}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {pixelSelection === "create_new" && (
-                  <FormField
-                    control={form.control}
-                    name="pixelName"
-                    render={({ field }) => (
-                      <FormItem className="animate-in fade-in">
-                        <FormLabel>Nome do Novo Pixel</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Ex: MeuPixel_2024" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {advertisers.length > 0 ? (
+                      advertisers.map((ad) => (
+                        <SelectItem
+                          key={ad.advertiser_id}
+                          value={ad.advertiser_id}
+                        >
+                          {ad.advertiser_name} ({ad.advertiser_id})
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <SelectItem value="none" disabled>
+                        Nenhuma conta encontrada
+                      </SelectItem>
                     )}
-                  />
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {selectedAdvertiserId && (
+            <>
+              <FormField
+                control={form.control}
+                name="pixelSelection"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Pixel</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      disabled={isFetchingPixels}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          {isFetchingPixels ? (
+                            <span className="flex items-center text-muted-foreground">
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Carregando Pixels...
+                            </span>
+                          ) : (
+                            <SelectValue placeholder="Selecione um pixel" />
+                          )}
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                          <SelectItem value="create_new">
+                              ✨ Criar um novo pixel
+                          </SelectItem>
+                          {pixels.length > 0 && (
+                              pixels.map((p) => (
+                              <SelectItem key={p.pixel_code} value={p.pixel_code}>
+                                  {p.pixel_name} ({p.pixel_code})
+                              </SelectItem>
+                              ))
+                          )}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
                 )}
-                
+              />
+
+              {pixelSelection === "create_new" && (
                 <FormField
                   control={form.control}
-                  name="pageUrl"
+                  name="pixelName"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>URL da Página</FormLabel>
+                    <FormItem className="animate-in fade-in">
+                      <FormLabel>Nome do Novo Pixel</FormLabel>
                       <FormControl>
-                        <Input placeholder="https://..." {...field} />
+                        <Input placeholder="Ex: MeuPixel_2024" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-
-
-                {/* Hidden Fields */}
-                <input type="hidden" {...form.register("externalId")} />
-              </>
-            )}
-          </fieldset>
-        </CardContent>
-        <CardFooter className="flex-col sm:flex-row gap-2 pt-4">
-            {pixelSelection === 'create_new' && (
-                <Button
-                    type="button"
-                    onClick={onCreatePixel}
-                    className="w-full font-bold"
-                    disabled={isLoading || !selectedAdvertiserId}
-                >
-                    {isCreatingPixel ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    ) : (
-                    <WandSparkles className="mr-2" />
-                    )}
-                    Gerar Pixel
-                </Button>
-            )}
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={onSendEvent}
-              className="w-full font-bold"
-              disabled={isLoading || !pixelCode}
-            >
-              {isSendingEvent ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Send className="mr-2" />
               )}
-              Testar Pixel
-            </Button>
-        </CardFooter>
-        </>
-      )}
+              
+              <FormField
+                control={form.control}
+                name="pageUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>URL da Página</FormLabel>
+                    <FormControl>
+                      <Input placeholder="https://..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+
+              {/* Hidden Fields */}
+              <input type="hidden" {...form.register("externalId")} />
+            </>
+          )}
+        </fieldset>
+      </CardContent>
+      <CardFooter className="flex-col sm:flex-row gap-2 pt-4">
+          {pixelSelection === 'create_new' && (
+              <Button
+                  type="button"
+                  onClick={onCreatePixel}
+                  className="w-full font-bold"
+                  disabled={isLoading || !selectedAdvertiserId}
+              >
+                  {isCreatingPixel ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                  <WandSparkles className="mr-2" />
+                  )}
+                  Gerar Pixel
+              </Button>
+          )}
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={onSendEvent}
+            className="w-full font-bold"
+            disabled={isLoading || !pixelCode}
+          >
+            {isSendingEvent ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Send className="mr-2" />
+            )}
+            Testar Pixel
+          </Button>
+      </CardFooter>
     </Card>
   );
 }
