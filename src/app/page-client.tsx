@@ -38,7 +38,7 @@ const words2 = ["Physical", "Digital", "Services"];
 // The page now accepts youtubeVideoUrl as a prop.
 export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: string }) {
   const { toast } = useToast();
-  const { accessToken, isLoading, login } = useAuth();
+  const { accessToken, isLoading } = useAuth();
   const router = useRouter();
   const [avatarImages, setAvatarImages] = useState<string[]>([]);
   const [isVideoOpen, setIsVideoOpen] = useState(false);
@@ -88,26 +88,7 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
   }, []);
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlAuthCode = urlParams.get("auth_code");
-
-    if (urlAuthCode && !accessToken) {
-      login(urlAuthCode).catch((err: Error) => {
-        toast({
-          title: "Authorization Error",
-          description: err.message || "Could not retrieve access token.",
-          variant: "destructive",
-        });
-      });
-      // Clean the URL
-      const url = new URL(window.location.href);
-      url.searchParams.delete("auth_code");
-      url.searchParams.delete("error");
-      window.history.replaceState(null, "", url.toString());
-    }
-  }, [login, toast, accessToken]);
-
-  useEffect(() => {
+    // The login flow is now handled in /alink-pro, so we just redirect if a token exists.
     if (accessToken) {
       setIsRedirecting(true);
       router.push("/alink-pro");
