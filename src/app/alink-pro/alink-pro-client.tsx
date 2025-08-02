@@ -332,7 +332,7 @@ export default function AlinkProClient() {
   return (
     <div className="flex-grow bg-background text-foreground flex flex-col items-center justify-center px-4 py-10">
       <div className="w-full max-w-lg mx-auto">
-        <header className="text-center mb-10">
+        <header className="text-center mb-8">
           <div className="inline-flex items-center justify-center -mb-12">
           <svg
               width="96"
@@ -340,7 +340,7 @@ export default function AlinkProClient() {
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="h-20 w-20 sm:h-24 sm:w-24"
+              className="h-24 w-24"
             >
               <defs>
                 <linearGradient id="anchor-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
