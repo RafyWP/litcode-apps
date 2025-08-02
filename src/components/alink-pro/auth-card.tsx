@@ -88,7 +88,10 @@ export function AuthCard({
                     {isCheckingEmail ? (
                       <Loader2 className="animate-spin" />
                     ) : (
-                      <LockKeyhole />
+                      <>
+                        <LockKeyhole />
+                        <span>Acessar</span>
+                      </>
                     )}
                   </Button>
                 </div>
