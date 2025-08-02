@@ -334,7 +334,42 @@ export default function AlinkProClient() {
       <div className="w-full max-w-lg mx-auto">
         <header className="text-center mb-10">
           <div className="inline-flex items-center justify-center mb-4">
-            <Anchor className="h-8 w-8 sm:h-10 sm:w-10 text-white/20" />
+          <svg
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-10 w-10 sm:h-12 sm:w-12"
+            >
+              <defs>
+                <linearGradient id="anchor-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: 'rgba(255,255,255,0.2)', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: 'rgba(255,255,255,0)', stopOpacity: 1 }} />
+                </linearGradient>
+              </defs>
+              <path
+                d="M12 22V8"
+                stroke="url(#anchor-gradient)"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M5 12H2a10 10 0 0 0 20 0h-3"
+                stroke="url(#anchor-gradient)"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"
+                stroke="url(#anchor-gradient)"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </div>
           <h1 className="font-headline text-3xl sm:text-5xl font-bold text-card-foreground">
             Âncora Link <span className="text-accent">PRO</span>
