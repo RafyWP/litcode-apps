@@ -24,7 +24,7 @@ const formSchema = z.object({
   pixelSelection: z.string(), // "create_new" or a pixel_code
   pixelName: z.string().optional(),
   pixelCode: z.string().optional(), // The code of the selected or newly created pixel
-  pageUrl: z.string().url({ message: "Por favor, insira uma URL válida." }),
+  pageUrl: z.string().url({ message: "Por favor, insira uma URL válida." }).optional().or(z.literal('')),
   externalId: z.string().optional(),
 }).refine(data => {
   if (data.pixelSelection === 'create_new') {
@@ -333,8 +333,8 @@ export default function AlinkProClient() {
     <div className="flex-grow bg-background text-foreground flex flex-col items-center justify-center px-4 py-10">
       <div className="w-full max-w-lg mx-auto">
         <header className="text-center mb-10">
-          <div className="inline-flex items-center justify-center bg-primary text-primary-foreground p-3 rounded-full mb-4 shadow-lg shadow-primary/30">
-            <Anchor className="h-8 w-8 sm:h-10 sm:w-10" />
+          <div className="inline-flex items-center justify-center mb-4">
+            <Anchor className="h-8 w-8 sm:h-10 sm:w-10 text-white/20" />
           </div>
           <h1 className="font-headline text-3xl sm:text-5xl font-bold text-card-foreground">
             Âncora Link <span className="text-accent">PRO</span>
