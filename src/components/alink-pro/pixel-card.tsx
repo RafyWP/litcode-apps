@@ -192,7 +192,7 @@ export function PixelCard({
                     name="pageUrl"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>URL da Página</FormLabel>
+                        <FormLabel>Link de Afiliado</FormLabel>
                         <FormControl>
                           <Input placeholder="https://..." {...field} />
                         </FormControl>
