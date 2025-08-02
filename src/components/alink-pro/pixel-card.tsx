@@ -177,7 +177,7 @@ export function PixelCard({
                       name="pixelName"
                       render={({ field }) => (
                         <FormItem className="animate-in fade-in">
-                          <FormLabel>Nome do Novo Pixel</FormLabel>
+                          <FormLabel>Nome do Produto / Pixel</FormLabel>
                           <FormControl>
                             <Input placeholder="Ex: MeuPixel_2024" {...field} />
                           </FormControl>
