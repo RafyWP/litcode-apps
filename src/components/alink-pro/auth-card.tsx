@@ -48,7 +48,7 @@ export function AuthCard({
             isCompleted && "justify-between"
           )}
         >
-          <span>1. Autorizar Acesso</span>
+          <span>Autorizar Acesso</span>
           {isCompleted && <CheckCircle className="ml-2 h-6 w-6 text-green-500" />}
         </CardTitle>
         <CardDescription>

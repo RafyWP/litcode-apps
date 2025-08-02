@@ -69,7 +69,7 @@ export function PixelCard({
             isCompleted && "justify-between"
           )}
         >
-          <span>2. Pixel e Teste</span>
+          <span>Pixel e Teste</span>
           {isCompleted && <CheckCircle className="ml-2 h-6 w-6 text-green-500" />}
         </CardTitle>
         <CardDescription>

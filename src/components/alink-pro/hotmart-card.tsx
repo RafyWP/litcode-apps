@@ -37,7 +37,7 @@ export function HotmartCard({
             isCompleted && "justify-between"
           )}
         >
-          <span>3. Configurar Hotmart</span>
+          <span>Configurar Hotmart</span>
           {isCompleted && <CheckCircle className="ml-2 h-6 w-6 text-green-500" />}
         </CardTitle>
         <CardDescription>
