@@ -38,8 +38,6 @@ export function AuthCard({
   advertisers,
   verifiedEmail,
 }: AuthCardProps) {
-  const tiktokAccountName = advertisers[0]?.advertiser_name;
-  const tiktokAccountId = advertisers[0]?.advertiser_id;
 
   return (
     <Card>
@@ -60,14 +58,6 @@ export function AuthCard({
                 Você está logado em nosso sistema como:{" "}
                 <span className="font-semibold text-foreground">{verifiedEmail}</span>
               </p>
-              {tiktokAccountName && (
-                 <p>
-                    Você está logado no TT4B como:{" "}
-                    <span className="font-semibold text-foreground">
-                        {tiktokAccountName} ({tiktokAccountId})
-                    </span>
-                </p>
-              )}
             </div>
           ) : (
             "Autorize o aplicativo para acessar sua conta do TikTok Ads."
