@@ -60,7 +60,7 @@ export function AuthCard({
               </p>
             </div>
           ) : (
-            "Autorize o aplicativo para acessar sua conta do TikTok Ads."
+            "Autorize o aplicativo para acessar sua conta do TikTok for Business."
           )}
         </CardDescription>
       </CardHeader>
