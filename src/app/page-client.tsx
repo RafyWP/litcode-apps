@@ -91,7 +91,7 @@ export default function PageClient({ youtubeVideoUrl }: { youtubeVideoUrl: strin
     // The login flow is now handled in /alink-pro, so we just redirect if a token exists.
     if (accessToken) {
       setIsRedirecting(true);
-      router.push("/alink-pro");
+      router.push("/apps");
     }
   }, [accessToken, router]);
 
