@@ -335,12 +335,12 @@ export default function AlinkProClient() {
         <header className="text-center mb-10">
           <div className="inline-flex items-center justify-center mb-4">
           <svg
-              width="48"
-              height="48"
+              width="96"
+              height="96"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="h-10 w-10 sm:h-12 sm:w-12"
+              className="h-20 w-20 sm:h-24 sm:w-24"
             >
               <defs>
                 <linearGradient id="anchor-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
