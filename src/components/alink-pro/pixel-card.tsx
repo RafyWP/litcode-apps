@@ -73,7 +73,9 @@ export function PixelCard({
           {isCompleted && <CheckCircle className="ml-2 h-6 w-6 text-green-500" />}
         </CardTitle>
         <CardDescription>
-          Crie um novo pixel ou selecione um existente para testar.
+          {isCompleted
+            ? "Seu evento teste foi enviado com sucesso!"
+            : "Crie um novo pixel ou selecione um existente para testar."}
         </CardDescription>
       </CardHeader>
       {!isCompleted && (
@@ -209,7 +211,7 @@ export function PixelCard({
             </fieldset>
           </CardContent>
           <CardFooter className="flex-col sm:flex-row gap-2 pt-4">
-              {pixelSelection === 'create_new' && (
+              {pixelSelection === 'create_new' ? (
                   <Button
                       type="button"
                       onClick={onCreatePixel}
@@ -223,8 +225,7 @@ export function PixelCard({
                       )}
                       Gerar Pixel
                   </Button>
-              )}
-              {pixelSelection !== 'create_new' && (
+              ) : (
                 <Button
                   type="button"
                   variant="secondary"
