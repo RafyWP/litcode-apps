@@ -333,7 +333,7 @@ export default function AlinkProClient() {
     <div className="flex-grow bg-background text-foreground flex flex-col items-center justify-center px-4 py-10">
       <div className="w-full max-w-lg mx-auto">
         <header className="text-center mb-10">
-          <div className="inline-flex items-center justify-center mb-4">
+          <div className="inline-flex items-center justify-center -mb-12">
           <svg
               width="96"
               height="96"
