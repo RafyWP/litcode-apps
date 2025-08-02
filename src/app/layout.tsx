@@ -4,11 +4,9 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { Sofia_Sans } from 'next/font/google';
 import { AuthProvider } from '@/contexts/auth-context';
-import Header from '@/components/layout/header';
-import Footer from '@/components/layout/footer';
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import React from 'react';
-import Script from 'next/script';
+import ConditionalLayout from '@/components/layout/conditional-layout';
 
 const sofiaSans = Sofia_Sans({
   subsets: ['latin'],
@@ -32,11 +30,9 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased flex flex-col min-h-screen">
         <AuthProvider>
-          <Header />
-          <div className="flex-grow flex flex-col">
+          <ConditionalLayout>
             {children}
-          </div>
-          <Footer />
+          </ConditionalLayout>
         </AuthProvider>
         <Toaster />
         <SpeedInsights />
