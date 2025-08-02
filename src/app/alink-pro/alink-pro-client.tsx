@@ -64,7 +64,7 @@ export default function AlinkProClient() {
       pixelSelection: "create_new",
       pixelName: "",
       pixelCode: "",
-      pageUrl: "https://ia.litcode.store/produto/test-product",
+      pageUrl: "",
       externalId: "",
     },
   });
@@ -77,18 +77,8 @@ export default function AlinkProClient() {
     return crypto.randomUUID();
   }
 
-  const generatePixelName = () => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = 'PX-';
-    for (let i = 0; i < 8; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
-  }
-
   useEffect(() => {
     setValue("externalId", generateUUID());
-    setValue("pixelName", generatePixelName());
   }, [setValue]);
 
 
